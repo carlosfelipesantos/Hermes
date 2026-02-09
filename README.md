@@ -9,6 +9,8 @@ Acompanhamento do status dos fretes
 Visualização do histórico de pedidos
 Gerenciamento de fretes pela equipe administrativa
 Organização e controle das operações logísticas
+
+
 🎯 Objetivo do Projeto
 O objetivo do Hermes é otimizar o fluxo de trabalho logístico, melhorar a comunicação entre clientes e a empresa e oferecer uma solução prática, eficiente e confiável para o gerenciamento de fretes.
 
