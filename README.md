@@ -15,9 +15,6 @@ O objetivo do Hermes é otimizar o fluxo de trabalho logístico, melhorar a comu
 🤝 Colaboração
 Projeto desenvolvido em colaboração.
 
-Repositório original:
-https://github.com/CarlosFelipeS7/Hermes
-
 🛠️ Tecnologias Utilizadas
 HTML
 CSS
