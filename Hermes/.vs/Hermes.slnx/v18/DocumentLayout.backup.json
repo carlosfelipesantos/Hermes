@@ -3,32 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\veiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\veiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\notificacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\notificacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\avaliacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\avaliacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\frete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\frete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\notificacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\notificacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\transportador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\transportador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\cliente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\onedrive\\meu computador (galaxy book 4)\\documents\\github\\hermes\\hermes\\entities\\veiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\veiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,69 +54,72 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Notificacao.cs",
               "DocumentMoniker": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Notificacao.cs",
               "RelativeDocumentMoniker": "Entities\\Notificacao.cs",
               "ToolTip": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Notificacao.cs",
               "RelativeToolTip": "Entities\\Notificacao.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-06T17:31:44.423Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "Veiculo.cs",
               "DocumentMoniker": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Veiculo.cs",
               "RelativeDocumentMoniker": "Entities\\Veiculo.cs",
               "ToolTip": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Veiculo.cs",
               "RelativeToolTip": "Entities\\Veiculo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAgAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-06T17:31:36.11Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "Avaliacao.cs",
               "DocumentMoniker": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Avaliacao.cs",
               "RelativeDocumentMoniker": "Entities\\Avaliacao.cs",
               "ToolTip": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Avaliacao.cs",
               "RelativeToolTip": "Entities\\Avaliacao.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T17:31:27.519Z"
+              "WhenOpened": "2026-03-06T17:31:27.519Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "Frete.cs",
               "DocumentMoniker": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Frete.cs",
               "RelativeDocumentMoniker": "Entities\\Frete.cs",
               "ToolTip": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Frete.cs",
               "RelativeToolTip": "Entities\\Frete.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAgwA4AAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T17:31:16.242Z"
+              "WhenOpened": "2026-03-06T17:31:16.242Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Transportador.cs",
               "DocumentMoniker": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Transportador.cs",
               "RelativeDocumentMoniker": "Entities\\Transportador.cs",
               "ToolTip": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Transportador.cs",
               "RelativeToolTip": "Entities\\Transportador.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T17:30:59.429Z"
+              "WhenOpened": "2026-03-06T17:30:59.429Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "Cliente.cs",
               "DocumentMoniker": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Cliente.cs",
               "RelativeDocumentMoniker": "Entities\\Cliente.cs",
@@ -124,17 +127,18 @@
               "RelativeToolTip": "Entities\\Cliente.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T17:30:44.018Z"
+              "WhenOpened": "2026-03-06T17:30:44.018Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "Usuario.cs",
               "DocumentMoniker": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Usuario.cs",
               "RelativeDocumentMoniker": "Entities\\Usuario.cs",
               "ToolTip": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Usuario.cs",
               "RelativeToolTip": "Entities\\Usuario.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAQwAcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-06T17:30:11.01Z",
               "EditorCaption": ""
