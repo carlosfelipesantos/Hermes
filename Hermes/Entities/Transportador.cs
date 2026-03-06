@@ -1,6 +1,6 @@
 ﻿namespace Hermes.Entities
 {
-    public class Transportador
+    public class Transportador: Usuario
     {
         public string Documento { get; set; }
         public double AvaliacaoMedia { get; set; }
