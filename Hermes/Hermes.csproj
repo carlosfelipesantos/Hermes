@@ -18,6 +18,11 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="DTOs\Avaliacao\" />
+    <Folder Include="DTOs\Frete\" />
+    <Folder Include="DTOs\Notificacao\" />
+    <Folder Include="DTOs\Veiculo\" />
+    <Folder Include="DTOs\Usuario\" />
   </ItemGroup>
 
 </Project>
