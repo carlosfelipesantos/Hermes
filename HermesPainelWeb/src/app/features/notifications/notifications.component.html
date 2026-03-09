@@ -1,0 +1,113 @@
+<div class="panel">
+  <div class="header">
+    <div>
+      <h2>Notificações do Sistema</h2>
+      <p>Alertas de novos fretes, problemas operacionais e avisos gerais.</p>
+    </div>
+
+    <div class="filters">
+      <input class="input" placeholder="Buscar (título, mensagem, ID)..." [(ngModel)]="query" />
+
+      <select class="input" [(ngModel)]="type">
+        <option value="All">Todos tipos</option>
+        <option value="NewFreight">Novo frete</option>
+        <option value="Operational">Operacional</option>
+        <option value="System">Sistema</option>
+      </select>
+
+      <select class="input" [(ngModel)]="read">
+        <option value="All">Todas</option>
+        <option value="Unread">Não lidas</option>
+        <option value="Read">Lidas</option>
+      </select>
+
+      <button class="btn ghost" (click)="markAllRead()">Marcar tudo como lido</button>
+    </div>
+  </div>
+
+  <div class="list">
+    <div class="item head">
+      <div>Tipo</div><div>Título</div><div>Referência</div><div>Tempo</div><div>Status</div><div>Ações</div>
+    </div>
+
+    <div class="item" *ngIf="loading">
+      <div class="skeleton" style="grid-column: 1 / -1;"></div>
+    </div>
+
+    <div class="item" *ngFor="let n of filtered" [class.unread]="!n.read">
+      <div>
+        <span class="chip" [ngClass]="typeClass(n.type)">{{ typeLabel(n.type) }}</span>
+      </div>
+
+      <div class="title">
+        <strong>{{ n.title }}</strong>
+        <div class="muted">{{ n.message }}</div>
+      </div>
+
+      <div class="mono">{{ refLabel(n) }}</div>
+
+      <div class="muted">{{ n.timeLabel }}</div>
+
+      <div>
+        <ui-badge [tone]="n.read ? 'ok' : 'warn'">
+        {{ n.read ? 'Lida' : 'Não lida' }}
+        </ui-badge>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" (click)="open(n)">Abrir</button>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="!loading && filtered.length === 0">
+      Nenhuma notificação encontrada.
+    </div>
+  </div>
+</div>
+
+<!-- Drawer -->
+<div class="overlay" *ngIf="selected" (click)="close()"></div>
+<ui-drawer [open]="!!selected" [width]="460" (closed)="close()">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title">{{ selected?.title }}</div>
+
+      <div class="drawer-sub">
+        <ui-badge
+          [tone]="selected?.type === 'NewFreight' ? 'ok' : selected?.type === 'Operational' ? 'warn' : 'sys'">
+          {{ selected?.type && selected ? typeLabel(selected.type) : '' }}
+        </ui-badge>
+
+        <span class="muted">• {{ selected?.timeLabel }}</span>
+      </div>
+    </div>
+
+    <button class="icon-btn" (click)="close()" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="section-title">Detalhes</div>
+    <div class="box">
+      <div class="muted">{{ selected?.message }}</div>
+    </div>
+
+    <div class="section-title">Referência</div>
+    <div class="kv">
+      <div class="k">Tipo</div><div class="v">{{ selected && selected.type ? typeLabel(selected.type) : '' }}</div>
+      <div class="k">Ref</div><div class="v mono">{{ selected ? refLabel(selected) : '—' }}</div>
+      <div class="k">Criada</div><div class="v">{{ selected?.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
+    </div>
+
+    <div class="section-title">Ações rápidas</div>
+    <div class="action-grid">
+      <a class="btn ghost" *ngIf="selected && refLink(selected) as link" [routerLink]="link">Abrir módulo</a>
+      <button class="btn ghost">Copiar ID</button>
+      <button class="btn ghost">Registrar ocorrência</button>
+    </div>
+  </div>
+
+  <div class="drawer-footer">
+    <button class="btn ghost" (click)="close()">Fechar</button>
+    <button class="btn primary" *ngIf="selected && refLink(selected) as link" [routerLink]="link">Ir agora</button>
+  </div>
+</ui-drawer>

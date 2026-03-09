@@ -1,0 +1,124 @@
+<div class="page">
+  <div class="container">
+    <div class="card">
+      <div class="title">
+        <h1>Solicitar Frete</h1>
+        <p>Preencha os dados completos para enviar sua solicitação.</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        <!-- ORIGEM -->
+        <div class="section">
+          <h3>📍 Endereço de Origem</h3>
+
+          <div class="field">
+            <label>CEP Origem (opcional)</label>
+            <input class="input" formControlName="originCep" (input)="onCepInput('originCep')" placeholder="00000-000" />
+            <small>Informe o CEP para preenchimento automático</small>
+          </div>
+
+          <div class="field">
+            <label>Região de Origem (DDD) *</label>
+            <select class="input" formControlName="originDdd">
+              <option value="">Selecione o DDD da região</option>
+              <option *ngFor="let d of ddds" [value]="d">{{ d }}</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Endereço Completo de Origem *</label>
+            <input class="input" formControlName="originAddress" placeholder="Ex: Rua das Flores, 123 - Centro" />
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label>Cidade de Origem *</label>
+              <input class="input" formControlName="originCity" placeholder="Cidade" />
+            </div>
+            <div class="field">
+              <label>Estado de Origem *</label>
+              <input class="input" formControlName="originUf" placeholder="UF" maxlength="2" />
+            </div>
+          </div>
+        </div>
+
+        <!-- DESTINO -->
+        <div class="section">
+          <h3>🏁 Endereço de Destino</h3>
+
+          <div class="field">
+            <label>CEP Destino (opcional)</label>
+            <input class="input" formControlName="destCep" (input)="onCepInput('destCep')" placeholder="00000-000" />
+            <small>Informe o CEP para preenchimento automático</small>
+          </div>
+
+          <div class="field">
+            <label>Região de Destino (DDD) *</label>
+            <select class="input" formControlName="destDdd">
+              <option value="">Selecione o DDD da região</option>
+              <option *ngFor="let d of ddds" [value]="d">{{ d }}</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Endereço Completo de Destino *</label>
+            <input class="input" formControlName="destAddress" placeholder="Ex: Av. Paulista, 1000 - Bela Vista" />
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label>Cidade de Destino *</label>
+              <input class="input" formControlName="destCity" placeholder="Cidade" />
+            </div>
+            <div class="field">
+              <label>Estado de Destino *</label>
+              <input class="input" formControlName="destUf" placeholder="UF" maxlength="2" />
+            </div>
+          </div>
+        </div>
+
+        <!-- CARGA -->
+        <div class="section">
+          <h3>📦 Informações da Carga</h3>
+
+          <div class="grid-2">
+            <div class="field">
+              <label>Peso (kg) *</label>
+              <input class="input" type="number" formControlName="weightKg" placeholder="Ex: 150,50" />
+              <small>Use vírgula/ponto para decimais</small>
+            </div>
+
+            <div class="field">
+              <label>Valor do Frete (R$) *</label>
+              <input class="input" type="number" formControlName="price" placeholder="R$ 0,00" />
+              <small>Valor que está disposto a pagar</small>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Descrição da Carga *</label>
+            <textarea class="input textarea" formControlName="cargoDesc"
+              placeholder="Descreva o tipo de carga, dimensões, cuidados especiais, etc."></textarea>
+            <small>Informações detalhadas ajudam os transportadores</small>
+          </div>
+
+          <div class="info">
+            <strong>✅ Como funciona:</strong>
+            <ul>
+              <li>O CEP é opcional — use apenas se souber</li>
+              <li>Se informar o CEP, os campos de endereço serão preenchidos automaticamente</li>
+              <li>DDD e UF ajudam a mostrar seu frete para transportadores da mesma região</li>
+              <li>O endereço completo pode ser usado para cálculo de rota</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn ghost" type="button">Cancelar</button>
+          <button class="btn primary" type="submit" [disabled]="form.invalid">Criar Solicitação</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

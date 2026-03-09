@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Base (tema) */
+:root {
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --bg: #0b1220;
+
+  --panel: #183327;     /* verde escuro */
+  --panel-2: #13261c;   /* verde mais fechado */
+
+  --border: rgba(255, 255, 255, 0.06);
+  --border-2: rgba(255, 255, 255, 0.10);
+
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.70);
+
+  --green: #22c55e;
+  --lime: #a3e635;
+  --red: #f87171;
+}
+
+/* Helpers */
+.muted { opacity: .7; font-size: 12px; }
+.mono  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+/* Containers */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.header h2 { margin: 0; font-size: 16px; }
+.header p  { margin: 6px 0 0; opacity: .7; font-size: 13px; }
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Inputs */
+.input {
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border-2);
+    /* background: var(--panel-2); */
+    color: #000000;
+    min-width: 220px;
+    outline: none;
+}
+
+.input::placeholder { color: rgba(255,255,255,.55); }
+
+/* Buttons */
+.btn {
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(34, 197, 94, 0.30);
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn:hover { background: rgba(34, 197, 94, 0.30); }
+
+.btn.primary {
+  background: var(--green);
+  border-color: var(--green);
+  color: #0f1f17;
+  font-weight: 700;
+}
+
+.btn.ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Tables (grid style) */
+.table {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.row {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--panel-2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  align-items: center;
+}
+
+.head {
+  opacity: 0.6;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+.skeleton {
+  height: 34px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.empty { padding: 16px; opacity: 0.75; }
+
+/* Drawer internal layout helpers (p/ usar dentro do ui-drawer) */
+.drawer-header {
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.drawer-title { font-size: 16px; font-weight: 900; }
+.drawer-sub { margin-top: 8px; display: flex; gap: 8px; align-items: center; }
+
+.drawer-body { padding: 14px; overflow: auto; }
+
+.drawer-footer {
+  margin-top: auto;
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+}
+.icon-btn:hover { background: rgba(255, 255, 255, 0.10); }
+
+.section-title {
+  margin: 12px 0 8px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.box, .kv {
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: 0.9fr 1.4fr;
+  gap: 8px 10px;
+}
+
+.k { opacity: 0.7; font-size: 12px; }
+.v { font-weight: 800; }

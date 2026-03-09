@@ -1,0 +1,142 @@
+<div class="panel">
+  <div class="header">
+    <div>
+      <h2>Gestão de Usuários</h2>
+      <p>Clientes e transportadores — visualizar, ativar/desativar e histórico de fretes.</p>
+    </div>
+
+    <div class="filters">
+      <input class="input" placeholder="Buscar por nome, email ou ID..." [(ngModel)]="query" />
+
+      <select class="input" [(ngModel)]="role">
+        <option value="All">Todos</option>
+        <option value="Customer">Clientes</option>
+        <option value="Transporter">Transportadores</option>
+      </select>
+
+      <select class="input" [(ngModel)]="status">
+        <option value="All">Status: todos</option>
+        <option value="Active">Ativos</option>
+        <option value="Inactive">Inativos</option>
+      </select>
+
+      <button class="btn primary">Novo</button>
+    </div>
+  </div>
+
+  <div class="table">
+    <div class="row head">
+      <div>Usuário</div><div>Tipo</div><div>Status</div><div>Contato</div><div>Ações</div>
+    </div>
+
+    <div class="row" *ngIf="loading">
+      <div class="skeleton" style="grid-column: 1 / -1;"></div>
+    </div>
+
+    <div class="row" *ngFor="let u of filtered">
+      <div>
+        <div class="name">{{ u.name }}</div>
+        <div class="muted">{{ u.email }}</div>
+      </div>
+
+      <div>
+        <span class="badge">{{ roleLabel(u.role) }}</span>
+        <div class="muted" *ngIf="u.role === 'Transporter'">★ {{ u.rating }} • {{ u.activeVehicles }} veículos</div>
+      </div>
+
+      <div>
+        <span class="badge" [class.ok]="u.status==='Active'" [class.bad]="u.status==='Inactive'">
+          {{ statusLabel(u.status) }}
+        </span>
+      </div>
+
+      <div>
+        <div class="muted">{{ u.phone }}</div>
+        <div class="muted">{{ u.id }}</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" (click)="open(u)">Ver</button>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="!loading && filtered.length === 0">
+      Nenhum usuário encontrado.
+    </div>
+  </div>
+</div>
+
+<!-- Drawer -->
+<div class="overlay" *ngIf="drawerOpen" (click)="close()"></div>
+
+<aside class="drawer" *ngIf="drawerOpen">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title">{{ details?.user?.name ?? 'Carregando...' }}</div>
+
+      <div class="drawer-sub" *ngIf="details">
+        <span class="badge">{{ roleLabel(details.user.role) }}</span>
+        <span class="badge" [class.ok]="details.user.status==='Active'" [class.bad]="details.user.status==='Inactive'">
+          {{ statusLabel(details.user.status) }}
+        </span>
+      </div>
+    </div>
+
+    <button class="icon-btn" (click)="close()" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="box skeleton" *ngIf="detailsLoading"></div>
+
+    <ng-container *ngIf="!detailsLoading && details">
+      <div class="section-title">Dados</div>
+      <div class="kv">
+        <div class="k">Email</div><div class="v">{{ details.user.email }}</div>
+        <div class="k">Telefone</div><div class="v">{{ details.user.phone }}</div>
+        <div class="k">ID</div><div class="v mono">{{ details.user.id }}</div>
+        <div class="k">Cadastro</div><div class="v">{{ details.user.createdAt | date:'dd/MM/yyyy' }}</div>
+        <div class="k" *ngIf="details.user.role==='Transporter'">Avaliação</div>
+        <div class="v" *ngIf="details.user.role==='Transporter'">★ {{ details.user.rating }}</div>
+      </div>
+
+      <div class="section-title">Resumo</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="label">Total de fretes</div>
+          <div class="value">{{ details.stats.totalFreights }}</div>
+        </div>
+        <div class="stat">
+          <div class="label">Finalizados</div>
+          <div class="value ok">{{ details.stats.doneFreights }}</div>
+        </div>
+        <div class="stat">
+          <div class="label">Cancelados</div>
+          <div class="value bad">{{ details.stats.canceledFreights }}</div>
+        </div>
+      </div>
+
+      <div class="section-title">Histórico de fretes</div>
+      <div class="history">
+        <div class="h-row head">
+          <div>ID</div><div>Status</div><div>Origem</div><div>Destino</div><div>Valor</div><div>Data</div>
+        </div>
+
+        <div class="h-row" *ngFor="let h of details.history">
+          <div class="mono">{{ h.id }}</div>
+          <div><span class="badge" [ngClass]="toneClass(h.statusTone)">{{ h.statusLabel }}</span></div>
+          <div>{{ h.origin }}</div>
+          <div>{{ h.destination }}</div>
+          <div class="money">{{ h.valueLabel }}</div>
+          <div class="muted">{{ h.dateLabel }}</div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="drawer-footer">
+    <button class="btn ghost" (click)="close()">Fechar</button>
+    <button class="btn" (click)="toggleStatus()" *ngIf="details">
+      {{ details.user.status === 'Active' ? 'Desativar' : 'Ativar' }}
+    </button>
+  </div>
+</aside>

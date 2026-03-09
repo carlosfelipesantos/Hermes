@@ -1,0 +1,101 @@
+<div class="panel">
+  <div class="header">
+    <div>
+      <h2>Minha Conta</h2>
+      <p class="muted">Gerencie seu perfil e avatar.</p>
+    </div>
+
+    <button class="btn" (click)="session.logout()">Sair</button>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="row">
+        <button type="button" class="avatarEdit" (click)="openEditor()">
+            <ui-avatar
+                [name]="user().name"
+                [src]="user().photoUrl ?? null"
+                [avatarId]="user().avatarId ?? null"
+                [size]="64"
+            />
+        </button>
+        <div class="meta">
+          <div class="name">{{ user().name }}</div>
+          <div class="muted">{{ user().role }} • {{ user().email }}</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" (click)="openEditor()">Alterar foto/Avatar</button>
+        <button class="btn" (click)="tab.set('avatars'); editing.set(true)">Escolher personagem</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Dados</h3>
+
+      <label class="field">
+        <span class="muted">Nome</span>
+        <input
+        class="input"
+        name="name"
+        [ngModel]="name()"
+        (ngModelChange)="name.set($event)"
+        />
+      </label>
+
+      <label class="field">
+        <span class="muted">Email</span>
+        <input
+        class="input"
+        name="email"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
+        />
+      </label>
+
+      <div class="actions">
+        <button class="btn primary" (click)="saveProfile()">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal simples -->
+<div class="overlay" *ngIf="editing()" (click)="closeEditor()"></div>
+<div class="modal" *ngIf="editing()">
+  <div class="modal-header">
+    <strong>Alterar foto</strong>
+    <button class="btn ghost" (click)="closeEditor()">Fechar</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="tab() === 'upload'" (click)="tab.set('upload')">Enviar foto</button>
+    <button class="tab" [class.active]="tab() === 'avatars'" (click)="tab.set('avatars')">Personagens</button>
+  </div>
+
+  <div *ngIf="tab() === 'upload'" class="modal-body">
+    <p class="muted">Escolha uma imagem (PNG/JPG/WEBP, até 2MB).</p>
+    <input type="file" accept="image/png,image/jpeg,image/webp" (change)="onFileSelected($event)" />
+  </div>
+
+  <div *ngIf="tab() === 'avatars'" class="modal-body">
+    <p class="muted">Selecione um avatar pré-definido.</p>
+
+    <div class="avatars">
+      <button class="avatarPick" *ngFor="let a of avatars" (click)="pickAvatar(a)">
+        <img [src]="'assets/avatars/' + a + '.png'" alt="avatar" />
+      </button>
+    </div>
+
+    <div class="actions">
+        <button class="btn primary" (click)="saveProfile()" [disabled]="saving()">
+            <span *ngIf="!saving()">Salvar</span>
+            <span *ngIf="saving()" class="spinner"></span>
+            <span *ngIf="saving()">Salvando...</span>
+        </button>
+        <span class="saveOk" *ngIf="saved()">✅ Salvo</span>
+    </div>
+
+  </div>
+</div>

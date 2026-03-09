@@ -1,0 +1,17 @@
+.ui-avatar{
+  border-radius: 999px;      /* 👈 deixa 100% circular */
+  overflow: hidden;          /* 👈 corta a imagem */
+  display: grid;
+  place-items: center;
+  background: rgba(34, 197, 94, 0.18);
+  border: 2px solid rgba(34, 197, 94, 0.35); /* moldura mais “certa” */
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.18);    /* opcional: separa do fundo */
+}
+
+.ui-avatar img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;         /* 👈 preenche e corta */
+  object-position: center;   /* 👈 centraliza */
+}

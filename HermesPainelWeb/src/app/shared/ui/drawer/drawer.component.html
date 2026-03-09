@@ -1,0 +1,5 @@
+<div class="overlay" *ngIf="open" (click)="close()"></div>
+
+<aside class="drawer" *ngIf="open" [style.width.px]="width">
+  <ng-content></ng-content>
+</aside>

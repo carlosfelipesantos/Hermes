@@ -1,0 +1,116 @@
+<div class="panel">
+  <div class="header">
+    <div>
+      <h2>Monitoramento Operacional</h2>
+      <p>Acompanhe fretes em tempo real e identifique parados/cancelados.</p>
+    </div>
+
+    <div class="filters">
+      <input class="input" placeholder="Buscar por ID/cidade/transportador..." [(ngModel)]="query" />
+      <select class="input" [(ngModel)]="status">
+        <option value="All">Todos</option>
+        <option value="InProgress">Em andamento</option>
+        <option value="Stopped">Parados</option>
+        <option value="Canceled">Cancelados</option>
+      </select>
+      <button class="btn primary">Atualizar</button>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">Em andamento</div>
+      <div class="value ok">{{ kpis.inProgress }}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Parados</div>
+      <div class="value warn">{{ kpis.stopped }}</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Cancelados</div>
+      <div class="value bad">{{ kpis.canceled }}</div>
+    </div>
+  </div>
+
+  <div class="table">
+    <div class="row head">
+      <div>ID</div><div>Status</div><div>Risco</div><div>Origem</div><div>Destino</div><div>Última atualização</div><div>Ações</div>
+    </div>
+
+    <div class="row" *ngIf="loading">
+      <div class="skeleton" style="grid-column: 1 / -1;"></div>
+    </div>
+
+    <div class="row" *ngFor="let i of filtered">
+      <div class="mono">{{ i.id }}</div>
+
+      <div>
+        <span class="badge" [ngClass]="statusClass(i.status)">{{ statusLabel(i.status) }}</span>
+      </div>
+
+      <div>
+        <span class="badge" [ngClass]="riskClass(i.riskLabel)">{{ i.riskLabel }}</span>
+      </div>
+
+      <div>{{ i.origin }}</div>
+      <div>{{ i.destination }}</div>
+      <div class="muted">{{ i.lastUpdateLabel }}</div>
+
+      <div class="actions">
+        <button class="btn ghost" (click)="open(i)">Ver</button>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="!loading && filtered.length === 0">
+      Nenhum frete encontrado.
+    </div>
+  </div>
+</div>
+
+<!-- Drawer -->
+<div class="overlay" *ngIf="selected" (click)="close()"></div>
+
+<aside class="drawer" *ngIf="selected">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title">{{ selected.id }}</div>
+      <div class="drawer-sub">
+        <span class="badge" [ngClass]="statusClass(selected.status)">{{ statusLabel(selected.status) }}</span>
+        <span class="badge" [ngClass]="riskClass(selected.riskLabel)">{{ selected.riskLabel }}</span>
+        <span class="muted">• {{ selected.lastUpdateLabel }}</span>
+      </div>
+    </div>
+
+    <button class="icon-btn" (click)="close()" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="section-title">Resumo</div>
+    <div class="kv">
+      <div class="k">Origem</div><div class="v">{{ selected.origin }}</div>
+      <div class="k">Destino</div><div class="v">{{ selected.destination }}</div>
+      <div class="k">Transportador</div><div class="v">{{ selected.transporter }}</div>
+      <div class="k">Carga</div><div class="v">{{ selected.cargo }}</div>
+      <div class="k">Valor</div><div class="v">{{ selected.valueLabel }}</div>
+    </div>
+
+    <div class="section-title">Ações</div>
+    <div class="action-grid">
+      <button class="btn ghost">Abrir frete</button>
+      <button class="btn ghost">Notificar transportador</button>
+      <button class="btn ghost">Registrar ocorrência</button>
+    </div>
+
+    <div class="section-title">Observação</div>
+    <div class="box">
+      <div class="muted">
+        Aqui depois você liga com a API para exibir eventos reais (geolocalização/status logs).
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer-footer">
+    <button class="btn ghost" (click)="close()">Fechar</button>
+    <button class="btn primary">Resolver</button>
+  </div>
+</aside>

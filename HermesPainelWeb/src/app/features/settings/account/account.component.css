@@ -1,0 +1,178 @@
+.panel{
+  background: rgba(19, 38, 28, 0.55);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+h2{ margin:0; }
+.muted{ opacity: .7; }
+
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.card{
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.row{
+  display:flex;
+  gap: 12px;
+  align-items:center;
+}
+
+.meta .name{
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.actions{
+  display:flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.input{
+  width:100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #13261c;
+  color: #fff;
+  outline: none;
+}
+
+.field{
+  display:block;
+  margin-top: 10px;
+}
+
+.btn.ghost{
+  background: transparent;
+  border-color: rgba(255,255,255,0.18);
+}
+
+/* Modal */
+.overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 100;
+}
+
+.modal{
+  position: fixed;
+  right: 22px;
+  top: 90px;
+  width: 420px;
+  background: #0b1220;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 16px;
+  padding: 14px;
+  z-index: 101;
+}
+
+.modal-header{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.tabs{
+  display:flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.tab{
+  flex:1;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  color:#fff;
+  cursor:pointer;
+}
+
+.tab.active{
+  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.avatars{
+  display:grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.avatarPick{
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  cursor:pointer;
+  overflow:hidden;
+}
+
+.avatarPick img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+}
+
+.avatarEdit{
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.avatarEdit:focus-visible{
+  outline: 2px solid rgba(34, 197, 94, 0.6);
+  outline-offset: 3px;
+}
+
+.btn[disabled]{
+  opacity: .7;
+  cursor: not-allowed;
+}
+
+.spinner{
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: rgba(255,255,255,0.95);
+  display: inline-block;
+  margin-right: 8px;
+  animation: spin .8s linear infinite;
+  vertical-align: -2px;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+.saveOk{
+  opacity: .9;
+  font-weight: 700;
+}

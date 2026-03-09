@@ -1,0 +1,149 @@
+<div class="panel">
+  <div class="header">
+    <div>
+      <h2>Gestão de Fretes</h2>
+      <p>Liste, filtre por status e visualize detalhes (drawer lateral).</p>
+    </div>
+
+    <div class="filters">
+      <input class="input" placeholder="Buscar (ID, cidade, transportador)..." [(ngModel)]="query" />
+
+      <select class="input" [(ngModel)]="status">
+        <option value="All">Todos</option>
+        <option value="Requested">Solicitado</option>
+        <option value="Accepted">Aceito</option>
+        <option value="InProgress">Em andamento</option>
+        <option value="Done">Finalizado</option>
+        <option value="Canceled">Cancelado</option>
+      </select>
+<a></a>
+      <button class="btn primary" 
+        routerLink="/create-freights"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">Novo frete</button>
+    </div>
+  </div>
+
+  <div class="table">
+    <div class="row head">
+      <div>ID</div>
+      <div>Status</div>
+      <div>Origem</div>
+      <div>Destino</div>
+      <div>Transportador</div>
+      <div>Valor</div>
+      <div>Ações</div>
+    </div>
+
+    <div class="row" *ngIf="loading">
+      <div class="skeleton" style="grid-column: 1 / -1;"></div>
+    </div>
+
+    <div class="row" *ngFor="let f of filtered">
+      <div class="mono">{{ f.id }}</div>
+
+      <div>
+        <ui-badge [tone]="badgeTone(f.status)">{{ statusLabel(f.status) }}</ui-badge>
+      </div>
+
+      <div>
+        <div class="city">{{ f.origin.city }}</div>
+        <div class="muted">{{ f.origin.address }}</div>
+      </div>
+
+      <div>
+        <div class="city">{{ f.destination.city }}</div>
+        <div class="muted">{{ f.destination.address }}</div>
+      </div>
+
+      <div>
+        <div class="city">{{ f.transporter?.name ?? '—' }}</div>
+        <div class="muted" *ngIf="f.transporter">
+          {{ f.transporter.vehicle }} • ★ {{ f.transporter.rating }}
+        </div>
+      </div>
+
+      <div class="money">{{ money(f.price) }}</div>
+
+      <div class="actions">
+        <button class="btn ghost" (click)="openDetails(f)">Ver</button>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="!loading && filtered.length === 0">
+      Nenhum frete encontrado.
+    </div>
+  </div>
+</div>
+
+<!-- Drawer (refatorado) -->
+<ui-drawer [open]="!!selected" [width]="420" (closed)="closeDetails()">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title">{{ selected?.id }}</div>
+
+      <div class="drawer-sub">
+        <ui-badge [tone]="selected && selected.status ? badgeTone(selected.status!) : 'neutral'">
+          {{ selected && selected.status ? statusLabel(selected.status!) : '' }}
+        </ui-badge>
+
+        <span class="muted">• {{ selected?.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+    </div>
+
+    <button class="icon-btn" (click)="closeDetails()" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="section-title">Resumo</div>
+
+    <div class="kv">
+      <div class="k">Valor</div><div class="v">{{ selected ? money(selected.price) : '' }}</div>
+      <div class="k">Carga</div><div class="v">{{ selected?.cargo?.description }}</div>
+      <div class="k">Peso</div><div class="v">{{ selected?.cargo?.weightKg }} kg</div>
+      <div class="k">Volume</div><div class="v">{{ selected?.cargo?.volumeM3 }} m³</div>
+    </div>
+
+    <div class="section-title">Origem</div>
+    <div class="box">
+      <div class="v">{{ selected?.origin?.city }}</div>
+      <div class="muted">{{ selected?.origin?.address }}</div>
+    </div>
+
+    <div class="section-title">Destino</div>
+    <div class="box">
+      <div class="v">{{ selected?.destination?.city }}</div>
+      <div class="muted">{{ selected?.destination?.address }}</div>
+    </div>
+
+    <div class="section-title">Transportador</div>
+    <div class="box" *ngIf="selected?.transporter; else noTransporter">
+      <div class="v">{{ selected?.transporter?.name }}</div>
+      <div class="muted">
+        {{ selected?.transporter?.vehicle }} • ★ {{ selected?.transporter?.rating }}
+      </div>
+    </div>
+
+    <ng-template #noTransporter>
+      <div class="box">
+        <div class="muted">Nenhum transportador aceitou ainda.</div>
+      </div>
+    </ng-template>
+
+    <div class="section-title">Status</div>
+    <div class="timeline">
+      <div class="step"
+           *ngFor="let s of (selected && selected.status ? timelineSteps(selected.status) : [])"
+           [class.done]="selected && selected.status ? isStepDone(s.key, selected.status) : false"
+           [class.current]="selected && selected.status ? isStepCurrent(s.key, selected.status!) : false">
+        <div class="dot"></div>
+        <div class="label">{{ s.label }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer-footer">
+    <button class="btn ghost" (click)="closeDetails()">Fechar</button>
+    <button class="btn primary">Editar</button>
+  </div>
+</ui-drawer>

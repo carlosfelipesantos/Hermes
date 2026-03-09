@@ -1,0 +1,109 @@
+<div class="panel">
+  <div class="header">
+    <div>
+      <h2>Veículos</h2>
+      <p>Veículos cadastrados por transportador (tipo, capacidade, disponibilidade).</p>
+    </div>
+
+    <div class="filters">
+      <input class="input" placeholder="Buscar por placa, ID, transportador..." [(ngModel)]="query" />
+
+      <select class="input" [(ngModel)]="transporter">
+        <option *ngFor="let t of transporters" [value]="t">
+          {{ t === 'All' ? 'Todos transportadores' : t }}
+        </option>
+      </select>
+
+      <select class="input" [(ngModel)]="type">
+        <option value="All">Todos tipos</option>
+        <option value="Moto">Moto</option>
+        <option value="Van">Van</option>
+        <option value="VUC">VUC</option>
+        <option value="Caminhao">Caminhão</option>
+      </select>
+
+      <select class="input" [(ngModel)]="availability">
+        <option value="All">Disponibilidade: todas</option>
+        <option value="Available">Disponível</option>
+        <option value="Busy">Em uso</option>
+        <option value="Inactive">Inativo</option>
+      </select>
+
+      <button class="btn primary">Novo veículo</button>
+    </div>
+  </div>
+
+  <div class="table">
+    <div class="row head">
+      <div>ID</div><div>Placa</div><div>Tipo</div><div>Capacidade</div><div>Volume</div><div>Transportador</div><div>Status</div><div>Ações</div>
+    </div>
+
+    <div class="row" *ngIf="loading">
+      <div class="skeleton" style="grid-column: 1 / -1;"></div>
+    </div>
+
+    <div class="row" *ngFor="let v of filtered">
+      <div class="mono">{{ v.id }}</div>
+      <div class="mono">{{ v.plate }}</div>
+      <div>{{ v.type }}</div>
+      <div class="money">{{ formatCapacity(v.capacityKg) }}</div>
+      <div class="money">{{ formatVolume(v.volumeM3) }}</div>
+      <div>{{ v.transporterName }}</div>
+      <div>
+        <span class="badge" [ngClass]="availClass(v.availability)">{{ availLabel(v.availability) }}</span>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" (click)="open(v)">Ver</button>
+      </div>
+    </div>
+
+    <div class="empty" *ngIf="!loading && filtered.length === 0">
+      Nenhum veículo encontrado.
+    </div>
+  </div>
+</div>
+
+<!-- Drawer -->
+<div class="overlay" *ngIf="selected" (click)="close()"></div>
+
+<aside class="drawer" *ngIf="selected">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title">{{ selected.id }} • {{ selected.plate }}</div>
+      <div class="drawer-sub">
+        <span class="badge" [ngClass]="availClass(selected.availability)">{{ availLabel(selected.availability) }}</span>
+        <span class="muted">• {{ selected.type }}</span>
+      </div>
+    </div>
+
+    <button class="icon-btn" (click)="close()" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="section-title">Informações</div>
+    <div class="kv">
+      <div class="k">Tipo</div><div class="v">{{ selected.type }}</div>
+      <div class="k">Capacidade</div><div class="v">{{ formatCapacity(selected.capacityKg) }}</div>
+      <div class="k">Volume</div><div class="v">{{ formatVolume(selected.volumeM3) }}</div>
+      <div class="k">Transportador</div><div class="v">{{ selected.transporterName }}</div>
+      <div class="k">Cadastro</div><div class="v">{{ selected.createdAt | date:'dd/MM/yyyy' }}</div>
+    </div>
+
+    <div class="section-title">Observações</div>
+    <div class="box">
+      <div class="muted">{{ selected.notes || 'Sem observações.' }}</div>
+    </div>
+
+    <div class="section-title">Ações</div>
+    <div class="action-grid">
+      <button class="btn ghost">Editar</button>
+      <button class="btn ghost">Alterar disponibilidade</button>
+      <button class="btn ghost">Ver transportador</button>
+    </div>
+  </div>
+
+  <div class="drawer-footer">
+    <button class="btn ghost" (click)="close()">Fechar</button>
+    <button class="btn primary">Salvar</button>
+  </div>
+</aside>

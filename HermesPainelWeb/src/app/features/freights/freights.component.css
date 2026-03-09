@@ -1,0 +1,60 @@
+/* Específico da tabela de fretes */
+.row {
+  grid-template-columns: 0.9fr 1fr 1.3fr 1.3fr 1.2fr 0.9fr 0.7fr;
+}
+
+/* Detalhes visuais da tabela */
+.city {
+  font-weight: 700;
+}
+
+.money {
+  font-weight: 900;
+}
+
+/* Timeline do drawer (específico) */
+.timeline {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+}
+
+.step {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  opacity: 0.55;
+}
+
+.step .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.step.done {
+  opacity: 0.9;
+}
+
+.step.done .dot {
+  background: rgba(34, 197, 94, 0.85);
+}
+
+.step.current {
+  opacity: 1;
+}
+
+.step.current .dot {
+  background: var(--green);
+}
+
+/* Responsivo: tabela quebra */
+@media (max-width: 1100px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

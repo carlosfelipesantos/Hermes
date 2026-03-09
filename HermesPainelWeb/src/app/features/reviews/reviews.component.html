@@ -1,0 +1,161 @@
+<div class="page">
+  <div class="header">
+    <div>
+      <h2>Avaliações</h2>
+      <p>Notas dos clientes para transportadores — média por profissional e comentários.</p>
+    </div>
+
+    <div class="filters">
+      <select class="input" [(ngModel)]="period">
+        <option value="30d">Últimos 30 dias</option>
+        <option value="7d">Últimos 7 dias</option>
+        <option value="month">Este mês</option>
+      </select>
+
+      <input class="input" placeholder="Buscar (transportador, cliente, frete, comentário)..." [(ngModel)]="query" />
+      <button class="btn primary">Atualizar</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="grid" *ngIf="loading">
+    <div class="card skeleton" *ngFor="let _ of [1,2,3]"></div>
+  </div>
+
+  <div class="grid" *ngIf="!loading && data">
+    <div class="card">
+      <div class="label">Avaliação média</div>
+      <div class="value">{{ data.averageRating }}</div>
+      <div class="hint">Plataforma</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Total de avaliações</div>
+      <div class="value ok">{{ data.totalReviews }}</div>
+      <div class="hint">Período selecionado</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Transportadores avaliados</div>
+      <div class="value">{{ data.ratedTransporters }}</div>
+      <div class="hint">Com nota no período</div>
+    </div>
+  </div>
+
+  <div class="cols" *ngIf="!loading && data">
+    <!-- Ranking -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>Média por transportador</h3>
+        <span class="muted">Top do período</span>
+      </div>
+
+      <div class="rank">
+        <div class="rank-row head">
+          <div>Transportador</div><div>Média</div><div>Avaliações</div><div>Ações</div>
+        </div>
+
+        <div class="rank-row" *ngFor="let t of data.topTransporters">
+          <div class="name">
+            <strong>{{ t.transporterName }}</strong>
+            <div class="muted" *ngIf="t.lastComment">“{{ t.lastComment }}”</div>
+          </div>
+
+          <div class="stars">
+            <span class="star" *ngFor="let s of stars(t.average)">★</span>
+            <span class="muted">({{ t.average }})</span>
+          </div>
+
+          <div class="mono">{{ t.totalReviews }}</div>
+
+          <div class="actions">
+            <button class="btn ghost" (click)="openTransporter(t)">Ver</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comentários recentes -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>Comentários recentes</h3>
+        <span class="muted">{{ filteredLatest.length }} itens</span>
+      </div>
+
+      <div class="reviews">
+        <div class="review" *ngFor="let r of filteredLatest">
+          <div class="tag">
+            <span class="star">★</span>
+            <strong>{{ r.rating }}</strong>
+          </div>
+
+          <div class="body">
+            <div class="line">
+              <strong>{{ r.transporterName }}</strong>
+              <span class="muted">• {{ r.customerName }} • {{ r.freightId }}</span>
+            </div>
+            <div class="comment">{{ r.comment }}</div>
+            <div class="meta">
+              <span class="muted">{{ r.dateLabel }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty" *ngIf="filteredLatest.length === 0">
+          Nenhuma avaliação encontrada.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Drawer -->
+<div class="overlay" *ngIf="drawerOpen" (click)="closeDrawer()"></div>
+
+<aside class="drawer" *ngIf="drawerOpen">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title">{{ selectedTransporter?.transporterName ?? 'Carregando...' }}</div>
+      <div class="drawer-sub" *ngIf="selectedTransporter">
+        <span class="badge ok">Média {{ selectedTransporter.average }}</span>
+        <span class="badge neutral">{{ selectedTransporter.totalReviews }} avaliações</span>
+      </div>
+    </div>
+
+    <button class="icon-btn" (click)="closeDrawer()" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="box skeleton" *ngIf="drawerLoading"></div>
+
+    <ng-container *ngIf="!drawerLoading && selectedTransporter">
+      <div class="section-title">Histórico</div>
+
+      <div class="t-table">
+        <div class="t-row head">
+          <div>Frete</div><div>Cliente</div><div>Nota</div><div>Comentário</div><div>Data</div>
+        </div>
+
+        <div class="t-row" *ngFor="let r of transporterReviews">
+          <div class="mono">{{ r.freightId }}</div>
+          <div>{{ r.customerName }}</div>
+          <div class="stars">
+            <span class="star" *ngFor="let s of stars(r.rating)">★</span>
+            <span class="muted">{{ r.rating }}</span>
+          </div>
+          <div class="comment">{{ r.comment }}</div>
+          <div class="muted">{{ r.dateLabel }}</div>
+        </div>
+
+        <div class="empty" *ngIf="transporterReviews.length === 0">
+          Nenhuma avaliação para este transportador.
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="drawer-footer">
+    <button class="btn ghost" (click)="closeDrawer()">Fechar</button>
+    <button class="btn primary">Ver usuário</button>
+  </div>
+</aside>

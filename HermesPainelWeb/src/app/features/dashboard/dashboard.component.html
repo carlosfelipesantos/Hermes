@@ -1,0 +1,115 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h2>Dashboard</h2>
+      <p>Visão geral do Hermes (administrativo e operacional).</p>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn ghost">Exportar</button>
+      <button class="btn primary">Atualizar</button>
+    </div>
+  </div>
+
+  <!-- Loading skeleton -->
+  <div class="grid" *ngIf="loading">
+    <div class="card skeleton" *ngFor="let _ of [1,2,3,4,5,6]"></div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="grid" *ngIf="!loading && data">
+    <div class="card">
+      <div class="label">Fretes solicitados</div>
+      <div class="value">{{ data.kpis.requestedFreights }}</div>
+      <div class="hint">Aguardando aceite</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Fretes em andamento</div>
+      <div class="value warn">{{ data.kpis.inProgressFreights }}</div>
+      <div class="hint">Monitoramento ativo</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Fretes concluídos</div>
+      <div class="value ok">{{ data.kpis.doneFreights }}</div>
+      <div class="hint">Últimos 30 dias</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Usuários cadastrados</div>
+      <div class="value">{{ data.kpis.usersCount }}</div>
+      <div class="hint">Clientes + transportadores</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Transportadores ativos</div>
+      <div class="value ok">{{ data.kpis.activeTransporters }}</div>
+      <div class="hint">Disponíveis hoje</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Avaliação média</div>
+      <div class="value">{{ data.kpis.averageRating }}</div>
+      <div class="hint">
+        <span class="stars">
+          <span class="star" *ngFor="let _ of [].constructor(ratingStars(data.kpis.averageRating).full)">★</span>
+          <span class="star half" *ngIf="ratingStars(data.kpis.averageRating).half">★</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cols" *ngIf="!loading && data">
+    <!-- Últimos fretes -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>Últimos fretes</h3>
+        <a class="link" routerLink="/freights">Ver todos</a>
+      </div>
+
+      <div class="table">
+        <div class="row head">
+          <div>ID</div><div>Status</div><div>Origem</div><div>Destino</div><div>Transportador</div><div>Valor</div>
+        </div>
+
+        <div class="row" *ngFor="let f of data.latestFreights">
+          <div class="mono">{{ f.id }}</div>
+          <div>
+            <span class="badge" [ngClass]="toneClass(f.statusTone)">{{ f.statusLabel }}</span>
+          </div>
+          <div>{{ f.origin }}</div>
+          <div>{{ f.destination }}</div>
+          <div>{{ f.transporterLabel }}</div>
+          <div class="money">{{ f.valueLabel }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alertas -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>Alertas</h3>
+        <a class="link" routerLink="/notifications">Central</a>
+      </div>
+
+      <div class="alerts">
+        <div class="alert" *ngFor="let a of data.alerts">
+          <div class="tag" [ngClass]="alertClass(a.type)"></div>
+          <div class="alert-body">
+            <div class="alert-title">
+              <strong>{{ a.title }}</strong>
+              <span class="time">{{ a.timeLabel }}</span>
+            </div>
+            <div class="alert-desc">{{ a.description }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-footer">
+        <button class="btn ghost" routerLink="/monitoring">Ir para monitoramento</button>
+        <button class="btn primary" routerLink="/freights">Ver fretes</button>
+      </div>
+    </div>
+  </div>
+</div>

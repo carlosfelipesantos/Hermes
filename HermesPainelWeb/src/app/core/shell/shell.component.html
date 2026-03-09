@@ -1,0 +1,109 @@
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">H</div>
+      <div class="brand-text">
+        <strong>Hermes</strong>
+        <small>Painel Administrativo</small>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="section">Geral</div>
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="dot"></span> Dashboard
+      </a>
+
+      <div class="section">Operação</div>
+      <a
+        routerLink="/freights"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="dot"></span> Fretes
+      </a>
+
+      <a
+        routerLink="/monitoring"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="dot"></span> Monitoramento
+      </a>
+
+      <div class="section">Cadastros</div>
+      <a
+        routerLink="/users"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="dot"></span> Usuários
+      </a>
+
+      <a
+        routerLink="/vehicles"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="dot"></span> Veículos
+      </a>
+
+      <div class="section">Qualidade</div>
+      <a
+        routerLink="/reviews"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="dot"></span> Avaliações
+      </a>
+
+      <div class="section">Sistema</div>
+      <a
+        routerLink="/notifications"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="dot"></span> Notificações
+      </a>
+
+      <a
+        routerLink="/settings"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="dot"></span> Configurações
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="title">
+        <h1>{{ session.user().name }}</h1>
+        <p>Backoffice — visual agora, API depois</p>
+      </div>
+
+      <div class="actions">
+        <input class="search" placeholder="Buscar..." />
+        <button class="btn primary">Novo</button>
+        <a routerLink="/account" class="avatarLink" title="Minha conta">
+          <ui-avatar
+            [name]="session.user().name"
+            [src]="session.user().photoUrl ?? null"
+            [avatarId]="session.user().avatarId ?? null"
+            [size]="36"
+          />
+        </a>
+
+      </div>
+    </header>
+
+    <section class="content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>
