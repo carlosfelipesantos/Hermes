@@ -10,8 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<HermesBD>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //conexao com Banco de Dados
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());//registrando automapper no container de injeção de dependência para mapear objetos de forma automatica
 
 var app = builder.Build();
 
