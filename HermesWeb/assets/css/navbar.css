@@ -1,0 +1,101 @@
+
+
+.nav-logo img.logo-img {
+    height: 100px !important;  
+    width: auto !important;
+    object-fit: contain;
+    display: block;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    
+}
+
+.nav-logo span {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.nav-logo span {
+    margin-left: -45px !important; 
+}
+
+.notification-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    margin-right: 0.5rem;
+}
+
+.notification-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--primary-color);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 2px solid var(--bg-color);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.user-name:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--primary-color);
+}
+
+.user-name i {
+    font-size: 1.2rem;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .user-name-text {
+        display: none;
+    }
+
+    .notification-link {
+        margin-right: 0;
+    }
+}

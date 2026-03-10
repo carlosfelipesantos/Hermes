@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Transportador | Hermes</title>
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/transportador.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container navbar-container">
+      <div class="logo">HERMES</div>
+      <nav class="nav-menu">
+        <a href="index.html">Início</a>
+        <a href="#">Fretes</a>
+        <a href="#">Veículos</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="dashboard-section">
+    <div class="dashboard-container">
+
+      <div class="dashboard-header">
+        <h1 class="section-title">Bem-vindo, <span id="nomeTransportador">Transportador</span></h1>
+        <p class="section-subtitle">Gerencie seus fretes e acompanhe suas atividades</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="fas fa-truck"></i>
+          <h3>Fretes Disponíveis</h3>
+          <p class="stat-number" id="statDisponiveis">0</p>
+        </div>
+
+        <div class="stat-card">
+          <i class="fas fa-clock"></i>
+          <h3>Aceitos - Para Iniciar</h3>
+          <p class="stat-number" id="statAceitos">0</p>
+        </div>
+
+        <div class="stat-card">
+          <i class="fas fa-route"></i>
+          <h3>Em Andamento</h3>
+          <p class="stat-number" id="statAndamento">0</p>
+        </div>
+
+        <div class="stat-card">
+          <i class="fas fa-check-circle"></i>
+          <h3>Concluídos</h3>
+          <p class="stat-number" id="statConcluidos">0</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin: 2rem 0;">
+        <a href="fretes-disponiveis.html" class="btn btn-primary">
+          <i class="fas fa-truck-loading"></i> Ver Todos os Fretes Disponíveis
+        </a>
+
+        <a href="veiculos.html" class="btn btn-primary">
+          <i class="fas fa-truck"></i> Gerenciar Meus Veículos
+        </a>
+      </div>
+
+      <h2 class="fretes-title">Fretes Aceitos - Prontos para Iniciar</h2>
+      <div class="fretes-grid" id="fretesAceitosGrid"></div>
+
+      <h2 class="fretes-title" style="margin-top: 40px;">Fretes em Andamento</h2>
+      <div class="fretes-grid" id="fretesAndamentoGrid"></div>
+
+      <h2 class="fretes-title" style="margin-top: 40px;">Fretes Concluídos</h2>
+      <div class="fretes-grid" id="fretesConcluidosGrid"></div>
+
+      <div class="veiculos-container" style="margin-top: 50px;">
+        <h2 class="fretes-title">Meus Veículos</h2>
+        <div class="fretes-grid" id="veiculosGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="modalExcluirFrete" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Confirmar Exclusão</h3>
+        <span class="close" id="closeModal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja excluir o frete de <strong id="freteOrigem"></strong> para <strong id="freteDestino"></strong>?</p>
+        <p class="text-warning">⚠️ Esta ação não pode ser desfeita!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnCancelarExclusao">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">Sim, Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/transportador.js"></script>
+</body>
+</html>

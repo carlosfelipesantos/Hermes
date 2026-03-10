@@ -1,0 +1,124 @@
+.dashboard-section {
+    padding: 10rem 2rem 6rem 2rem;
+    background: var(--light);
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.stats-grid {
+    display: flex;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: #10b98133;
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid #10b981;
+    color: black;
+    justify-content: space-evenly;
+}
+
+.stat-card {
+    width: 75%;
+    background: white;
+    padding: 2rem;
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+    box-shadow: var(--shadow-xl);
+    transition: var(--transition);
+    border-left: #3498db00 !important;
+}
+
+.stat-card i {
+    font-size: 2rem;
+    color: var(--primary) !important;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card h3 {
+    color: var(--dark);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card .stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Lista de fretes */
+.fretes-grid {
+    margin-top: 3rem;
+}
+
+.fretes-title {
+    font-size: 1.8rem;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.frete-card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition);
+    flex-wrap: wrap;
+    border-left: #3498db00 !important;
+}
+
+.frete-card:hover {
+    transform: translateY(-4px);
+}
+
+.frete-info h3 {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.frete-info p {
+    color: var(--gray);
+    margin: 0.3rem 0;
+}
+
+.frete-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+@media (max-width: 768px) {
+    .frete-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .frete-actions {
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+    }
+}

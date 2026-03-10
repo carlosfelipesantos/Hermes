@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Cliente | Hermes</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container navbar-container">
+      <div class="logo">HERMES</div>
+      <nav class="nav-menu">
+        <a href="index.html">Início</a>
+        <a href="#">Fretes</a>
+        <a href="#">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="feedbackContainer"></div>
+
+  <section class="dashboard-section">
+    <div class="dashboard-container animate-fade-in">
+
+      <div class="dashboard-header">
+        <h1 class="section-title">Painel do Cliente</h1>
+        <p class="section-subtitle">Bem-vindo, <strong id="nomeUsuario">Usuário</strong>!</p>
+      </div>
+
+      <div class="actions-bar">
+        <a href="solicitar-frete.html" class="btn btn-primary">
+          <i class="fas fa-plus-circle"></i> Solicitar Novo Frete
+        </a>
+        <a href="lista-fretes.html" class="btn btn-primary">
+          <i class="fas fa-list"></i> Ver Todos
+        </a>
+      </div>
+
+      <h2 class="fretes-title">Últimos Fretes</h2>
+      <div class="fretes-grid" id="fretesGrid"></div>
+    </div>
+  </section>
+
+  <div id="modalExcluirFrete" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Confirmar Exclusão</h3>
+        <span class="close" id="closeModal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja excluir o frete de <strong id="freteOrigem"></strong> para <strong id="freteDestino"></strong>?</p>
+        <p class="text-warning">⚠️ Esta ação não pode ser desfeita!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btnCancelarExclusao">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">Sim, Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/cliente.js"></script>
+</body>
+</html>

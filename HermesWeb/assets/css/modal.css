@@ -1,0 +1,41 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+    animation: fadeIn .3s ease;
+}
+
+.modal-card {
+    background: white;
+    padding: 2rem;
+    width: 450px;
+    max-width: 95%;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    animation: slideUp .3s ease-out;
+    position: relative;
+}
+
+.btn-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity:0; }
+    to { opacity:1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(40px); opacity:0; }
+    to { transform: translateY(0); opacity:1; }
+}

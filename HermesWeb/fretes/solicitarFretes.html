@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitar Frete | Hermes</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/fretes.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f8fa;
+      color: #1f2937;
+    }
+
+    .navbar {
+      background: #111827;
+      color: white;
+      padding: 16px 24px;
+    }
+
+    .navbar h2 {
+      margin: 0;
+    }
+
+    .frete-section {
+      padding: 32px 20px;
+    }
+
+    .frete-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    .section-title {
+      margin: 0 0 8px 0;
+      color: #047857;
+    }
+
+    .section-subtitle {
+      margin-bottom: 24px;
+      color: #6b7280;
+    }
+
+    .frete-form {
+      display: grid;
+      gap: 24px;
+    }
+
+    .form-section {
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 20px;
+      background: #fafafa;
+    }
+
+    .form-section h3 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      color: #111827;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .form-select {
+      background: white;
+    }
+
+    .field-info {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .cep-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .cep-container input {
+      width: 100%;
+    }
+
+    .loading {
+      position: absolute;
+      right: 12px;
+      color: #10b981;
+    }
+
+    .form-info {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 16px;
+      border-radius: 14px;
+    }
+
+    .form-info i {
+      color: #10b981;
+      margin-top: 2px;
+    }
+
+    .form-info ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .btn {
+      border: none;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: #10b981;
+      color: white;
+    }
+
+    .btn-large {
+      width: 100%;
+      font-size: 15px;
+    }
+
+    .alert-message {
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .alert-message.success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .alert-message.warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .alert-message.error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <h2>Hermes</h2>
+  </nav>
+
+  <section class="frete-section">
+    <div class="frete-container animate-fade-in">
+      <h1 class="section-title">Solicitar Frete</h1>
+      <p class="section-subtitle">Preencha os dados completos para enviar sua solicitação.</p>
+
+      <form action="#" method="post" class="frete-form">
+        <input type="hidden" name="action" value="criar">
+        <input type="hidden" name="idCliente" value="1">
+
+        <div class="form-section">
+          <h3><i class="fas fa-map-marker-alt"></i> Endereço de Origem</h3>
+
+          <div class="form-group">
+            <label>CEP Origem <small>(opcional)</small></label>
+            <div class="cep-container">
+              <input type="text" name="cepOrigem" id="cepOrigem" placeholder="00000-000" maxlength="9">
+              <div class="loading" id="loadingOrigem" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+            </div>
+            <small class="field-info">Informe o CEP para preenchimento automático</small>
+          </div>
+
+          <div class="form-group">
+            <label>Região de Origem (DDD) *</label>
+            <select name="dddOrigem" required class="form-select">
+              <option value="">Selecione o DDD da região</option>
+              <option value="11">11 - São Paulo e Região Metropolitana</option>
+              <option value="12">12 - São José dos Campos e Vale do Paraíba</option>
+              <option value="13">13 - Santos e Baixada Santista</option>
+              <option value="14">14 - Bauru e Centro-Oeste Paulista</option>
+              <option value="15">15 - Sorocaba e Sudoeste Paulista</option>
+              <option value="16">16 - Ribeirão Preto e Nordeste Paulista</option>
+              <option value="17">17 - São José do Rio Preto e Noroeste Paulista</option>
+              <option value="18">18 - Presidente Prudente e Oeste Paulista</option>
+              <option value="19">19 - Campinas e Região</option>
+              <option value="21">21 - Rio de Janeiro/RJ</option>
+              <option value="31">31 - Belo Horizonte/MG</option>
+              <option value="41">41 - Curitiba/PR</option>
+              <option value="51">51 - Porto Alegre/RS</option>
+              <option value="61">61 - Brasília/DF</option>
+              <option value="71">71 - Salvador/BA</option>
+              <option value="81">81 - Recife/PE</option>
+              <option value="85">85 - Fortaleza/CE</option>
+              <option value="91">91 - Belém/PA</option>
+            </select>
+            <small class="field-info">Selecione o DDD da região de origem</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Endereço Completo de Origem *</label>
+              <input type="text" name="origem" placeholder="Ex: Rua das Flores, 123 - Centro - São Paulo/SP" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Cidade de Origem *</label>
+              <input type="text" name="cidadeOrigem" placeholder="Cidade" required>
+            </div>
+            <div class="form-group">
+              <label>Estado de Origem *</label>
+              <input type="text" name="estadoOrigem" placeholder="UF" maxlength="2" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3><i class="fas fa-flag-checkered"></i> Endereço de Destino</h3>
+
+          <div class="form-group">
+            <label>CEP Destino <small>(opcional)</small></label>
+            <div class="cep-container">
+              <input type="text" name="cepDestino" id="cepDestino" placeholder="00000-000" maxlength="9">
+              <div class="loading" id="loadingDestino" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+            </div>
+            <small class="field-info">Informe o CEP para preenchimento automático</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Endereço Completo de Destino *</label>
+              <input type="text" name="destino" placeholder="Ex: Av. Paulista, 1000 - Bela Vista - São Paulo/SP" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Cidade de Destino *</label>
+              <input type="text" name="cidadeDestino" placeholder="Cidade" required>
+            </div>
+            <div class="form-group">
+              <label>Estado de Destino *</label>
+              <input type="text" name="estadoDestino" placeholder="UF" maxlength="2" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3><i class="fas fa-box"></i> Informações da Carga</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Peso (kg) *</label>
+              <input type="text" name="peso" id="peso" placeholder="Ex: 150,50" required>
+              <small class="field-info">Use vírgula para decimais</small>
+            </div>
+
+            <div class="form-group">
+              <label>Valor do Frete (R$) *</label>
+              <input type="text" name="valor" id="valor" placeholder="R$ 0,00" required>
+              <small class="field-info">Valor que está disposto a pagar</small>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label>Descrição da Carga *</label>
+            <textarea name="descricaoCarga" rows="4" placeholder="Descreva o tipo de carga, dimensões, cuidados especiais, etc." required></textarea>
+            <small class="field-info">Informações detalhadas ajudam os transportadores</small>
+          </div>
+        </div>
+
+        <div class="form-info">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <strong>Como funciona:</strong>
+            <ul>
+              <li>O CEP é <strong>opcional</strong> - use apenas se souber</li>
+              <li>Se informar o CEP, os campos de endereço serão preenchidos automaticamente</li>
+              <li>O DDD é usado para mostrar seu frete apenas para transportadores da mesma região</li>
+              <li>O endereço completo será usado para cálculo de rota</li>
+            </ul>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large">
+          <i class="fas fa-paper-plane"></i> Solicitar Frete
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <footer>© Hermes</footer>
+
+  <script>
+    const campoValor = document.getElementById("valor");
+    campoValor.addEventListener("input", function () {
+      let v = this.value.replace(/\D/g, "");
+      v = (Number(v) / 100).toFixed(2) + "";
+      v = v.replace(".", ",");
+      v = "R$ " + v;
+      this.value = v;
+    });
+
+    document.querySelector(".frete-form").addEventListener("submit", function (e) {
+      let v = campoValor.value.replace("R$ ", "").replace(".", "").replace(",", ".");
+      campoValor.value = v;
+    });
+
+    const campoPeso = document.querySelector("input[name='peso']");
+    campoPeso.addEventListener("input", function () {
+      let v = this.value.replace(/\D/g, "");
+      if (v.length > 3) {
+        v = v.replace(/(\d+)(\d{2})$/, "$1,$2");
+      }
+      this.value = v;
+    });
+
+    document.querySelector(".frete-form").addEventListener("submit", function (e) {
+      campoPeso.value = campoPeso.value.replace(",", ".");
+    });
+
+    document.querySelector(".frete-form").addEventListener("submit", function(e) {
+      const dddSelect = document.querySelector("select[name='dddOrigem']");
+      if (!dddSelect.value) {
+        e.preventDefault();
+        alert('Por favor, selecione a região de origem (DDD).');
+        dddSelect.focus();
+        return false;
+      }
+
+      e.preventDefault();
+      showMessage('Visual HTML enviado com sucesso. No HTML puro ele não salva no backend.', 'success');
+      return true;
+    });
+
+    function mascaraCEP(input) {
+      let value = input.value.replace(/\D/g, '');
+      if (value.length > 5) {
+        value = value.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+      }
+      input.value = value;
+    }
+
+    async function buscarEnderecoPorCEP(cep, tipo) {
+      if (cep.length === 9) {
+        const cepLimpo = cep.replace('-', '');
+
+        try {
+          const loadingElement = document.getElementById('loading' + tipo);
+          if (loadingElement) loadingElement.style.display = 'inline';
+
+          const response = await fetch('https://viacep.com.br/ws/' + cepLimpo + '/json/');
+          const data = await response.json();
+
+          if (!data.erro) {
+            document.querySelector('input[name="origem"]').value =
+              (data.logradouro || '') + ' - ' + (data.bairro || '') + ' - ' + data.localidade + '/' + data.uf;
+            document.querySelector('input[name="cidadeOrigem"]').value = data.localidade || '';
+            document.querySelector('input[name="estadoOrigem"]').value = data.uf || '';
+            if (tipo === 'Origem') {
+              selecionarDDDPorEstado(data.uf, data.localidade);
+            }
+            showMessage('Endereço origem preenchido automaticamente!', 'success');
+          } else {
+            showMessage('CEP não encontrado. Preencha os campos manualmente.', 'warning');
+          }
+        } catch (error) {
+          showMessage('Erro ao buscar CEP. Preencha os campos manualmente.', 'error');
+        } finally {
+          const loadingElement = document.getElementById('loading' + tipo);
+          if (loadingElement) loadingElement.style.display = 'none';
+        }
+      }
+    }
+
+    async function buscarEnderecoDestinoPorCEP(cep, tipo) {
+      if (cep.length === 9) {
+        const cepLimpo = cep.replace('-', '');
+
+        try {
+          const loadingElement = document.getElementById('loading' + tipo);
+          if (loadingElement) loadingElement.style.display = 'inline';
+
+          const response = await fetch('https://viacep.com.br/ws/' + cepLimpo + '/json/');
+          const data = await response.json();
+
+          if (!data.erro) {
+            document.querySelector('input[name="destino"]').value =
+              (data.logradouro || '') + ' - ' + (data.bairro || '') + ' - ' + data.localidade + '/' + data.uf;
+            document.querySelector('input[name="cidadeDestino"]').value = data.localidade || '';
+            document.querySelector('input[name="estadoDestino"]').value = data.uf || '';
+            showMessage('Endereço destino preenchido automaticamente!', 'success');
+          } else {
+            showMessage('CEP não encontrado. Preencha os campos manualmente.', 'warning');
+          }
+        } catch (error) {
+          showMessage('Erro ao buscar CEP. Preencha os campos manualmente.', 'error');
+        } finally {
+          const loadingElement = document.getElementById('loading' + tipo);
+          if (loadingElement) loadingElement.style.display = 'none';
+        }
+      }
+    }
+
+    function selecionarDDDPorEstado(uf, cidade) {
+      const mapeamentoDDD = {
+        '11': ['São Paulo', 'Guarulhos', 'Osasco', 'Santo André', 'São Bernardo do Campo', 'Mauá', 'Diadema'],
+        '12': ['São José dos Campos', 'Taubaté', 'Jacareí', 'Caçapava', 'Campos do Jordão'],
+        '13': ['Santos', 'São Vicente', 'Praia Grande', 'Guarujá', 'Cubatão'],
+        '14': ['Bauru', 'Jaú', 'Botucatu', 'Avaré', 'Marília'],
+        '15': ['Sorocaba', 'Itapetininga', 'Itu', 'Tatuí', 'Porto Feliz'],
+        '16': ['Ribeirão Preto', 'Franca', 'São Carlos', 'Araraquara', 'Sertãozinho'],
+        '17': ['São José do Rio Preto', 'Votuporanga', 'Catanduva', 'Jales', 'Fernandópolis', 'Auriflama', 'Santa Fé do Sul'],
+        '18': ['Presidente Prudente', 'Araçatuba', 'Assis', 'Adamantina', 'Dracena'],
+        '19': ['Campinas', 'Piracicaba', 'Limeira', 'Americana', 'Sumaré', 'Hortolândia'],
+        '21': ['RJ'], '22': ['RJ'], '24': ['RJ'],
+        '27': ['ES'], '28': ['ES'],
+        '31': ['MG'], '32': ['MG'], '33': ['MG'], '34': ['MG'], '35': ['MG'], '37': ['MG'], '38': ['MG'],
+        '41': ['PR'], '42': ['PR'], '43': ['PR'], '44': ['PR'], '45': ['PR'], '46': ['PR'],
+        '47': ['SC'], '48': ['SC'], '49': ['SC'],
+        '51': ['RS'], '53': ['RS'], '54': ['RS'], '55': ['RS'],
+        '61': ['DF'], '62': ['GO'], '63': ['TO'], '64': ['GO'], '65': ['MT'], '66': ['MT'], '67': ['MS'],
+        '68': ['AC'], '69': ['RO'],
+        '71': ['BA'], '73': ['BA'], '74': ['BA'], '75': ['BA'], '77': ['BA'],
+        '79': ['SE'],
+        '81': ['PE'], '82': ['AL'], '83': ['PB'], '84': ['RN'],
+        '85': ['CE'], '86': ['PI'], '87': ['PE'], '88': ['CE'], '89': ['PI'],
+        '91': ['PA'], '92': ['AM'], '93': ['PA'], '94': ['PA'], '95': ['RR'],
+        '96': ['AP'], '97': ['AM'], '98': ['MA'], '99': ['MA']
+      };
+
+      for (const [ddd, cidades] of Object.entries(mapeamentoDDD)) {
+        for (const nomeCidade of cidades) {
+          if (cidade.toLowerCase().includes(nomeCidade.toLowerCase())) {
+            document.querySelector('select[name="dddOrigem"]').value = ddd;
+            return;
+          }
+        }
+      }
+
+      for (const [ddd, cidades] of Object.entries(mapeamentoDDD)) {
+        for (const nomeCidade of cidades) {
+          if (nomeCidade === uf) {
+            document.querySelector('select[name="dddOrigem"]').value = ddd;
+            return;
+          }
+        }
+      }
+    }
+
+    function showMessage(message, type) {
+      const oldMessage = document.querySelector('.alert-message');
+      if (oldMessage) oldMessage.remove();
+
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'alert-message ' + type;
+
+      let iconClass = 'fa-exclamation-circle';
+      if (type === 'success') iconClass = 'fa-check-circle';
+
+      messageDiv.innerHTML = '<i class="fas ' + iconClass + '"></i>' + message;
+      document.querySelector('.frete-form').prepend(messageDiv);
+
+      setTimeout(function() {
+        messageDiv.remove();
+      }, 5000);
+    }
+
+    document.getElementById('cepOrigem').addEventListener('input', function() {
+      mascaraCEP(this);
+      if (this.value.length === 9) {
+        buscarEnderecoPorCEP(this.value, 'Origem');
+      }
+    });
+
+    document.getElementById('cepDestino').addEventListener('input', function() {
+      mascaraCEP(this);
+      if (this.value.length === 9) {
+        buscarEnderecoDestinoPorCEP(this.value, 'Destino');
+      }
+    });
+  </script>
+
+</body>
+</html>

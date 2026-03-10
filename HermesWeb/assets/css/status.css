@@ -1,0 +1,24 @@
+.status {
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    font-size: .75rem;
+}
+
+.status.pendente { 
+    background: #b91c1c; 
+}
+
+.status.aceito { 
+    background: #1d4ed8; 
+}
+
+.status.em_andamento { 
+    background: #f59e0b; 
+}
+
+.status.concluido { 
+    background: #10b981; 
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliar Transportador - Hermes</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/avaliacoes.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-container">
+      <h2>Hermes</h2>
+    </div>
+  </nav>
+
+  <section class="avaliacao-section">
+    <div class="avaliacao-container">
+      <div class="avaliacao-header">
+        <h1><i class="fas fa-star"></i> Avaliar Transportador</h1>
+        <p>Avalie o serviço prestado pelo transportador</p>
+      </div>
+
+      <div class="frete-info">
+        <h3>Detalhes do Frete</h3>
+        <p><strong>Origem:</strong> São Paulo - SP</p>
+        <p><strong>Destino:</strong> Santa Fé do Sul - SP</p>
+        <p><strong>Peso:</strong> 120 kg</p>
+        <p><strong>Valor:</strong> R$ 450,00</p>
+        <p><strong>Status:</strong> <span style="color:#27ae60;font-weight:600;">CONCLUÍDO</span></p>
+      </div>
+
+      <form action="#" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="idFrete" value="1">
+        <input type="hidden" name="idAvaliado" value="12">
+
+        <div class="stars-rating">
+          <label>Avaliação:</label>
+          <div class="stars">
+            <input type="radio" id="star5" name="nota" value="5" class="star-input" required>
+            <label for="star5" class="star-label">★</label>
+
+            <input type="radio" id="star4" name="nota" value="4" class="star-input">
+            <label for="star4" class="star-label">★</label>
+
+            <input type="radio" id="star3" name="nota" value="3" class="star-input">
+            <label for="star3" class="star-label">★</label>
+
+            <input type="radio" id="star2" name="nota" value="2" class="star-input">
+            <label for="star2" class="star-label">★</label>
+
+            <input type="radio" id="star1" name="nota" value="1" class="star-input">
+            <label for="star1" class="star-label">★</label>
+          </div>
+          <div class="rating-text" id="ratingText">Selecione uma nota de 1 a 5 estrelas</div>
+        </div>
+
+        <div class="form-group">
+          <label for="comentario"><i class="fas fa-comment"></i> Comentário (opcional):</label>
+          <textarea name="comentario" id="comentario" placeholder="Conte como foi sua experiência..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="foto"><i class="fas fa-camera"></i> Foto da entrega (opcional):</label>
+          <input type="file" name="foto" id="foto" accept="image/*" class="form-control">
+        </div>
+
+        <button type="submit" class="btn-avaliar">
+          <i class="fas fa-paper-plane"></i> Enviar Avaliação
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <footer style="text-align:center; padding:20px;">
+    <p>© Hermes</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const starInputs = document.querySelectorAll('.star-input');
+      const ratingText = document.getElementById('ratingText');
+
+      const messages = {
+        1: "Péssimo",
+        2: "Ruim",
+        3: "Regular",
+        4: "Bom",
+        5: "Excelente"
+      };
+
+      starInputs.forEach(star => {
+        star.addEventListener('change', () => {
+          ratingText.textContent = messages[star.value];
+          ratingText.style.color = "#27ae60";
+          ratingText.style.fontWeight = "600";
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
