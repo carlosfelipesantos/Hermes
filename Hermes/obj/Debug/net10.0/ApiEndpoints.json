@@ -1,0 +1,18 @@
+[
+  {
+    "ContainingType": "Hermes.Controllers.VeiculoController",
+    "Method": "Criar",
+    "RelativePath": "api/Veiculo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "veiculoDto",
+        "Type": "Hermes.DTOs.Veiculo.CriarVeiculo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
