@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notificações - Hermes</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/notificacao.css">
+  <link rel="stylesheet" href="assets/css/footer.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container navbar-container">
+      <div class="logo">HERMES</div>
+      <nav class="nav-menu">
+        <a href="index.html">Início</a>
+        <a href="#">Fretes</a>
+        <a href="#">Sobre</a>
+        <a href="#">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="notificacoes-section">
+    <div class="notificacoes-container">
+      <div class="notificacoes-header">
+        <h1>Notificações</h1>
+        <span class="nao-lidas-badge" id="naoLidasBadge" style="display: none;"></span>
+      </div>
+
+      <div class="actions-container" id="actionsContainer" style="display: none;">
+        <button class="btn-marcar-todas" id="btnMarcarTodas">
+          <i class="fas fa-check-double"></i> Marcar Todas como Lidas
+        </button>
+      </div>
+
+      <div class="notificacoes-list" id="notificacoesList"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Hermes - Sistema de Fretes. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/notificacoes.js"></script>
+</body>
+</html>
