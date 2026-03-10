@@ -1,10 +1,36 @@
-﻿namespace Hermes.DTOs.Usuario
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Hermes.DTOs.Usuario
 {
     public class CriarUsuario
     {
+        [Required]
         public string Nome { get; set; }
+
+        [Required]
         public string Email { get; set; }
+
+        [Required]
         public string Senha { get; set; }
-        public string Tipo { get; set; }
+
+        [Required]
+        public string Tipo { get; set; } // Cliente ou Transportador
+
+        [Required]
+        public string Telefone { get; set; }
+
+        public string Endereco { get; set; }
+
+        public string FotoPerfil { get; set; }
+
+        [Required]
+        public string DDD { get; set; }
+
+        [Required]
+        public string Estado { get; set; }
+
+        [Required]
+        public string Cidade { get; set; }
+
     }
 }

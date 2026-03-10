@@ -44,6 +44,13 @@ namespace Hermes.Controllers
         {
             var veiculo = _mapper.Map<Veiculo>(veiculoDto);
 
+            var transportadorExiste = await _context.Transportadores
+        .AnyAsync(t => t.Id == veiculo.TransportadorId);
+
+            if (!transportadorExiste)
+                return BadRequest(new { message = "TransportadorId inválido ou inexistente." });
+
+
             _context.Veiculos.Add(veiculo);
             await _context.SaveChangesAsync();
             
