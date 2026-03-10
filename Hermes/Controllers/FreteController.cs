@@ -41,8 +41,30 @@ namespace Hermes.Controllers
             _context.Fretes.Add(frete);
             await _context.SaveChangesAsync();
             return Ok(_mapper.Map<FreteDTO>(frete));
+        }
 
-
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Atualizar(int id, AtualizarStatusFrete dto)
+        { 
+            var frete = await _context.Fretes.FindAsync(id); // Busca o frete pelo ID
+            if (frete == null)
+                return NotFound(); // Retorna 404 se o frete não for encontrado
+            frete.Status = dto.Status; // Atualiza o status do frete
+            await _context.SaveChangesAsync(); // Salva as alterações no banco de dados
+            return Ok(_mapper.Map<FreteDTO>(frete)); // Retorna o frete atualizado
 
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Deletar(int id)
+        {
+            var frete = await _context.Fretes.FindAsync(id);
+            if (frete == null)
+                return NotFound();
+            _context.Fretes.Remove(frete);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+    }
 }
