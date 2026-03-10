@@ -1,4 +1,5 @@
-﻿namespace Hermes.Entities
+﻿using System;
+namespace Hermes.Entities
 {
     public class Veiculo
     {
