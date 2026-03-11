@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Veículo | Hermes</title>
+
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/veiculos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container navbar-container">
+      <div class="logo">HERMES</div>
+      <nav class="nav-menu">
+        <a href="index.html">Início</a>
+        <a href="transportador.html">Painel</a>
+        <a href="meus-veiculos.html">Veículos</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="vehicle-form-container">
+    <h1><i class="fas fa-edit"></i> Editar Veículo</h1>
+
+    <form id="editarVeiculoForm">
+      <input type="hidden" id="veiculoId">
+
+      <div class="input-group">
+        <label for="tipoVeiculo">Tipo do Veículo</label>
+        <select id="tipoVeiculo" required>
+          <option value="Caminhão">Caminhão</option>
+          <option value="Carro">Carro</option>
+          <option value="Van">Van</option>
+          <option value="Moto">Moto</option>
+          <option value="Utilitário">Utilitário</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="marca">Marca</label>
+        <input type="text" id="marca" required>
+      </div>
+
+      <div class="input-group">
+        <label for="modelo">Modelo</label>
+        <input type="text" id="modelo" required>
+      </div>
+
+      <div class="input-group">
+        <label for="ano">Ano</label>
+        <input type="number" id="ano" min="1980" max="2050" required>
+      </div>
+
+      <div class="input-group">
+        <label for="placa">Placa</label>
+        <input type="text" id="placa" required>
+      </div>
+
+      <div class="input-group">
+        <label for="capacidade">Capacidade (kg)</label>
+        <input type="number" id="capacidade" step="0.01" required>
+      </div>
+
+      <div class="input-group">
+        <label for="cor">Cor</label>
+        <input type="text" id="cor">
+      </div>
+
+      <button type="submit" class="btn-primary">
+        <i class="fas fa-save"></i> Salvar Alterações
+      </button>
+    </form>
+
+    <a href="meus-veiculos.html" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Voltar para meus veículos
+    </a>
+  </div>
+
+  <script src="assets/js/editar-veiculo.js"></script>
+</body>
+</html>

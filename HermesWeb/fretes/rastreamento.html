@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rastreamento - Hermes</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/rastreamento.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f8fa;
+      color: #1f2937;
+    }
+
+    .navbar {
+      background: #111827;
+      color: white;
+      padding: 16px 24px;
+    }
+
+    .navbar h2 {
+      margin: 0;
+    }
+
+    .rastreamento-section {
+      padding: 32px 20px;
+    }
+
+    .rastreamento-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      gap: 24px;
+    }
+
+    .rastreamento-header,
+    .frete-info-card,
+    .timeline-container,
+    .map-container,
+    .action-buttons {
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    .rastreamento-header h1 {
+      margin: 0 0 8px 0;
+      color: #047857;
+    }
+
+    .frete-info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      background: #10b981;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .frete-info-content {
+      display: grid;
+      gap: 14px;
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .info-item {
+      background: #f9fafb;
+      padding: 14px;
+      border-radius: 12px;
+    }
+
+    .info-item strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 14px;
+      opacity: 0.65;
+      transform: translateX(-10px);
+      transition: all .4s ease;
+    }
+
+    .timeline-item.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .timeline-marker {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      border-radius: 50%;
+      background: #10b981;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .timeline-content h4 {
+      margin: 0 0 6px 0;
+    }
+
+    .timeline-content p {
+      margin: 0 0 4px 0;
+      color: #6b7280;
+    }
+
+    .timeline-date {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    #map {
+      height: 400px;
+      border-radius: 14px;
+      overflow: hidden;
+      z-index: 1;
+      margin-top: 16px;
+    }
+
+    .map-controls {
+      margin-top: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .map-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .stat {
+      background: #f3f4f6;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #111827;
+      border: 1px solid #d1d5db;
+    }
+
+    .btn-primary {
+      background: #10b981;
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <h2>Hermes</h2>
+  </nav>
+
+  <section class="rastreamento-section">
+    <div class="rastreamento-container">
+      <div class="rastreamento-header">
+        <h1><i class="fas fa-map-marker-alt"></i> Rastreamento do Frete</h1>
+        <p>Acompanhe em tempo real a localização do seu frete</p>
+      </div>
+
+      <div class="frete-info-card">
+        <div class="frete-info-header">
+          <h3>Detalhes do Frete</h3>
+          <span class="status-badge">EM ANDAMENTO</span>
+        </div>
+
+        <div class="frete-info-content">
+          <div class="info-row">
+            <div class="info-item">
+              <strong><i class="fas fa-flag"></i> Origem:</strong>
+              <span>São Paulo - SP</span>
+            </div>
+            <div class="info-item">
+              <strong><i class="fas fa-flag-checkered"></i> Destino:</strong>
+              <span>Rio de Janeiro - RJ</span>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-item">
+              <strong><i class="fas fa-weight-hanging"></i> Peso:</strong>
+              <span>150 kg</span>
+            </div>
+            <div class="info-item">
+              <strong><i class="fas fa-dollar-sign"></i> Valor:</strong>
+              <span>R$ 780,00</span>
+            </div>
+          </div>
+
+          <div class="info-row">
+            <div class="info-item">
+              <strong><i class="fas fa-box"></i> Descrição:</strong>
+              <span>Caixas com produtos eletrônicos e frágeis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-container">
+        <h3><i class="fas fa-route"></i> Status do Rastreamento</h3>
+
+        <div class="timeline">
+          <div class="timeline-item active">
+            <div class="timeline-marker">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>Solicitado</h4>
+              <p>Frete criado e aguardando aceitação</p>
+              <span class="timeline-date">10/03/2026 09:10</span>
+            </div>
+          </div>
+
+          <div class="timeline-item active">
+            <div class="timeline-marker">
+              <i class="fas fa-truck-loading"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>Aceito</h4>
+              <p>Transportador aceitou o frete</p>
+              <span class="timeline-date">Em andamento</span>
+            </div>
+          </div>
+
+          <div class="timeline-item active">
+            <div class="timeline-marker">
+              <i class="fas fa-truck-moving"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>Em Transporte</h4>
+              <p>Frete a caminho do destino</p>
+              <span class="timeline-date">Em andamento</span>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-marker">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="timeline-content">
+              <h4>Entregue</h4>
+              <p>Frete entregue com sucesso</p>
+              <span class="timeline-date"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-container">
+        <h3><i class="fas fa-map"></i> Localização em Tempo Real</h3>
+        <div id="map"></div>
+
+        <div class="map-controls">
+          <div class="location-info" id="locationInfo">
+            <strong>Status de Localização:</strong>
+            <span id="locationText">Em trânsito - Próximo ao destino</span>
+          </div>
+
+          <div class="map-stats">
+            <div class="stat">
+              <i class="fas fa-road"></i>
+              <span id="distance">--</span>
+            </div>
+            <div class="stat">
+              <i class="fas fa-clock"></i>
+              <span id="duration">--</span>
+            </div>
+            <div class="stat">
+              <i class="fas fa-tachometer-alt"></i>
+              <span id="speed">--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <a href="#" class="btn btn-secondary">
+          <i class="fas fa-arrow-left"></i> Voltar ao Painel
+        </a>
+
+        <button onclick="window.print()" class="btn btn-outline">
+          <i class="fas fa-print"></i> Imprimir Rastreamento
+        </button>
+
+        <a href="#" class="btn btn-primary">
+          <i class="fas fa-star"></i> Avaliar Serviço
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>© Hermes</footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    let map;
+    let marker;
+    let routeLine;
+    let watchId;
+    let progresso = 0;
+
+    const coordenadasFrete = {
+      origem: [-23.5505, -46.6333],
+      destino: [-22.9068, -43.1729],
+      atual: [-23.5505, -46.6333],
+      rota: [
+        [-23.5505, -46.6333],
+        [-23.1791, -45.8872],
+        [-22.3145, -46.1625],
+        [-21.7672, -43.3504],
+        [-22.9068, -43.1729]
+      ]
+    };
+
+    function initMap() {
+      map = L.map('map').setView(coordenadasFrete.origem, 7);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      L.marker(coordenadasFrete.origem)
+        .addTo(map)
+        .bindPopup('<strong>📍 Origem</strong><br>São Paulo - SP')
+        .openPopup();
+
+      L.marker(coordenadasFrete.destino)
+        .addTo(map)
+        .bindPopup('<strong>🎯 Destino</strong><br>Rio de Janeiro - RJ');
+
+      routeLine = L.polyline(coordenadasFrete.rota, {
+        color: '#10b981',
+        weight: 4,
+        opacity: 0.7,
+        dashArray: '10, 10'
+      }).addTo(map);
+
+      map.fitBounds(routeLine.getBounds());
+
+      const distancia = calcularDistancia(coordenadasFrete.origem, coordenadasFrete.destino);
+      document.getElementById('distance').textContent = distancia + ' km';
+      document.getElementById('duration').textContent = calcularTempoEstimado(distancia);
+
+      iniciarRastreamentoSimulado();
+    }
+
+    function calcularDistancia(origem, destino) {
+      const R = 6371;
+      const dLat = (destino[0] - origem[0]) * Math.PI / 180;
+      const dLon = (destino[1] - origem[1]) * Math.PI / 180;
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(origem[0] * Math.PI / 180) * Math.cos(destino[0] * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return Math.round(R * c);
+    }
+
+    function calcularTempoEstimado(distancia) {
+      const velocidadeMedia = 60;
+      const horas = distancia / velocidadeMedia;
+      if (horas < 1) return Math.round(horas * 60) + ' min';
+      return Math.round(horas) + ' h';
+    }
+
+    function iniciarRastreamentoSimulado() {
+      const totalPontos = coordenadasFrete.rota.length;
+
+      watchId = setInterval(() => {
+        if (progresso >= totalPontos - 1) {
+          clearInterval(watchId);
+          document.getElementById('locationText').textContent = 'Entrega concluída';
+          document.getElementById('speed').textContent = '0 km/h';
+          return;
+        }
+
+        progresso++;
+        const novaPosicao = coordenadasFrete.rota[progresso];
+        atualizarPosicaoNoMapa(novaPosicao);
+        atualizarInterface(progresso, totalPontos);
+      }, 3000);
+    }
+
+    function atualizarPosicaoNoMapa(posicao) {
+      if (marker) {
+        map.removeLayer(marker);
+      }
+
+      const vehicleIcon = L.divIcon({
+        className: 'vehicle-marker',
+        html: '<div style="background: #ef4444; border: 3px solid white; border-radius: 50%; width: 20px; height: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"></div>',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+      });
+
+      marker = L.marker(posicao, { icon: vehicleIcon })
+        .addTo(map)
+        .bindPopup('<strong>🚚 Veículo</strong><br>Posição atual do frete');
+
+      if (progresso > 0 && progresso < coordenadasFrete.rota.length - 1) {
+        map.setView(posicao, 8);
+      }
+
+      const velocidade = Math.random() * 80 + 20;
+      document.getElementById('speed').textContent = Math.round(velocidade) + ' km/h';
+    }
+
+    function atualizarInterface(progressoAtual, totalPontos) {
+      const statusElement = document.getElementById('locationText');
+      const percentual = Math.round((progressoAtual / (totalPontos - 1)) * 100);
+
+      if (percentual < 25) {
+        statusElement.textContent = `Saindo da origem (${percentual}%)`;
+      } else if (percentual < 75) {
+        statusElement.textContent = `Em trânsito (${percentual}%)`;
+      } else {
+        statusElement.textContent = `Próximo ao destino (${percentual}%)`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initMap();
+
+      const timelineItems = document.querySelectorAll('.timeline-item.active');
+      timelineItems.forEach((item, index) => {
+        setTimeout(() => {
+          item.style.opacity = '1';
+          item.style.transform = 'translateX(0)';
+        }, index * 300);
+      });
+    });
+
+    window.addEventListener('beforeunload', function() {
+      if (watchId) clearInterval(watchId);
+    });
+  </script>
+</body>
+</html>

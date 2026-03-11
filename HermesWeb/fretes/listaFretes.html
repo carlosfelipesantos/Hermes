@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Fretes | Hermes</title>
+  <link rel="stylesheet" href="assets/css/fretes.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-container">
+      <h2>Hermes</h2>
+    </div>
+  </nav>
+
+  <section class="frete-section">
+    <div class="frete-container">
+
+      <h1 class="section-title">Meus Fretes</h1>
+
+      <table class="frete-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Origem</th>
+            <th>Destino</th>
+            <th>Data</th>
+            <th>Peso</th>
+            <th>Valor</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>São José do Rio Preto - SP</td>
+            <td>Santa Fé do Sul - SP</td>
+            <td>2026-03-10</td>
+            <td>80 kg</td>
+            <td>R$ 320,00</td>
+            <td><span class="status aceito">aceito</span></td>
+            <td>
+              <a class="btn btn-secondary btn-small" href="#">Rastrear</a>
+            </td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td>São Paulo - SP</td>
+            <td>Jales - SP</td>
+            <td>2026-03-08</td>
+            <td>150 kg</td>
+            <td>R$ 580,00</td>
+            <td><span class="status concluido">concluido</span></td>
+            <td>
+              <a class="btn btn-primary btn-small" href="#">
+                <i class="fas fa-star"></i> Avaliar
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td>Araçatuba - SP</td>
+            <td>Fernandópolis - SP</td>
+            <td>2026-03-05</td>
+            <td>60 kg</td>
+            <td>R$ 210,00</td>
+            <td><span class="status pendente">pendente</span></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+  <footer style="text-align:center; padding:20px;">
+    <p>© Hermes</p>
+  </footer>
+
+</body>
+</html>

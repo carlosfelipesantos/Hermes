@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Navbar Hermes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/navbar.css">
+  <link rel="stylesheet" href="../assets/css/navbar.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+  <link rel="shortcut icon" href="../assets/favicon/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="../assets/favicon/site.webmanifest">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f7f8fa;
+    }
+
+    .navbar {
+      width: 100%;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #111827;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .logo-img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-link,
+    .nav-join,
+    .btn-nav,
+    .perfil-link,
+    .notification-link {
+      text-decoration: none;
+      color: #374151;
+      font-weight: 500;
+      transition: 0.2s ease;
+    }
+
+    .nav-link:hover,
+    .nav-join:hover,
+    .perfil-link:hover,
+    .notification-link:hover {
+      color: #10b981;
+    }
+
+    .nav-join,
+    .btn-nav,
+    .logout-btn {
+      padding: 10px 14px;
+      border-radius: 10px;
+    }
+
+    .nav-join {
+      background: #f3f4f6;
+    }
+
+    .btn-nav {
+      background: #10b981;
+      color: #fff;
+    }
+
+    .btn-nav:hover {
+      background: #059669;
+      color: #fff;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-left: 8px;
+    }
+
+    .notification-link {
+      position: relative;
+      font-size: 18px;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: #ef4444;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .perfil-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-name-text {
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .logout-btn {
+      background: #111827;
+      color: #fff;
+    }
+
+    .logout-btn:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background: #111827;
+      border-radius: 999px;
+      transition: 0.3s ease;
+    }
+
+    .demo-content {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      color: #374151;
+    }
+
+    @media (max-width: 900px) {
+      .nav-toggle {
+        display: flex;
+      }
+
+      .nav-menu {
+        position: absolute;
+        top: 74px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 20px;
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .user-menu {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 0;
+      }
+
+      .logout-text {
+        display: inline;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/LogoOficial.png" alt="Logo Hermes" class="logo-img">
+        <span>HERMES</span>
+      </a>
+
+      <div class="nav-menu">
+        <a href="dashboard-clientes.html" class="nav-link">
+          <i class="fas fa-tachometer-alt"></i> Painel
+        </a>
+
+        <a href="solicitar-frete.html" class="nav-link">
+          <i class="fas fa-plus-circle"></i> Solicitar Frete
+        </a>
+
+        <a href="meus-fretes.html" class="nav-link">
+          <i class="fas fa-list"></i> Meus Fretes
+        </a>
+
+        <div class="user-menu">
+          <a href="notificacoes.html" class="notification-link" title="Notificações">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </a>
+
+          <a href="perfil.html" class="user-name perfil-link" title="Meu Perfil">
+            <i class="fas fa-user-circle"></i>
+            <span class="user-name-text">Thales Marconsini</span>
+          </a>
+
+          <a href="login.html" class="nav-link btn-nav logout-btn" title="Sair">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="logout-text">Sair</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="nav-toggle" id="navToggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="demo-content">
+    <h1>Preview da Navbar Hermes</h1>
+    <p>Essa versão está em HTML puro, com conteúdo estático de exemplo para visualização.</p>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.getElementById('navToggle');
+      const navMenu = document.querySelector('.nav-menu');
+
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', function() {
+          navMenu.classList.toggle('active');
+          navToggle.classList.toggle('active');
+        });
+      }
+
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          navMenu.classList.remove('active');
+          navToggle.classList.remove('active');
+        });
+      });
+
+      document.addEventListener('click', function(event) {
+        if (
+          navMenu &&
+          navMenu.classList.contains('active') &&
+          !navMenu.contains(event.target) &&
+          !navToggle.contains(event.target)
+        ) {
+          navMenu.classList.remove('active');
+          navToggle.classList.remove('active');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
