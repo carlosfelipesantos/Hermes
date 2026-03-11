@@ -732,11 +732,6 @@
         color: white;
     }
     
-    .form-input {
-        background: #374151;
-        border-color: #4b5563;
-        color: black;
-    }
     
     .form-input:focus {
         border-color: var(--accent);

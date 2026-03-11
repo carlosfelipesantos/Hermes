@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Hermes Sistema de Fretes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/login.css">
+  <link rel="stylesheet" href="/assets/css/navbar.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="login-body">
+
+  <div class="floating-elements">
+    <div class="floating-element element-1"></div>
+    <div class="floating-element element-2"></div>
+    <div class="floating-element element-3"></div>
+    <div class="floating-element element-4"></div>
+  </div>
+
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">
+          <a href="index.html" class="nav-logo">
+            <img src="/assets/images/LogoOficial.png" alt="Logo Hermes" class="logo-img">
+          </a>
+        </div>
+
+        <h1 class="login-title">Bem-vindo</h1>
+        <p class="login-subtitle">Entre em sua conta para continuar</p>
+      </div>
+
+      <div class="message error" id="mensagemDemo" style="display:none;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>E-mail ou senha inválidos.</span>
+      </div>
+
+      <form class="login-form" method="POST" action="#" id="loginForm">
+        <input type="hidden" name="action" value="login">
+
+        <div class="form-group">
+          <label for="email" class="form-label">
+            <i class="fas fa-envelope"></i>
+            E-mail
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-input"
+            value="usuario@email.com"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="senha" class="form-label">
+            <i class="fas fa-lock"></i>
+            Senha
+          </label>
+          <input
+            type="password"
+            id="senha"
+            name="senha"
+            class="form-input"
+            required
+          >
+          <button type="button" class="password-toggle" aria-label="Mostrar senha" id="toggleSenha">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox-container">
+            <input type="checkbox" name="lembrar" checked>
+            <span>Lembrar de mim</span>
+          </label>
+          <a href="recuperar-senha.html" class="forgot-password">Esqueci minha senha</a>
+        </div>
+
+        <button type="submit" class="btn-login">
+          <span class="btn-text">Entrar</span>
+          <i class="fas fa-sign-in-alt btn-icon"></i>
+        </button>
+
+        <div class="register-button">
+          <p>Não possui conta? <a href="cadastro.html">Cadastre-se</a></p>
+        </div>
+      </form>
+
+      <div class="login-footer">
+        <p>Voltar para <a href="/index.html">página inicial</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const toggleSenha = document.getElementById('toggleSenha');
+    const inputSenha = document.getElementById('senha');
+
+    toggleSenha.addEventListener('click', function() {
+      const icon = this.querySelector('i');
+      if (inputSenha.type === 'password') {
+        inputSenha.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        inputSenha.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const msg = document.getElementById('mensagemDemo');
+      msg.style.display = 'flex';
+
+      setTimeout(() => {
+        msg.style.display = 'none';
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
