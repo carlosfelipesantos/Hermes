@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Hermes.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hermes.DTOs.Usuario
 {
@@ -14,7 +15,7 @@ namespace Hermes.DTOs.Usuario
         public string Senha { get; set; }
 
         [Required]
-        public string Tipo { get; set; } // Cliente ou Transportador
+        public TipoUsuario Tipo { get; set; }
 
         [Required]
         public string Telefone { get; set; }

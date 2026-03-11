@@ -44,12 +44,15 @@ namespace Hermes.Controllers
             var usuario = _mapper.Map<Usuario>(dto);
             _context.Usuarios.Add(usuario);
 
+            usuario.Data_Cadastro = DateTime.Now;
+            usuario.Ativo = true;
+
             await _context.SaveChangesAsync();
             return Ok(_mapper.Map<UsuarioDTO>(usuario));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Atualizar(int id, CriarUsuario dto)
+        public async Task<IActionResult> Atualizar(int id, AtualizarUsuario dto)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
 

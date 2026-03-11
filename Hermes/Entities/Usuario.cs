@@ -1,4 +1,6 @@
-﻿namespace Hermes.Entities
+﻿using Hermes.Enums;
+
+namespace Hermes.Entities
 {
     public class Usuario
     {  
@@ -6,7 +8,7 @@
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
-        public string Tipo { get; set; }
+        public TipoUsuario Tipo { get; set; }
 
         public string Telefone { get; set; }
         public string Endereco { get; set; }

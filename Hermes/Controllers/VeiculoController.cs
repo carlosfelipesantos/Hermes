@@ -50,6 +50,7 @@ namespace Hermes.Controllers
             if (!transportadorExiste)
                 return BadRequest(new { message = "TransportadorId inválido ou inexistente." });
 
+            veiculo.DataCadastro = DateTime.Now;
 
             _context.Veiculos.Add(veiculo);
             await _context.SaveChangesAsync();

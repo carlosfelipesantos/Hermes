@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hermes")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+60090265d1939ffdd577454e81169398d8c585bb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a3784a4d52d7b5528c869090f83b11042af7a477")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hermes")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hermes")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
