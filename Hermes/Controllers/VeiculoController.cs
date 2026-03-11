@@ -40,7 +40,7 @@ namespace Hermes.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Criar(CriarVeiculo veiculoDto)
+        public async Task<IActionResult> Criar([FromBody] CriarVeiculo veiculoDto)
         {
             var veiculo = _mapper.Map<Veiculo>(veiculoDto);
 
@@ -58,7 +58,7 @@ namespace Hermes.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Atualizar(int id, CriarVeiculo dto)
+        public async Task<IActionResult> Atualizar(int id, [FromBody] AtualizarVeiculo dto)
         {
             var veiculo = await _context.Veiculos.FindAsync(id);
 

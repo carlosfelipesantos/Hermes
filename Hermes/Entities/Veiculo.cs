@@ -1,15 +1,11 @@
-﻿using System;
+﻿using Hermes.Enums;
+using System;
 namespace Hermes.Entities
 {
     public class Veiculo
     {
         public int Id { get; set; }
-        public enum TipoVeiculo { 
-            Moto,
-            Carro,
-            Van,
-            Caminhao
-        }
+        public TipoVeiculo TipoVeiculo { get; set; }
         public string Marca { get; set; }
         public string Modelo { get; set; }
         public string Placa { get; set; }
