@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hermes.Data;
 using Hermes.DTOs.Frete;
+using Hermes.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,27 @@ namespace Hermes.Controllers
             var fretes = await _context.Fretes.ToListAsync();
             return Ok(_mapper.Map<List<FreteDTO>>(fretes));
         }
+
+        [HttpGet("cliente/{clienteId}")]
+        public async Task<ActionResult<IEnumerable<FreteDTO>>> ListarPorCliente(int clienteId)
+        {
+            var fretes = await _context.Fretes
+                .Where(f => f.ClienteId == clienteId)
+                .ToListAsync();
+
+            return Ok(_mapper.Map<List<FreteDTO>>(fretes));
+        }
+
+        [HttpGet("disponiveis")]
+        public async Task<ActionResult<IEnumerable<FreteDTO>>> FretesDisponiveis()
+        {
+            var fretes = await _context.Fretes
+                .Where(f => f.TransportadorId == null)
+                .ToListAsync();
+
+            return Ok(_mapper.Map<List<FreteDTO>>(fretes));
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<FreteDTO>> Buscar(int id)
         {
@@ -38,8 +60,14 @@ namespace Hermes.Controllers
         public async Task<IActionResult> Criar(CriarFrete dto)
         {
             var frete = _mapper.Map<Entities.Frete>(dto);
+
+            frete.Status = StatusFrete.Pendente;
+            frete.DataSolicitacao = DateTime.Now;
+
             _context.Fretes.Add(frete);
+
             await _context.SaveChangesAsync();
+
             return Ok(_mapper.Map<FreteDTO>(frete));
         }
 

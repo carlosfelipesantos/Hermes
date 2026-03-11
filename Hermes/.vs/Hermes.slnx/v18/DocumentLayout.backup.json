@@ -1,16 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\ccfel\\Documents\\GitHub\\Hermes\\Hermes\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\documents\\github\\hermes\\hermes\\entities\\veiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\veiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\ccfel\\documents\\github\\hermes\\hermes\\controllers\\veiculocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:controllers\\veiculocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -18,35 +9,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": -1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Veiculo.cs",
-              "DocumentMoniker": "C:\\Users\\ccfel\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Veiculo.cs",
-              "RelativeDocumentMoniker": "Entities\\Veiculo.cs",
-              "ToolTip": "C:\\Users\\ccfel\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Veiculo.cs",
-              "RelativeToolTip": "Entities\\Veiculo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-11T11:28:08.095Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "VeiculoController.cs",
-              "DocumentMoniker": "C:\\Users\\ccfel\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\VeiculoController.cs",
-              "RelativeDocumentMoniker": "Controllers\\VeiculoController.cs",
-              "ToolTip": "C:\\Users\\ccfel\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\VeiculoController.cs",
-              "RelativeToolTip": "Controllers\\VeiculoController.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAQwCoAAAA6AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-11T11:19:58.197Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:2:0:{fabf9319-47eb-497e-b8f6-d9f73fba5f55}"

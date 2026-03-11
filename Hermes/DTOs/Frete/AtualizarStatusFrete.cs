@@ -1,7 +1,9 @@
-﻿namespace Hermes.DTOs.Frete
+﻿using Hermes.Enums;
+
+namespace Hermes.DTOs.Frete
 {
     public class AtualizarStatusFrete
     {
-        public string Status { get; set; }
+        public StatusFrete Status { get; set; }
     }
 }

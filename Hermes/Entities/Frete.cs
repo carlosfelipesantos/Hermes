@@ -1,19 +1,18 @@
-﻿namespace Hermes.Entities
+﻿using Hermes.Enums;
+
+namespace Hermes.Entities
 {
     public class Frete
     {
-        public enum TipoCarga {
-            Pequena,
-            Media,
-            Grande
-        }
+     
 
         public int Id { get; set; }
+        public TipoCarga TipoCarga { get; set; }
         public string Origem { get; set; }
         public string Destino { get; set; }
         public string DescricaoCarga { get; set; }
         public double Valor { get; set; }
-        public string Status { get; set; }
+        public StatusFrete Status { get; set; }
         public DateTime DataSolicitacao { get; set; }
         public DateTime? DataConclusao { get; set; }
 
