@@ -4,205 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solicitar Frete | Hermes</title>
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/fretes.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/fretes.css">
+  <link rel="stylesheet" href="/assets/css/navbar.css">
+  <link rel="stylesheet" href="/assets/css/footer.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f7f8fa;
-      color: #1f2937;
-    }
-
-    .navbar {
-      background: #111827;
-      color: white;
-      padding: 16px 24px;
-    }
-
-    .navbar h2 {
-      margin: 0;
-    }
-
-    .frete-section {
-      padding: 32px 20px;
-    }
-
-    .frete-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 20px;
-      padding: 28px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    }
-
-    .section-title {
-      margin: 0 0 8px 0;
-      color: #047857;
-    }
-
-    .section-subtitle {
-      margin-bottom: 24px;
-      color: #6b7280;
-    }
-
-    .frete-form {
-      display: grid;
-      gap: 24px;
-    }
-
-    .form-section {
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      padding: 20px;
-      background: #fafafa;
-    }
-
-    .form-section h3 {
-      margin-top: 0;
-      margin-bottom: 18px;
-      color: #111827;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .form-group textarea {
-      resize: vertical;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-    }
-
-    .form-select {
-      background: white;
-    }
-
-    .field-info {
-      margin-top: 6px;
-      font-size: 12px;
-      color: #6b7280;
-    }
-
-    .cep-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .cep-container input {
-      width: 100%;
-    }
-
-    .loading {
-      position: absolute;
-      right: 12px;
-      color: #10b981;
-    }
-
-    .form-info {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      padding: 16px;
-      border-radius: 14px;
-    }
-
-    .form-info i {
-      color: #10b981;
-      margin-top: 2px;
-    }
-
-    .form-info ul {
-      margin: 8px 0 0 18px;
-      padding: 0;
-    }
-
-    .btn {
-      border: none;
-      padding: 14px 18px;
-      border-radius: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: #10b981;
-      color: white;
-    }
-
-    .btn-large {
-      width: 100%;
-      font-size: 15px;
-    }
-
-    .alert-message {
-      padding: 12px 14px;
-      border-radius: 10px;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 600;
-    }
-
-    .alert-message.success {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .alert-message.warning {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .alert-message.error {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    footer {
-      text-align: center;
-      padding: 24px;
-      color: #6b7280;
-    }
-  </style>
+  
 </head>
 <body>
 
+
+ 
   <nav class="navbar">
-    <h2>Hermes</h2>
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="/assets/images/LogoOficial.png" alt="Logo Hermes" class="logo-img">
+        <span>HERMES</span>
+      </a>
+
+      <div class="nav-menu">
+        <a href="" class="nav-link">
+          <i class="fas fa-tachometer-alt"></i> Painel
+        </a>
+
+        <a href="/fretes/solicitarFretes.html" class="nav-link">
+          <i class="fas fa-plus-circle"></i> Solicitar Frete
+        </a>
+
+        <a href="/fretes/listaFretes.html" class="nav-link">
+          <i class="fas fa-list"></i> Meus Fretes
+        </a>
+
+        <div class="user-menu">
+          <a href="notificacoes.html" class="notification-link" title="Notificações">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </a>
+
+          <a href="/perfil/perfil.html" class="user-name perfil-link" title="Meu Perfil">
+            <i class="fas fa-user-circle"></i>
+            <span class="user-name-text">Thales Marconsini</span>
+          </a>
+
+          <a href="/auth/login/login.html" class="nav-link btn-nav logout-btn" title="Sair">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="logout-text">Sair</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="nav-toggle" id="navToggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
   </nav>
+
 
   <section class="frete-section">
     <div class="frete-container animate-fade-in">
@@ -349,7 +207,129 @@
     </div>
   </section>
 
-  <footer>© Hermes</footer>
+  
+  <!-- Footer -->
+<footer class="footer">
+    
+    <div class="footer-content">
+        <!-- Newsletter Section -->
+        <div class="footer-newsletter">
+            <div class="newsletter-content">
+                <div class="newsletter-text">
+                    <h4>Fique por dentro das novidades</h4>
+                    <p>Receba atualizações sobre fretes e promoções especiais</p>
+                </div>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Seu melhor e-mail" required>
+                    <button type="submit" class="newsletter-button">
+                        <i class="fas fa-paper-plane"></i>
+                        Assinar
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Footer Content -->
+        <div class="footer-main">
+            <!-- Brand Column -->
+            <div class="footer-brand">
+                <a href="../index.jsp" class="footer-logo">
+                    <i class="fas fa-shipping-fast"></i>
+                    <span>HERMES</span>
+                </a>
+                <p class="footer-description">
+                    Conectando clientes e transportadores com eficiência e confiança. 
+                    Sua plataforma completa para soluções de fretes.
+                </p>
+                <div class="footer-social">
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links Column 1 -->
+            <div class="footer-column">
+                <h3>Navegação</h3>
+                <ul class="footer-links">
+                    <li><a href="/index.jsp"><i class="fas fa-chevron-right"></i>Página Inicial</a></li>
+                    <li><a href="../sobre.jsp"><i class="fas fa-chevron-right"></i>Sobre Nós</a></li>
+                    <li><a href="../servicos.jsp"><i class="fas fa-chevron-right"></i>Serviços</a></li>
+                    <li><a href="../precos.jsp"><i class="fas fa-chevron-right"></i>Preços</a></li>
+                    <li><a href="../contato.jsp"><i class="fas fa-chevron-right"></i>Contato</a></li>
+                </ul>
+            </div>
+
+            <!-- Links Column 2 -->
+            <div class="footer-column">
+                <h3>Serviços</h3>
+                <ul class="footer-links">
+                    <li><a href="/fretes-urbanos.jsp"><i class="fas fa-chevron-right"></i>Fretes Urbanos</a></li>
+                    <li><a href="/fretes-interurbanos.jsp"><i class="fas fa-chevron-right"></i>Fretes Interurbanos</a></li>
+                    <li><a href="/entregas-rapidas.jsp"><i class="fas fa-chevron-right"></i>Entregas Rápidas</a></li>
+                    <li><a href="/cargas-especiais.jsp"><i class="fas fa-chevron-right"></i>Cargas Especiais</a></li>
+                    <li><a href="/logistica.jsp"><i class="fas fa-chevron-right"></i>Logística</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Column -->
+            <div class="footer-column">
+                <h3>Contato</h3>
+                <ul class="footer-contact">
+                    <li class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="contact-info">
+                            <span class="contact-label">Endereço</span>
+                            <span class="contact-value">Av. Principal, 123 - Centro</span>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="contact-info">
+                            <span class="contact-label">Telefone</span>
+                            <span class="contact-value">(11) 9999-9999</span>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="contact-info">
+                            <span class="contact-label">E-mail</span>
+                            <span class="contact-value">contato@hermesfretes.com</span>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="contact-info">
+                            <span class="contact-label">Horário</span>
+                            <span class="contact-value">Seg-Sex: 8h-18h</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                <p>&copy; 2025 Hermes - Sistema de Fretes. Todos os direitos reservados.</p>
+            </div>
+            <div class="footer-legal">
+                <a href="../privacidade.jsp">Política de Privacidade</a>
+                <a href="../termos.jsp">Termos de Uso</a>
+                <a href="../cookies.jsp">Cookies</a>
+            </div>
+        </div>
+    </div>
+</footer>
 
   <script>
     const campoValor = document.getElementById("valor");
