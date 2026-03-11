@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BMiyHtUfCdQ=",
+  "dgSpecHash": "aiV/ZTIIgYE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\ccfel\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj",
+  "projectFilePath": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ccfel\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\ccfel\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

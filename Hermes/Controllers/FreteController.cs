@@ -56,6 +56,16 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<FreteDTO>(frete));
         }
 
+        [HttpGet("transportador/{transportadorId}")]
+        public async Task<ActionResult<IEnumerable<FreteDTO>>> ListarPorTransportador(int transportadorId)
+        {
+            var fretes = await _context.Fretes
+                .Where(f => f.TransportadorId == transportadorId)
+                .ToListAsync();
+
+            return Ok(_mapper.Map<List<FreteDTO>>(fretes));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Criar(CriarFrete dto)
         {
@@ -65,6 +75,21 @@ namespace Hermes.Controllers
             frete.DataSolicitacao = DateTime.Now;
 
             _context.Fretes.Add(frete);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(Buscar), new { id = frete.Id }, _mapper.Map<FreteDTO>(frete));
+        }
+
+        [HttpPost("{id}/finalizar")]
+        public async Task<IActionResult> FinalizarFrete(int id)
+        {
+            var frete = await _context.Fretes.FindAsync(id);
+
+            if (frete == null)
+                return NotFound();
+
+            frete.Status = StatusFrete.Concluido;
 
             await _context.SaveChangesAsync();
 
