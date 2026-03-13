@@ -8,10 +8,19 @@ namespace Hermes.Profiles
     {
         public FreteProfile()
         {
-            CreateMap<Frete, FreteDTO>();
-            CreateMap<CriarFrete, Frete>();
-            CreateMap<AtualizarStatusFrete, Frete>();
+            CreateMap<Frete, FreteDTO>()
+                .ForMember(dest => dest.Origem,
+                    opt => opt.MapFrom(src => $"{src.CidadeOrigem} - {src.BairroOrigem}"))
+                .ForMember(dest => dest.Destino,
+                    opt => opt.MapFrom(src => $"{src.CidadeDestino} - {src.BairroDestino}"))
+                .ForMember(dest => dest.NomeCliente,
+                    opt => opt.MapFrom(src => src.Cliente.Nome))
+                .ForMember(dest => dest.NomeTransportador,
+                    opt => opt.MapFrom(src => src.Transportador != null ? src.Transportador.Nome : null));
 
+            CreateMap<CriarFrete, Frete>();
+
+            CreateMap<AtualizarStatusFrete, Frete>();
         }
     }
 }

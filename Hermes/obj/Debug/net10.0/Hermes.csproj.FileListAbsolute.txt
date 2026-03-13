@@ -322,3 +322,9 @@ C:\Users\ccfel\Documents\GitHub\Hermes\Hermes\obj\Debug\net10.0\ref\Hermes.dll
 C:\Users\ccfel\Documents\GitHub\Hermes\Hermes\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\ccfel\Documents\GitHub\Hermes\Hermes\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\ccfel\Documents\GitHub\Hermes\Hermes\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ccfel\OneDrive\Meu Computador (Galaxy Book 4)\Documents\GitHub\Hermes\Hermes\bin\Debug\net10.0\AutoMapper.dll
+C:\Users\ccfel\OneDrive\Meu Computador (Galaxy Book 4)\Documents\GitHub\Hermes\Hermes\bin\Debug\net10.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\ccfel\OneDrive\Meu Computador (Galaxy Book 4)\Documents\GitHub\Hermes\Hermes\bin\Debug\net10.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\ccfel\OneDrive\Meu Computador (Galaxy Book 4)\Documents\GitHub\Hermes\Hermes\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\ccfel\OneDrive\Meu Computador (Galaxy Book 4)\Documents\GitHub\Hermes\Hermes\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\ccfel\OneDrive\Meu Computador (Galaxy Book 4)\Documents\GitHub\Hermes\Hermes\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

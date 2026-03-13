@@ -16,6 +16,8 @@ namespace Hermes.Entities
         public DateTime Data_Cadastro { get; set; }
         public string DDD { get; set; }
         public Boolean Ativo { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public string Estado { get; set; }
         public string Cidade { get; set; }
 

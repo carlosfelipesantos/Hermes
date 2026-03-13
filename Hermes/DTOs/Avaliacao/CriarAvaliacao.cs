@@ -6,5 +6,6 @@
         public string Comentario { get; set; }
 
         public int FreteId { get; set; }
+        public int TransportadorId { get; set; }
     }
 }

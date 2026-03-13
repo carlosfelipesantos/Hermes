@@ -1,6 +1,7 @@
 ﻿using Hermes.Data;
 using Hermes.Entities;
 using Hermes.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Services.Implementations
 {
@@ -22,5 +23,15 @@ namespace Hermes.Services.Implementations
 
             return avaliacao;
         }
+
+        public async Task<IEnumerable<Avaliacao>> ListarPorTransportador(int transportadorId)
+        {
+            return await _context.Avaliacoes
+                .Where(a => a.TransportadorId == transportadorId)
+                .ToListAsync();
+        }
+
+
+
     }
 }

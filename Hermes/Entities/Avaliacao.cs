@@ -9,5 +9,8 @@
 
         public int FreteId { get; set; }
         public Frete Frete { get; set; }
+
+        public int TransportadorId { get; set; }
+        public Transportador Transportador { get; set; }
     }
 }
