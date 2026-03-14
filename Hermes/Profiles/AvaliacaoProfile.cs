@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Hermes.DTOs.Avaliacao;
+using Hermes.Entities;
 
 namespace Hermes.Profiles
 {
@@ -7,7 +8,7 @@ namespace Hermes.Profiles
     {
         public AvaliacaoProfile()
         {
-            CreateMap<AvaliacaoProfile, AvaliacaoDTO>();
+            CreateMap<Avaliacao, AvaliacaoDTO>();
             CreateMap<CriarAvaliacao, AvaliacaoDTO>();
         }
     }

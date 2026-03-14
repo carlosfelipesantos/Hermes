@@ -21,16 +21,27 @@ namespace Hermes.Controllers
             _mapper = mapper;
         }
 
-     
-        [HttpGet("frete/{freteId}")]
-        public async Task<ActionResult<IEnumerable<AvaliacaoDTO>>> ListarPorFrete(int transportadorId)
+
+        [HttpGet("transportador/{transportadorId}")]
+        public async Task<ActionResult<IEnumerable<AvaliacaoDTO>>> ListarPorTransportador(int transportadorId)
         {
             var avaliacoes = await _avaliacaoService.ListarPorTransportador(transportadorId);
-              
+
             return Ok(_mapper.Map<List<AvaliacaoDTO>>(avaliacoes));
         }
 
-    
+
+        //MediaAvaliacoesTransportador
+        [HttpGet("transportador/{transportadorId}/media")]
+        public async Task<ActionResult<double>> MediaTransportador(int transportadorId)
+        {
+            var media = await _avaliacaoService.CalcularMediaTransportador(transportadorId);
+
+            return Ok(media);
+        }
+
+
+
         [HttpPost]
         public async Task<ActionResult<AvaliacaoDTO>> Criar(CriarAvaliacao dto)
         {
@@ -38,7 +49,8 @@ namespace Hermes.Controllers
 
             var avaliacaoCriada = await _avaliacaoService.Criar(avaliacao);
 
-            return Ok(_mapper.Map<AvaliacaoDTO>(avaliacao));
+            return Ok(_mapper.Map<AvaliacaoDTO>(avaliacaoCriada));
         }
+
     }
 }

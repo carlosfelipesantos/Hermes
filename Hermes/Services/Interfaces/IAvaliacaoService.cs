@@ -6,5 +6,9 @@ namespace Hermes.Services.Interfaces
     {
         Task<Avaliacao> Criar(Avaliacao avaliacao);
         Task<IEnumerable<Avaliacao>> ListarPorTransportador(int transportadorId);
+
+        Task<double> CalcularMediaTransportador(int transportadorId);
+
+
     }
 }
