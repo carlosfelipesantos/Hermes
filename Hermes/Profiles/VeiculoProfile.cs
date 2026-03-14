@@ -10,6 +10,8 @@ namespace Hermes.Profiles
         {
             CreateMap<Veiculo, VeiculoDTO>(); //mapeamento entre veiculo e veiculo DTO, ou seja, quando for converter de um para outro, ele vai fazer o mapeamento automaticamente).
             CreateMap<CriarVeiculo, Veiculo>();
+            CreateMap<AtualizarVeiculo, Veiculo>();
+
         }
 
 

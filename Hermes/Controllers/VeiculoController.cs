@@ -1,74 +1,63 @@
-﻿using Hermes.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
-
-
 using Hermes.DTOs.Veiculo;
 using Hermes.Entities;
-using Microsoft.EntityFrameworkCore;
+using Hermes.Services.Interfaces;
 
 namespace Hermes.Controllers
 {
-    [ApiController] //dizendo que essa classe é controlador de api
-    [Route("api/[controller]")] //definindo a rota para acessar os métodos desse controlador, o [controller] é um placeholder que será substituído pelo nome do controlador, nesse caso "veiculo"
-    public class VeiculoController : ControllerBase 
+    [ApiController]
+    [Route("api/[controller]")]
+    public class VeiculoController : ControllerBase
     {
-        private readonly HermesBD _context;
+        private readonly IVeiculoService _veiculoService;
         private readonly IMapper _mapper;
 
-        public VeiculoController(HermesBD context, IMapper mapper )
+        public VeiculoController(IVeiculoService veiculoService, IMapper mapper)
         {
-            _context = context;
+            _veiculoService = veiculoService;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> Listar()
         {
-            var veiculos = await _context.Veiculos.ToListAsync();
+            var veiculos = await _veiculoService.Listar();
             return Ok(_mapper.Map<List<VeiculoDTO>>(veiculos));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<VeiculoDTO>> Buscar(int id)
         {
-            var veiculo = await _context.Veiculos.FindAsync(id);
+            var veiculo = await _veiculoService.BuscarPorId(id);
+
             if (veiculo == null)
                 return NotFound();
-            
+
             return Ok(_mapper.Map<VeiculoDTO>(veiculo));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Criar([FromBody] CriarVeiculo veiculoDto)
+        public async Task<IActionResult> Criar([FromBody] CriarVeiculo dto)
         {
-            var veiculo = _mapper.Map<Veiculo>(veiculoDto);
+            var veiculo = _mapper.Map<Veiculo>(dto);
 
-            var transportadorExiste = await _context.Transportadores
-        .AnyAsync(t => t.Id == veiculo.TransportadorId);
+            await _veiculoService.Criar(veiculo);
 
-            if (!transportadorExiste)
-                return BadRequest(new { message = "TransportadorId inválido ou inexistente." });
-
-            veiculo.DataCadastro = DateTime.Now;
-
-            _context.Veiculos.Add(veiculo);
-            await _context.SaveChangesAsync();
-            
             return Ok(_mapper.Map<VeiculoDTO>(veiculo));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, [FromBody] AtualizarVeiculo dto)
         {
-            var veiculo = await _context.Veiculos.FindAsync(id);
+            var veiculo = await _veiculoService.BuscarPorId(id);
 
             if (veiculo == null)
                 return NotFound();
 
             _mapper.Map(dto, veiculo);
 
-            await _context.SaveChangesAsync();
+            await _veiculoService.Atualizar(veiculo);
 
             return NoContent();
         }
@@ -76,17 +65,12 @@ namespace Hermes.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(int id)
         {
-            var veiculo = await _context.Veiculos.FindAsync(id);
+            var sucesso = await _veiculoService.Deletar(id);
 
-            if (veiculo == null)
+            if (!sucesso)
                 return NotFound();
-
-            _context.Veiculos.Remove(veiculo);
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
-
     }
 }

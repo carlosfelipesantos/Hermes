@@ -30,6 +30,22 @@ namespace Hermes.Services.Implementations
             return veiculo;
         }
 
+
+        public async Task<Veiculo> BuscarPorId(int id)
+        {
+            return await _context.Veiculos
+                .Include(v => v.Transportador)
+                .FirstOrDefaultAsync(v => v.Id == id);
+        }
+
+        public async Task Atualizar(Veiculo veiculo)
+        {
+            _context.Veiculos.Update(veiculo);
+            await _context.SaveChangesAsync();
+        }
+
+
+
         public async Task<bool> Deletar(int id)
         {
             var veiculo = await _context.Veiculos.FindAsync(id);
