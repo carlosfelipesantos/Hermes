@@ -1,80 +1,61 @@
 ﻿using AutoMapper;
-using Hermes.Data;
 using Hermes.DTOs.Usuario;
-using Hermes.DTOs.Veiculo;
 using Hermes.Entities;
+using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-namespace Hermes.Controllers
+[ApiController]
+[Route("api/[controller]")]
+public class UsuarioController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsuarioController : ControllerBase
+    private readonly IUsuarioService _usuarioService;
+    private readonly IMapper _mapper;
+
+    public UsuarioController(IMapper mapper, IUsuarioService usuarioService)
     {
-        private readonly HermesBD _context;
-        private readonly IMapper _mapper;
-        public UsuarioController(HermesBD context, IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
+        _usuarioService = usuarioService;
+        _mapper = mapper;
+    }
 
-        }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UsuarioDTO>>> Listar()
+    {
+        var usuarios = await _usuarioService.Listar();
+        return Ok(_mapper.Map<List<UsuarioDTO>>(usuarios));
+    }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsuarioDTO>>> Listar()
-        {
-            var usuarios = await _context.Usuarios.ToListAsync();
-            return Ok(_mapper.Map<List<UsuarioDTO>>(usuarios));
-        }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UsuarioDTO>> Buscar(int id)
+    {
+        var usuario = await _usuarioService.BuscarPorId(id);
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UsuarioDTO>> Buscar(int id)
-        {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null)
-                return NotFound();
+        if (usuario == null)
+            return NotFound();
 
-            return Ok(_mapper.Map<UsuarioDTO>(usuario));
-        }
+        return Ok(_mapper.Map<UsuarioDTO>(usuario));
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Criar(CriarUsuario dto)
-        {
-            var usuario = _mapper.Map<Usuario>(dto);
-            _context.Usuarios.Add(usuario);
+    [HttpPost]
+    public async Task<IActionResult> Criar(CriarUsuario dto)
+    {
+        var usuario = _mapper.Map<Usuario>(dto);
 
-            usuario.Data_Cadastro = DateTime.Now;
-            usuario.Ativo = true;
+        usuario.DataCadastro = DateTime.Now;
+        usuario.Ativo = true;
 
-            await _context.SaveChangesAsync();
-            return Ok(_mapper.Map<UsuarioDTO>(usuario));
-        }
+        await _usuarioService.Criar(usuario);
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Atualizar(int id, AtualizarUsuario dto)
-        {
-            var usuario = await _context.Usuarios.FindAsync(id);
+        return Ok(_mapper.Map<UsuarioDTO>(usuario));
+    }
 
-            if (usuario == null)
-                return NotFound();
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Deletar(int id)
+    {
+        var sucesso = await _usuarioService.Deletar(id);
 
-            _mapper.Map(dto, usuario);
+        if (!sucesso)
+            return NotFound();
 
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-       [HttpDelete("{id}")]
-       public async Task<IActionResult> Deletar(int id)
-       {
-           var usuario = await _context.Usuarios.FindAsync(id);
-           if (usuario == null)
-               return NotFound();
-           _context.Usuarios.Remove(usuario);
-           await _context.SaveChangesAsync();
-           return NoContent();
-        }
+        return NoContent();
     }
 }
