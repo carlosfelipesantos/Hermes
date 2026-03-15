@@ -29,10 +29,10 @@ namespace Hermes.Entities
         public DateTime? DataConclusao { get; set; }
 
         public int ClienteId { get; set; }
-        public Cliente Cliente { get; set; }
+        public Usuario Cliente { get; set; }
 
         public int? TransportadorId { get; set; }
-        public Transportador? Transportador { get; set; }
+        public Usuario? Transportador { get; set; }
 
         public Avaliacao? Avaliacao { get; set; }
 

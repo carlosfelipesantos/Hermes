@@ -54,16 +54,18 @@ namespace Hermes.Services.Implementations
                 .Include(f => f.Cliente)
                 .ToListAsync();
 
+            if (transportador.Latitude is null || transportador.Longitude is null)
+                throw new Exception("Transportador precisa ativar localização.");
+
             var fretesProximos = fretes
                 .Where(f =>
                     CalcularDistancia(
-                        transportador.Latitude,
-                        transportador.Longitude,
+                        transportador.Latitude.Value,
+                        transportador.Longitude.Value,
                         f.LatitudeOrigem,
                         f.LongitudeOrigem
                     ) <= 20
                 );
-
             return fretesProximos;
         }
 
