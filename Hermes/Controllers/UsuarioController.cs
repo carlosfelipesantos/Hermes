@@ -38,13 +38,19 @@ public class UsuarioController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Criar(CriarUsuario dto)
     {
-        var usuario = _mapper.Map<Usuario>(dto);
+        if (dto.Tipo == TipoUsuario.Cliente)
+        {
+            var cliente = _mapper.Map<Cliente>(dto);
+            cliente.DataCadastro = DateTime.Now;
+            cliente.Ativo = true;
+            await _usuarioService.Criar(cliente); // aceita Cliente pois herda de Usuario
+            return Ok(_mapper.Map<UsuarioDTO>(cliente));
+        }
 
+        var usuario = _mapper.Map<Usuario>(dto);
         usuario.DataCadastro = DateTime.Now;
         usuario.Ativo = true;
-
         await _usuarioService.Criar(usuario);
-
         return Ok(_mapper.Map<UsuarioDTO>(usuario));
     }
 
