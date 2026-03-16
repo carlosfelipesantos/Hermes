@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hermes.DTOs.Usuario;
 using Hermes.Entities;
+using Hermes.Enums;
 using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
