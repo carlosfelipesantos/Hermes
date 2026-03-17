@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj": {}
+    "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj": {
+    "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj",
+        "projectUniqueName": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj",
         "projectName": "Hermes",
-        "projectPath": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj",
-        "packagesPath": "C:\\Users\\Carlos\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\obj\\",
+        "projectPath": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj",
+        "packagesPath": "C:\\Users\\ccfel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ccfel\\OneDrive\\Meu Computador (Galaxy Book 4)\\Documents\\GitHub\\Hermes\\Hermes\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Carlos\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ccfel\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
