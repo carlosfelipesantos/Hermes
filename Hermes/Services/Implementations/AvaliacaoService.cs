@@ -16,6 +16,7 @@ namespace Hermes.Services.Implementations
 
         public async Task<Avaliacao> Criar(Avaliacao avaliacao)
         {
+            // 1️⃣ Busca o frete
             var frete = await _context.Fretes
                 .Include(f => f.Avaliacao)
                 .FirstOrDefaultAsync(f => f.Id == avaliacao.FreteId);
@@ -29,13 +30,29 @@ namespace Hermes.Services.Implementations
             if (frete.Avaliacao != null)
                 throw new Exception("Frete já avaliado");
 
+            // 2️⃣ Busca o transportador
+            var transportador = await _context.Transportadores
+                .FirstOrDefaultAsync(t => t.Id == avaliacao.TransportadorId);
+
+            if (transportador == null)
+                throw new Exception("Transportador não encontrado");
+
+            // 3️⃣ Vincula os objetos de navegação
+            avaliacao.Frete = frete;
+            avaliacao.Transportador = transportador;
+
             avaliacao.DataAvaliacao = DateTime.Now;
 
+            // 4️⃣ Salva no banco
             _context.Avaliacoes.Add(avaliacao);
             await _context.SaveChangesAsync();
 
             return avaliacao;
         }
+
+
+
+
 
         public async Task<double> CalcularMediaTransportador(int transportadorId)
         {

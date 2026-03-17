@@ -8,8 +8,12 @@ namespace Hermes.Profiles
     {
         public AvaliacaoProfile()
         {
+            // Avaliacao -> AvaliacaoDTO (pra retornar pro front)
             CreateMap<Avaliacao, AvaliacaoDTO>();
-            CreateMap<CriarAvaliacao, AvaliacaoDTO>();
+
+            // CriarAvaliacao -> Avaliacao (pra salvar no DB)
+            CreateMap<CriarAvaliacao, Avaliacao>()
+                .ForMember(dest => dest.TransportadorId, opt => opt.MapFrom(src => src.TransportadorId));
         }
     }
 }

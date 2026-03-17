@@ -41,15 +41,19 @@ namespace Hermes.Controllers
         }
 
 
-
         [HttpPost]
         public async Task<ActionResult<AvaliacaoDTO>> Criar(CriarAvaliacao dto)
         {
-            var avaliacao = _mapper.Map<Avaliacao>(dto);
-
-            var avaliacaoCriada = await _avaliacaoService.Criar(avaliacao);
-
-            return Ok(_mapper.Map<AvaliacaoDTO>(avaliacaoCriada));
+            try
+            {
+                var avaliacao = _mapper.Map<Avaliacao>(dto);
+                var avaliacaoCriada = await _avaliacaoService.Criar(avaliacao);
+                return Ok(_mapper.Map<AvaliacaoDTO>(avaliacaoCriada));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = ex.Message });
+            }
         }
 
     }
