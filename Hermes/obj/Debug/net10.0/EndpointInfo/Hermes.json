@@ -1030,6 +1030,25 @@
             "type": "number",
             "format": "double"
           },
+          "sitioOrigem": {
+            "type": "boolean"
+          },
+          "descricaoOrigem": {
+            "type": "string",
+            "nullable": true
+          },
+          "sitioDestino": {
+            "type": "boolean"
+          },
+          "descricaoDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "distanciaExtra": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
           "clienteId": {
             "type": "integer",
             "format": "int32"
@@ -1157,6 +1176,33 @@
           "dataConclusao": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "telefoneTransportador": {
+            "type": "string",
+            "nullable": true
+          },
+          "mensagemWhatsapp": {
+            "type": "string",
+            "nullable": true
+          },
+          "sitioOrigem": {
+            "type": "boolean"
+          },
+          "descricaoOrigem": {
+            "type": "string",
+            "nullable": true
+          },
+          "sitioDestino": {
+            "type": "boolean"
+          },
+          "descricaoDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "distanciaExtra": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "clienteId": {

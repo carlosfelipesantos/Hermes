@@ -19,6 +19,15 @@ namespace Hermes.DTOs.Frete
         public DateTime DataSolicitacao { get; set; }
         public DateTime? DataConclusao { get; set; }
 
+        public string? TelefoneTransportador { get; set; }
+        public string? MensagemWhatsapp { get; set; }
+
+        public bool SitioOrigem { get; set; }
+        public string? DescricaoOrigem { get; set; }
+        public bool SitioDestino { get; set; }
+        public string? DescricaoDestino { get; set; }
+        public double? DistanciaExtra { get; set; }
+
         public int ClienteId { get; set; }
         public int? TransportadorId { get; set; }
 

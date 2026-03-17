@@ -33,6 +33,14 @@ namespace Hermes.Services.Implementations
 
         public async Task<Frete> Criar(Frete frete)
         {
+            // VALIDAÇÕES DE SITIO
+            if (frete.SitioOrigem && string.IsNullOrWhiteSpace(frete.DescricaoOrigem))
+                throw new Exception("Descrição da origem é obrigatória para sítio");
+
+            if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
+                throw new Exception("Descrição do destino é obrigatória para sítio");
+
+
             frete.DataSolicitacao = DateTime.Now;
             frete.Status = StatusFrete.Pendente;
 
@@ -67,6 +75,23 @@ namespace Hermes.Services.Implementations
                     ) <= 20
                 );
             return fretesProximos;
+        }
+
+        public string GerarMensagemWhatsApp(Frete frete)
+        {
+            var origem = frete.SitioOrigem
+                ? $"Sítio - {frete.DescricaoOrigem}"
+                : $"{frete.CidadeOrigem} - {frete.BairroOrigem}";
+
+            var destino = frete.SitioDestino
+                ? $"Sítio - {frete.DescricaoDestino}"
+                : $"{frete.CidadeDestino} - {frete.BairroDestino}";
+
+            return $"Olá, vi seu frete no Hermes.%0A" +
+                   $"Origem: {origem}%0A" +
+                   $"Destino: {destino}%0A" +
+                   $"Carga: {frete.DescricaoCarga}%0A" +
+                   $"Valor: R$ {frete.Valor}";
         }
 
         private double CalcularDistancia(double lat1, double lon1, double lat2, double lon2)

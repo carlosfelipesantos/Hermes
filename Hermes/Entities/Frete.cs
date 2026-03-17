@@ -23,6 +23,13 @@ namespace Hermes.Entities
         public string CidadeDestino { get; set; }
         public string EstadoDestino { get; set; }
         public string DescricaoCarga { get; set; }
+
+        public bool SitioOrigem { get; set; }
+        public string? DescricaoOrigem { get; set; }
+        public bool SitioDestino { get; set; }
+        public string? DescricaoDestino { get; set; }
+        public double? DistanciaExtra { get; set; }
+
         public double Valor { get; set; }
         public StatusFrete Status { get; set; }
         public DateTime DataSolicitacao { get; set; }
