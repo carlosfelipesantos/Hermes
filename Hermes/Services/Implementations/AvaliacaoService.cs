@@ -1,5 +1,6 @@
 ﻿using Hermes.Data;
 using Hermes.Entities;
+using Hermes.Enums;
 using Hermes.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +9,12 @@ namespace Hermes.Services.Implementations
     public class AvaliacaoService : IAvaliacaoService
     {
         private readonly HermesBD _context;
+        private readonly NotificacaoService _notificacaoService;
 
-        public AvaliacaoService(HermesBD context)
+        public AvaliacaoService(HermesBD context, NotificacaoService notificacaoService)
         {
             _context = context;
+            _notificacaoService = notificacaoService;
         }
 
         public async Task<Avaliacao> Criar(Avaliacao avaliacao)
@@ -42,6 +45,16 @@ namespace Hermes.Services.Implementations
             avaliacao.Transportador = transportador;
 
             avaliacao.DataAvaliacao = DateTime.Now;
+
+
+            // Notificação para o transportador
+            await _notificacaoService.CriarNotificacao(
+                avaliacao.TransportadorId,
+                "Você recebeu uma avaliação",
+                $"Seu frete #{avaliacao.FreteId} recebeu uma nota de {avaliacao.Nota}",
+                TipoNotificacao.AvaliacaoRecebida,
+                avaliacao.FreteId
+            );
 
             // 4️⃣ Salva no banco
             _context.Avaliacoes.Add(avaliacao);

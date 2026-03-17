@@ -9,10 +9,13 @@ namespace Hermes.Services.Implementations
     public class FreteService : IFreteService
     {
         private readonly HermesBD _context;
+        private readonly NotificacaoService _notificacaoService;
 
-        public FreteService(HermesBD context)
+
+        public FreteService(HermesBD context, NotificacaoService notificacaoService)
         {
             _context = context;
+            _notificacaoService = notificacaoService;
         }
 
         public async Task<IEnumerable<Frete>> Listar()
@@ -46,6 +49,19 @@ namespace Hermes.Services.Implementations
 
             _context.Fretes.Add(frete);
             await _context.SaveChangesAsync();
+
+            // Notificação para todos os transportadores: Frete novo
+            var transportadores = await _context.Transportadores.ToListAsync();
+            foreach (var t in transportadores)
+            {
+                await _notificacaoService.CriarNotificacao(
+                    t.Id,
+                    "Novo frete disponível",
+                    $"Um novo frete #{frete.Id} foi solicitado.",
+                    TipoNotificacao.FreteNovo,
+                    frete.Id
+                );
+            }
 
             return frete;
         }
@@ -133,6 +149,15 @@ namespace Hermes.Services.Implementations
 
             await _context.SaveChangesAsync();
 
+            // Notificação para o cliente
+            await _notificacaoService.CriarNotificacao(
+                frete.ClienteId,
+                "Frete aceito",
+                $"Seu frete #{frete.Id} foi aceito pelo transportador {frete.TransportadorId}.",
+                TipoNotificacao.FreteAceito,
+                frete.Id
+            );
+
             return true;
         }
 
@@ -155,6 +180,17 @@ namespace Hermes.Services.Implementations
             frete.DataConclusao = DateTime.Now;
 
             await _context.SaveChangesAsync();
+
+            // Notificação para o cliente
+            await _notificacaoService.CriarNotificacao(
+                frete.ClienteId,
+                "Frete concluído",
+                $"O frete #{frete.Id} foi concluído.",
+                TipoNotificacao.FreteFinalizado,
+                frete.Id
+            );
+
+
 
             return true;
         }
