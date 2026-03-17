@@ -148,6 +148,7 @@ namespace Hermes.Services.Implementations
             return await _context.Fretes
                 .Where(f => f.TransportadorId == transportadorId)
                 .Include(f => f.Transportador)
+                .Include(f => f.Cliente)
                 .ToListAsync();
         }
 

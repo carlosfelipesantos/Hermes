@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using Hermes.DTOs.Usuario;
 using Hermes.Entities;
+using Hermes.Enums;
 using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("api/[controller]")]
 public class UsuarioController : ControllerBase
-{
+{   
     private readonly IUsuarioService _usuarioService;
     private readonly IMapper _mapper;
 
@@ -43,15 +44,21 @@ public class UsuarioController : ControllerBase
             var cliente = _mapper.Map<Cliente>(dto);
             cliente.DataCadastro = DateTime.Now;
             cliente.Ativo = true;
-            await _usuarioService.Criar(cliente); // aceita Cliente pois herda de Usuario
+
+            await _usuarioService.Criar(cliente);
             return Ok(_mapper.Map<UsuarioDTO>(cliente));
         }
+        else if (dto.Tipo == TipoUsuario.Transportador)
+        {
+            var transportador = _mapper.Map<Transportador>(dto);
+            transportador.DataCadastro = DateTime.Now;
+            transportador.Ativo = true;
 
-        var usuario = _mapper.Map<Usuario>(dto);
-        usuario.DataCadastro = DateTime.Now;
-        usuario.Ativo = true;
-        await _usuarioService.Criar(usuario);
-        return Ok(_mapper.Map<UsuarioDTO>(usuario));
+            await _usuarioService.Criar(transportador);
+            return Ok(_mapper.Map<UsuarioDTO>(transportador));
+        }
+
+        return BadRequest("Tipo inválido");
     }
 
     [HttpDelete("{id}")]
