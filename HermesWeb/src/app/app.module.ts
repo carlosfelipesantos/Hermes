@@ -5,16 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { App } from './app';
 import { Navbar } from './core/layout/navbar/navbar';
 import { Footer } from './core/layout/footer/footer';
+import { Home } from './home/home';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     App,
     Navbar,
-    Footer
+    Home,
+    Footer,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

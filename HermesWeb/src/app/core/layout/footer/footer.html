@@ -1,1 +1,124 @@
-<p>footer works!</p>
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-newsletter">
+      <div class="newsletter-content">
+        <div class="newsletter-text">
+          <h4>Fique por dentro das novidades</h4>
+          <p>Receba atualizações sobre fretes e promoções especiais</p>
+        </div>
+
+        <form class="newsletter-form" (ngSubmit)="assinarNewsletter()">
+          <input
+            type="email"
+            class="newsletter-input"
+            placeholder="Seu melhor e-mail"
+            name="newsletterEmail"
+            [(ngModel)]="emailNewsletter"
+            required
+          >
+          <button type="submit" class="newsletter-button">
+            <i class="fas fa-paper-plane"></i>
+            Assinar
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer-main">
+      <div class="footer-brand">
+        <a routerLink="/" class="footer-logo">
+          <i class="fas fa-shipping-fast"></i>
+          <span>HERMES</span>
+        </a>
+
+        <p class="footer-description">
+          Conectando clientes e transportadores com eficiência e confiança.
+          Sua plataforma completa para soluções de fretes.
+        </p>
+
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h3>Navegação</h3>
+        <ul class="footer-links">
+          <li><a routerLink="/"><i class="fas fa-chevron-right"></i>Página Inicial</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i>Sobre Nós</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i>Serviços</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i>Preços</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i>Contato</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Serviços</h3>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-chevron-right"></i>Fretes Urbanos</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i>Fretes Interurbanos</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i>Entregas Rápidas</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i>Cargas Especiais</a></li>
+          <li><a href="#"><i class="fas fa-chevron-right"></i>Logística</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>Contato</h3>
+        <ul class="footer-contact">
+          <li class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div class="contact-info">
+              <span class="contact-label">Endereço</span>
+              <span class="contact-value">Av. Principal, 123 - Centro</span>
+            </div>
+          </li>
+          <li class="contact-item">
+            <i class="fas fa-phone"></i>
+            <div class="contact-info">
+              <span class="contact-label">Telefone</span>
+              <span class="contact-value">(11) 9999-9999</span>
+            </div>
+          </li>
+          <li class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <div class="contact-info">
+              <span class="contact-label">E-mail</span>
+              <span class="contact-value">contato@hermesfretes.com</span>
+            </div>
+          </li>
+          <li class="contact-item">
+            <i class="fas fa-clock"></i>
+            <div class="contact-info">
+              <span class="contact-label">Horário</span>
+              <span class="contact-value">Seg-Sex: 8h-18h</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copyright">
+        <p>&copy; 2026 Hermes - Sistema de Fretes. Todos os direitos reservados.</p>
+      </div>
+
+      <div class="footer-legal">
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos de Uso</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
