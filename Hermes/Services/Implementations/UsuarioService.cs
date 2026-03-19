@@ -27,7 +27,7 @@ namespace Hermes.Services.Implementations
 
         public async Task<Usuario> Criar(Usuario usuario)
         {
-            usuario.Data_Cadastro = DateTime.Now;
+            usuario.DataCadastro = DateTime.Now;
 
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();

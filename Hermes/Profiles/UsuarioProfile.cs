@@ -9,7 +9,11 @@ namespace Hermes.Profiles
         public UsuarioProfile()
         {
             CreateMap<Usuario, UsuarioDTO>();
+            CreateMap<CriarUsuario, Cliente>();
             CreateMap<CriarUsuario, Usuario>();
+            CreateMap<CriarUsuario, Transportador>();
+            CreateMap<Cliente, UsuarioDTO>();
+
             CreateMap<AtualizarUsuario, Usuario>();
         }
     }

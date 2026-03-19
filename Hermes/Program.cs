@@ -19,7 +19,7 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IVeiculoService, VeiculoService>();
 builder.Services.AddScoped<IFreteService, FreteService>();
 builder.Services.AddScoped<IAvaliacaoService, AvaliacaoService>();
-
+builder.Services.AddScoped<NotificacaoService>();
 
 
 var app = builder.Build();

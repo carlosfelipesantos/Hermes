@@ -38,14 +38,7 @@ namespace Hermes.Data
                 .HasForeignKey(f => f.ClienteId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //Transportador -> Cliente 1:N (FretesAceitos)
-            modelBuilder.Entity<Frete>()
-                .HasOne(f => f.Transportador)
-                .WithMany(t => t.FretesAceitos)
-                .HasForeignKey(f => f.TransportadorId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Transportador -> Frete 1:1
+            //Transportador -> Frete 1:N (FretesAceitos)
             modelBuilder.Entity<Frete>()
                 .HasOne(f => f.Transportador)
                 .WithMany(t => t.FretesAceitos)

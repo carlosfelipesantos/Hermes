@@ -31,7 +31,6 @@ namespace Hermes.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comentario")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DataAvaliacao")
@@ -43,10 +42,15 @@ namespace Hermes.Migrations
                     b.Property<decimal>("Nota")
                         .HasColumnType("decimal(3,2)");
 
+                    b.Property<int>("TransportadorId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("FreteId")
                         .IsUnique();
+
+                    b.HasIndex("TransportadorId");
 
                     b.ToTable("Avaliacoes");
                 });
@@ -58,6 +62,22 @@ namespace Hermes.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BairroDestino")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BairroOrigem")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CidadeDestino")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CidadeOrigem")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
@@ -72,17 +92,46 @@ namespace Hermes.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Destino")
+                    b.Property<string>("DescricaoDestino")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescricaoOrigem")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("DistanciaExtra")
+                        .HasColumnType("float");
+
+                    b.Property<string>("EstadoDestino")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Origem")
+                    b.Property<string>("EstadoOrigem")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("LatitudeDestino")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LatitudeOrigem")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LongitudeDestino")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LongitudeOrigem")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("SitioDestino")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SitioOrigem")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TipoCarga")
+                        .HasColumnType("int");
 
                     b.Property<int?>("TransportadorId")
                         .HasColumnType("int");
@@ -120,9 +169,8 @@ namespace Hermes.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
@@ -159,7 +207,7 @@ namespace Hermes.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Data_Cadastro")
+                    b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
@@ -180,8 +228,13 @@ namespace Hermes.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FotoPerfil")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("float");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -195,9 +248,8 @@ namespace Hermes.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -238,6 +290,9 @@ namespace Hermes.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TipoVeiculo")
+                        .HasColumnType("int");
+
                     b.Property<int>("TransportadorId")
                         .HasColumnType("int");
 
@@ -252,7 +307,7 @@ namespace Hermes.Migrations
                 {
                     b.HasBaseType("Hermes.Entities.Usuario");
 
-                    b.Property<DateTime>("DataNasc")
+                    b.Property<DateTime?>("DataNasc")
                         .HasColumnType("datetime2");
 
                     b.HasDiscriminator().HasValue("Cliente");
@@ -262,12 +317,18 @@ namespace Hermes.Migrations
                 {
                     b.HasBaseType("Hermes.Entities.Usuario");
 
-                    b.Property<double>("AvaliacaoMedia")
+                    b.Property<double?>("AvaliacaoMedia")
                         .HasColumnType("float");
+
+                    b.Property<bool>("Disponivel")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Documento")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalAvaliacoes")
+                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("Transportador");
                 });
@@ -280,7 +341,15 @@ namespace Hermes.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Hermes.Entities.Transportador", "Transportador")
+                        .WithMany()
+                        .HasForeignKey("TransportadorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Frete");
+
+                    b.Navigation("Transportador");
                 });
 
             modelBuilder.Entity("Hermes.Entities.Frete", b =>
@@ -332,8 +401,7 @@ namespace Hermes.Migrations
 
             modelBuilder.Entity("Hermes.Entities.Frete", b =>
                 {
-                    b.Navigation("Avaliacao")
-                        .IsRequired();
+                    b.Navigation("Avaliacao");
                 });
 
             modelBuilder.Entity("Hermes.Entities.Usuario", b =>

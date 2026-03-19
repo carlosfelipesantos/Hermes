@@ -1,5 +1,83 @@
 [
   {
+    "ContainingType": "Hermes.Controllers.AvaliacaoController",
+    "Method": "Criar",
+    "RelativePath": "api/Avaliacao",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Hermes.DTOs.Avaliacao.CriarAvaliacao",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Hermes.DTOs.Avaliacao.AvaliacaoDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Hermes.Controllers.AvaliacaoController",
+    "Method": "ListarPorTransportador",
+    "RelativePath": "api/Avaliacao/transportador/{transportadorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "transportadorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Hermes.DTOs.Avaliacao.AvaliacaoDTO, Hermes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Hermes.Controllers.AvaliacaoController",
+    "Method": "MediaTransportador",
+    "RelativePath": "api/Avaliacao/transportador/{transportadorId}/media",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "transportadorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Double",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "Hermes.Controllers.FreteController",
     "Method": "Listar",
     "RelativePath": "api/Frete",
@@ -99,7 +177,174 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Hermes.Controllers.UsuarioController",
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "AceitarFrete",
+    "RelativePath": "api/Frete/{id}/aceitar/{transportadorId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "transportadorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "FinalizarFrete",
+    "RelativePath": "api/Frete/{id}/finalizar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "FretesPorCidade",
+    "RelativePath": "api/Frete/cidade/{cidade}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cidade",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "ListarPorCliente",
+    "RelativePath": "api/Frete/cliente/{clienteId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "clienteId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Hermes.DTOs.Frete.FreteDTO, Hermes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "FretesDisponiveis",
+    "RelativePath": "api/Frete/disponiveis",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Hermes.DTOs.Frete.FreteDTO, Hermes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "ListarPorTransportador",
+    "RelativePath": "api/Frete/transportador/{transportadorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "transportadorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Hermes.DTOs.Frete.FreteDTO, Hermes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Hermes.Controllers.NotificacaoController",
+    "Method": "MarcarComoLida",
+    "RelativePath": "api/Notificacao/{id}/lida",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.NotificacaoController",
+    "Method": "ListarPorUsuario",
+    "RelativePath": "api/Notificacao/usuario/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Hermes.DTOs.Notificacao.NotificacaoDTO, Hermes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "UsuarioController",
     "Method": "Listar",
     "RelativePath": "api/Usuario",
     "HttpMethod": "GET",
@@ -119,7 +364,7 @@
     ]
   },
   {
-    "ContainingType": "Hermes.Controllers.UsuarioController",
+    "ContainingType": "UsuarioController",
     "Method": "Criar",
     "RelativePath": "api/Usuario",
     "HttpMethod": "POST",
@@ -135,7 +380,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Hermes.Controllers.UsuarioController",
+    "ContainingType": "UsuarioController",
     "Method": "Buscar",
     "RelativePath": "api/Usuario/{id}",
     "HttpMethod": "GET",
@@ -161,28 +406,7 @@
     ]
   },
   {
-    "ContainingType": "Hermes.Controllers.UsuarioController",
-    "Method": "Atualizar",
-    "RelativePath": "api/Usuario/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "dto",
-        "Type": "Hermes.DTOs.Usuario.CriarUsuario",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hermes.Controllers.UsuarioController",
+    "ContainingType": "UsuarioController",
     "Method": "Deletar",
     "RelativePath": "api/Usuario/{id}",
     "HttpMethod": "DELETE",
@@ -226,7 +450,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "veiculoDto",
+        "Name": "dto",
         "Type": "Hermes.DTOs.Veiculo.CriarVeiculo",
         "IsRequired": true
       }
@@ -274,7 +498,7 @@
       },
       {
         "Name": "dto",
-        "Type": "Hermes.DTOs.Veiculo.CriarVeiculo",
+        "Type": "Hermes.DTOs.Veiculo.AtualizarVeiculo",
         "IsRequired": true
       }
     ],

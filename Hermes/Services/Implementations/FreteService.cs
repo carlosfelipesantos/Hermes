@@ -9,10 +9,13 @@ namespace Hermes.Services.Implementations
     public class FreteService : IFreteService
     {
         private readonly HermesBD _context;
+        private readonly NotificacaoService _notificacaoService;
 
-        public FreteService(HermesBD context)
+
+        public FreteService(HermesBD context, NotificacaoService notificacaoService)
         {
             _context = context;
+            _notificacaoService = notificacaoService;
         }
 
         public async Task<IEnumerable<Frete>> Listar()
@@ -33,13 +36,97 @@ namespace Hermes.Services.Implementations
 
         public async Task<Frete> Criar(Frete frete)
         {
+            // VALIDAÇÕES DE SITIO
+            if (frete.SitioOrigem && string.IsNullOrWhiteSpace(frete.DescricaoOrigem))
+                throw new Exception("Descrição da origem é obrigatória para sítio");
+
+            if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
+                throw new Exception("Descrição do destino é obrigatória para sítio");
+
+
             frete.DataSolicitacao = DateTime.Now;
             frete.Status = StatusFrete.Pendente;
 
             _context.Fretes.Add(frete);
             await _context.SaveChangesAsync();
 
+            // Notificação para todos os transportadores: Frete novo
+            var transportadores = await _context.Transportadores.ToListAsync();
+            foreach (var t in transportadores)
+            {
+                await _notificacaoService.CriarNotificacao(
+                    t.Id,
+                    "Novo frete disponível",
+                    $"Um novo frete #{frete.Id} foi solicitado.",
+                    TipoNotificacao.FreteNovo,
+                    frete.Id
+                );
+            }
+
             return frete;
+        }
+        public async Task<IEnumerable<Frete>> BuscarFretesParaTransportador(int transportadorId)
+        {
+            var transportador = await _context.Transportadores
+                .FirstOrDefaultAsync(t => t.Id == transportadorId);
+
+            if (transportador == null)
+                return new List<Frete>();
+
+            var fretes = await _context.Fretes
+                .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
+                .Include(f => f.Cliente)
+                .ToListAsync();
+
+            if (transportador.Latitude is null || transportador.Longitude is null)
+                throw new Exception("Transportador precisa ativar localização.");
+
+            var fretesProximos = fretes
+                .Where(f =>
+                    CalcularDistancia(
+                        transportador.Latitude.Value,
+                        transportador.Longitude.Value,
+                        f.LatitudeOrigem,
+                        f.LongitudeOrigem
+                    ) <= 20
+                );
+            return fretesProximos;
+        }
+
+        public string GerarMensagemWhatsApp(Frete frete)
+        {
+            var origem = frete.SitioOrigem
+                ? $"Sítio - {frete.DescricaoOrigem}"
+                : $"{frete.CidadeOrigem} - {frete.BairroOrigem}";
+
+            var destino = frete.SitioDestino
+                ? $"Sítio - {frete.DescricaoDestino}"
+                : $"{frete.CidadeDestino} - {frete.BairroDestino}";
+
+            return $"Olá, vi seu frete no Hermes.%0A" +
+                   $"Origem: {origem}%0A" +
+                   $"Destino: {destino}%0A" +
+                   $"Carga: {frete.DescricaoCarga}%0A" +
+                   $"Valor: R$ {frete.Valor}";
+        }
+
+        private double CalcularDistancia(double lat1, double lon1, double lat2, double lon2)
+        {
+            var R = 6371;
+
+            var dLat = (lat2 - lat1) * Math.PI / 180;
+            var dLon = (lon2 - lon1) * Math.PI / 180;
+
+            var a =
+                Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                Math.Cos(lat1 * Math.PI / 180) *
+                Math.Cos(lat2 * Math.PI / 180) *
+                Math.Sin(dLon / 2) *
+                Math.Sin(dLon / 2);
+
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+            return R * c;
         }
 
 
@@ -48,18 +135,40 @@ namespace Hermes.Services.Implementations
         {
             var frete = await _context.Fretes.FindAsync(freteId);
 
-            if(frete ==null )
+            if (frete == null)
+                return false;
+
+            if (frete.TransportadorId != null)
+                return false;
+
+            if (frete.Status != StatusFrete.Pendente)
                 return false;
 
             frete.TransportadorId = transportadorId;
             frete.Status = StatusFrete.Aceito;
-            await _context.SaveChangesAsync(); 
+
+            await _context.SaveChangesAsync();
+
+            // Notificação para o cliente
+            await _notificacaoService.CriarNotificacao(
+                frete.ClienteId,
+                "Frete aceito",
+                $"Seu frete #{frete.Id} foi aceito pelo transportador {frete.TransportadorId}.",
+                TipoNotificacao.FreteAceito,
+                frete.Id
+            );
 
             return true;
         }
 
-       
-        
+        public async Task<IEnumerable<Frete>> ListarPorCidade(string cidade)
+        {
+            return await _context.Fretes
+                .Where(f => f.CidadeOrigem.ToLower() == cidade.ToLower()) //toLower para comparação case-insensitive
+                .ToListAsync();
+        }
+
+
         public async Task<bool> FinalizarFrete(int id)
         {
             var frete = await _context.Fretes.FindAsync(id);
@@ -72,9 +181,71 @@ namespace Hermes.Services.Implementations
 
             await _context.SaveChangesAsync();
 
+            // Notificação para o cliente
+            await _notificacaoService.CriarNotificacao(
+                frete.ClienteId,
+                "Frete concluído",
+                $"O frete #{frete.Id} foi concluído.",
+                TipoNotificacao.FreteFinalizado,
+                frete.Id
+            );
+
+
+
             return true;
         }
 
-      
+        public async Task<IEnumerable<Frete>> ListarPorCliente(int clienteId)
+        {
+            return await _context.Fretes
+                .Where(f => f.ClienteId == clienteId)
+                .Include(f => f.Cliente)
+                .Include(f => f.Transportador)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Frete>> ListarPorTransportador(int transportadorId)
+        {
+            return await _context.Fretes
+                .Where(f => f.TransportadorId == transportadorId)
+                .Include(f => f.Transportador)
+                .Include(f => f.Cliente)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Frete>> ListarDisponiveis()
+        {
+            return await _context.Fretes
+                .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
+                .Include(f => f.Cliente)
+                .ToListAsync();
+        }
+
+        public async Task<bool> AtualizarStatus(int id, StatusFrete status)
+        {
+            var frete = await _context.Fretes.FindAsync(id);
+
+            if(frete  == null)
+                return false;
+
+            frete.Status = status;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> Deletar(int id)
+        {
+            var frete = await _context.Fretes.FindAsync(id);
+
+            if (frete == null)
+                return false;
+
+            _context.Fretes.Remove(frete);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

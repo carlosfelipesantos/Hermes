@@ -2,6 +2,7 @@
 using Hermes.Data;
 using Hermes.DTOs.Avaliacao;
 using Hermes.Entities;
+using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,39 +12,49 @@ namespace Hermes.Controllers
     [Route("api/[controller]")]
     public class AvaliacaoController : ControllerBase
     {
-        private readonly HermesBD _context;
+        private readonly IAvaliacaoService _avaliacaoService;
         private readonly IMapper _mapper;
 
-        public AvaliacaoController(HermesBD context, IMapper mapper)
+        public AvaliacaoController(IAvaliacaoService avaliacaoService, IMapper mapper)
         {
-            _context = context;
+            _avaliacaoService = avaliacaoService;
             _mapper = mapper;
         }
 
-        // LISTAR AVALIAÇÕES DE UM FRETE
-        [HttpGet("frete/{freteId}")]
-        public async Task<ActionResult<IEnumerable<AvaliacaoDTO>>> ListarPorFrete(int freteId)
+
+        [HttpGet("transportador/{transportadorId}")]
+        public async Task<ActionResult<IEnumerable<AvaliacaoDTO>>> ListarPorTransportador(int transportadorId)
         {
-            var avaliacoes = await _context.Avaliacoes
-                .Where(a => a.FreteId == freteId)
-                .ToListAsync();
+            var avaliacoes = await _avaliacaoService.ListarPorTransportador(transportadorId);
 
             return Ok(_mapper.Map<List<AvaliacaoDTO>>(avaliacoes));
         }
 
-        // CRIAR AVALIAÇÃO
+
+        //MediaAvaliacoesTransportador
+        [HttpGet("transportador/{transportadorId}/media")]
+        public async Task<ActionResult<double>> MediaTransportador(int transportadorId)
+        {
+            var media = await _avaliacaoService.CalcularMediaTransportador(transportadorId);
+
+            return Ok(media);
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<AvaliacaoDTO>> Criar(CriarAvaliacao dto)
         {
-            var avaliacao = _mapper.Map<Avaliacao>(dto);
-
-            avaliacao.DataAvaliacao = DateTime.Now;
-
-            _context.Avaliacoes.Add(avaliacao);
-
-            await _context.SaveChangesAsync();
-
-            return Ok(_mapper.Map<AvaliacaoDTO>(avaliacao));
+            try
+            {
+                var avaliacao = _mapper.Map<Avaliacao>(dto);
+                var avaliacaoCriada = await _avaliacaoService.Criar(avaliacao);
+                return Ok(_mapper.Map<AvaliacaoDTO>(avaliacaoCriada));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { erro = ex.Message });
+            }
         }
+
     }
 }
