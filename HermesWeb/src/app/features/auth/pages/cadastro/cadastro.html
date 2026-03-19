@@ -1,1 +1,157 @@
-<p>cadastro works!</p>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-logo">
+        <a routerLink="/" class="nav-logo">
+          <img
+            src="assets/images/LogoOficial.png"
+            alt="Logo Hermes"
+            class="logo-img"
+          />
+        </a>
+      </div>
+
+      <h1 class="login-title">Crie sua conta</h1>
+      <p class="login-subtitle">Preencha os campos abaixo para se cadastrar</p>
+    </div>
+
+    <form class="login-form">
+      <div class="form-group floating animated-input">
+        <input type="text" id="nome" name="nome" class="form-input" placeholder=" " required>
+        <label for="nome" class="form-label">
+          <i class="fas fa-user"></i>
+          Nome completo
+        </label>
+        <div class="input-focus-line"></div>
+      </div>
+
+      <div class="form-group floating animated-input">
+        <input type="email" id="email" name="email" class="form-input" placeholder=" " required>
+        <label for="email" class="form-label">
+          <i class="fas fa-envelope"></i>
+          E-mail
+        </label>
+        <div class="input-focus-line"></div>
+      </div>
+
+      <div class="form-group floating animated-input">
+        <input type="password" id="senha" name="senha" class="form-input" placeholder=" " required>
+        <label for="senha" class="form-label">
+          <i class="fas fa-lock"></i>
+          Senha
+        </label>
+        <div class="input-focus-line"></div>
+      </div>
+
+      <div class="form-group animated-input">
+        <label class="form-label" style="font-weight:600; color:var(--primary); margin-bottom:0.5rem;">
+          <i class="fas fa-user-tag"></i> Tipo de Usuário
+        </label>
+
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="tipoUsuario" value="cliente" required>
+            <span>Sou Cliente</span>
+          </label>
+
+          <label class="radio-option">
+            <input type="radio" name="tipoUsuario" value="transportador" required>
+            <span>Sou Transportador</span>
+          </label>
+        </div>
+
+        <div id="camposTransportador" class="transportador-bloco">
+          <div class="login-divider"><span>Informações do Transportador</span></div>
+
+          <div class="form-group floating animated-input">
+            <input type="text" id="documento" name="documento" class="form-input" placeholder=" ">
+            <label for="documento" class="form-label">
+              <i class="fas fa-id-card"></i>
+              Documento (CPF ou CNPJ)
+            </label>
+            <div class="input-focus-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group floating animated-input">
+        <input type="text" id="telefone" name="telefone" class="form-input" placeholder=" " required>
+        <label for="telefone" class="form-label">
+          <i class="fas fa-phone"></i>
+          Telefone
+        </label>
+        <div class="input-focus-line"></div>
+      </div>
+
+      <div class="form-group floating animated-input">
+        <select id="estado" name="estado" class="form-input" required>
+          <option value="" disabled selected hidden></option>
+          <option value="AC">AC</option>
+          <option value="AL">AL</option>
+          <option value="AP">AP</option>
+          <option value="AM">AM</option>
+          <option value="BA">BA</option>
+          <option value="CE">CE</option>
+          <option value="DF">DF</option>
+          <option value="ES">ES</option>
+          <option value="GO">GO</option>
+          <option value="MA">MA</option>
+          <option value="MT">MT</option>
+          <option value="MS">MS</option>
+          <option value="MG">MG</option>
+          <option value="PA">PA</option>
+          <option value="PB">PB</option>
+          <option value="PR">PR</option>
+          <option value="PE">PE</option>
+          <option value="PI">PI</option>
+          <option value="RJ">RJ</option>
+          <option value="RN">RN</option>
+          <option value="RS">RS</option>
+          <option value="RO">RO</option>
+          <option value="RR">RR</option>
+          <option value="SC">SC</option>
+          <option value="SP">SP</option>
+          <option value="SE">SE</option>
+          <option value="TO">TO</option>
+        </select>
+        <label for="estado" class="form-label">
+          <i class="fas fa-flag"></i>
+          Estado (UF)
+        </label>
+        <div class="input-focus-line"></div>
+      </div>
+
+      <div class="form-group floating animated-input">
+        <input type="text" id="cidade" name="cidade" class="form-input" placeholder=" " required>
+        <label for="cidade" class="form-label">
+          <i class="fas fa-city"></i>
+          Cidade
+        </label>
+        <div class="input-focus-line"></div>
+      </div>
+
+      <div class="form-group floating animated-input">
+        <input type="text" id="endereco" name="endereco" class="form-input" placeholder=" " required>
+        <label for="endereco" class="form-label">
+          <i class="fas fa-map-marker-alt"></i>
+          Endereço
+        </label>
+        <div class="input-focus-line"></div>
+      </div>
+
+      <button type="submit" class="btn-login animated-input">
+        <span class="btn-text">Cadastrar</span>
+        <i class="fas fa-user-plus btn-icon"></i>
+        <div class="btn-shine"></div>
+      </button>
+
+      <div class="register-button animated-input">
+        <p>Já possui conta? <a routerLink="/login">Faça o login</a></p>
+      </div>
+    </form>
+
+    <div class="login-footer animated-input">
+      <p>Voltar para <a routerLink="/">página inicial</a></p>
+    </div>
+  </div>
+</div>
