@@ -1,8 +1,6 @@
 <app-navbar></app-navbar>
 
 <section class="hero">
-  <div class="hero-bg hero-bg-left"></div>
-  <div class="hero-bg hero-bg-right"></div>
   <div class="hero-content">
     <h1 class="hero-title animate-fade-in">
       Encontre os <span class="text-gradient">melhores fretes</span>
@@ -27,15 +25,25 @@
   </div>
 </section>
 
+<div class="hero-bg hero-bg-left"></div>
+<div class="hero-bg hero-bg-right"></div>
+
 <section class="features" id="features">
   <div class="container">
+    <p class="hero-subtitle-secundary animate-fade-in-delay">
+      Conectamos embarcadores e transportadores de forma rápida e segura
+    </p>
+    <h1 class="hero-title-secundary animate-fade-in">
+      Tudo que você precisa para <span class="text-gradient">transportar cargas</span>
+      com confiança
+    </h1>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">
-          <i class="fas fa-shipping-fast"></i>
+          <i class="fas fa-truck"></i>
         </div>
-        <h3>Solicitar Frete</h3>
-        <p>
+        <h3 class="feature-card-title">Solicitar Frete</h3>
+        <p class="feature-card-text">
           Encontre os melhores transportadores para sua carga de forma rápida e segura.
         </p>
       </div>
@@ -44,8 +52,8 @@
         <div class="feature-icon">
           <i class="fas fa-truck"></i>
         </div>
-        <h3>Ser Transportador</h3>
-        <p>
+        <h3 class="feature-card-title">Ser Transportador</h3>
+        <p class="feature-card-text">
           Cadastre-se como transportador e encontre novas oportunidades de fretes.
         </p>
       </div>
@@ -54,8 +62,8 @@
         <div class="feature-icon">
           <i class="fas fa-user-check"></i>
         </div>
-        <h3>Cadastro Verificado</h3>
-        <p>
+        <h3 class="feature-card-title">Cadastro Verificado</h3>
+        <p class="feature-card-text">
           Todos os usuários são verificados para garantir segurança e confiabilidade.
         </p>
       </div>
@@ -64,55 +72,73 @@
 </section>
 
 <section class="complement-section">
-  <div class="complement-grid">
-    <div class="complement-content">
-      <h2>Transforme sua operação de fretes</h2>
-      <h3>Seja HERMES</h3>
+ <div class="container">
+  <div class="complement-wrapper">
+    <div class="complement-left">
 
-      <p>
-        Sistema completo para gerenciamento de fretes, com cobertura nacional e suporte especializado.
+      <h2 class="complement-title">
+        Transforme a maneira como você gerencia o frete.
+      </h2>
+
+      <p class="complement-description">
+        Uma plataforma completa de gestão de frete criada para conectar empresas e transportadoras 
+        em todo o Brasil com rapidez, visibilidade e confiabilidade operacional.
       </p>
 
       <ul class="feature-list">
-        <li>Cobertura em todas as regiões do Brasil</li>
-        <li>Rastreamento em tempo real</li>
-        <li>Pagamento seguro e rápido</li>
-        <li>Suporte 24/7 especializado</li>
+        <li>
+          <span class="feature-check"><i class="fas fa-check"></i></span>
+          Cobertura nacional.
+        </li>
+        <li>
+          <span class="feature-check"><i class="fas fa-check"></i></span>
+          Acompanhamento em tempo real
+        </li>
+        <li>
+          <span class="feature-check"><i class="fas fa-check"></i></span>
+          Processos rápidos e seguros
+        </li>
+        <li>
+          <span class="feature-check"><i class="fas fa-check"></i></span>
+          Suporte dedicado sempre que você precisar
+        </li>
       </ul>
 
-      <div class="stats-grid">
-        <div class="stat-item">
-          <span class="stat-number">250+</span>
-          <span class="stat-label">Proteções Ativas</span>
-        </div>
-
-        <div class="stat-item">
-          <span class="stat-number">500+</span>
-          <span class="stat-label">Transportadores</span>
-        </div>
-
-        <div class="stat-item">
-          <span class="stat-number">99%</span>
-          <span class="stat-label">Satisfação</span>
-        </div>
-
-        <div class="stat-item">
-          <span class="stat-number">24/7</span>
-          <span class="stat-label">Suporte</span>
-        </div>
-      </div>
+      <a routerLink="/" class="learn-more-btn">
+        Saiba mais
+        <i class="fas fa-arrow-right"></i>
+      </a>
     </div>
 
-    <div class="complement-visual">
-      <div class="map-container">
-        <img
-          src="assets/images/backgrounds/mapa.jpg"
-          alt="Mapa de Cobertura Hermes"
-          class="map-image"
-        />
+    <div class="complement-right">
+      <div class="numbers-card">
+        <span class="numbers-label">Nossos números</span>
+
+        <div class="numbers-grid">
+          <div class="number-item">
+            <h3>250+</h3>
+            <p>Proteções Ativas</p>
+          </div>
+
+          <div class="number-item">
+            <h3>500+</h3>
+            <p>Transportadoras Cadastradas</p>
+          </div>
+
+          <div class="number-item">
+            <h3>99%</h3>
+            <p>Satisfação dos Clientes</p>
+          </div>
+
+          <div class="number-item">
+            <h3>24/7</h3>
+            <p>Suporte Especializado</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+ </div> 
 </section>
 
 <app-footer></app-footer>
