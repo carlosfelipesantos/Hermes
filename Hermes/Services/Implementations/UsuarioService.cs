@@ -35,6 +35,12 @@ namespace Hermes.Services.Implementations
             return usuario;
         }
 
+        public async Task<Usuario> Autenticar(string email, string senha)
+        {
+            return await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Email == email && u.Senha == senha);
+        }
+
         public async Task<bool> Deletar(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
