@@ -8,5 +8,6 @@ namespace Hermes.Services.Interfaces
         Task<Usuario> BuscarPorId(int id); 
         Task<Usuario> Criar(Usuario usuario);
         Task<bool> Deletar(int id);
+        Task<Usuario> Autenticar(string email, string senha);
     }
 }
