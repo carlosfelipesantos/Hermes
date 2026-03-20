@@ -23,7 +23,7 @@ namespace Hermes.Services.Interfaces
 
         Task<bool> AceitarFrete(int freteId, int transportadorId);
 
-        Task<bool> FinalizarFrete(int id);
+        Task<bool> FinalizarFrete(int id, int transportadorId);
 
         Task<bool> AtualizarStatus(int id, StatusFrete status);
 

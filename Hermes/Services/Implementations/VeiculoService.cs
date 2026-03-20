@@ -14,6 +14,13 @@ namespace Hermes.Services.Implementations
             _context = context;
         }
 
+        public async Task<IEnumerable<Veiculo>> ListarPorTransportador(int transportadorId)
+        {
+            return await _context.Veiculos
+                .Where(v => v.TransportadorId == transportadorId)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Veiculo>> Listar()
         {
             return await _context.Veiculos

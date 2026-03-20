@@ -25,6 +25,6 @@ namespace Hermes.DTOs.Frete
         public string? DescricaoDestino { get; set; }
         public double? DistanciaExtra { get; set; }
 
-        public int ClienteId { get; set; }
+       
     }
 }

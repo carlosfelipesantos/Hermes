@@ -58,6 +58,12 @@ namespace Hermes.Data
               .WithOne(a => a.Frete)
               .HasForeignKey<Avaliacao>(a => a.FreteId);
 
+            modelBuilder.Entity<Avaliacao>()
+                .HasOne(a => a.Cliente)
+                .WithMany()
+                .HasForeignKey(a => a.ClienteId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             //Usuario -> Notificacao 1:N
             modelBuilder.Entity<Notificacao>()
                .HasOne(n => n.Usuario)

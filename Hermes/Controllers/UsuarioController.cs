@@ -3,12 +3,14 @@ using Hermes.DTOs.Usuario;
 using Hermes.Entities;
 using Hermes.Enums;
 using Hermes.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 [ApiController]
 [Route("api/[controller]")]
 public class UsuarioController : ControllerBase
-{   
+{
     private readonly IUsuarioService _usuarioService;
     private readonly IMapper _mapper;
 
@@ -18,24 +20,8 @@ public class UsuarioController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<UsuarioDTO>>> Listar()
-    {
-        var usuarios = await _usuarioService.Listar();
-        return Ok(_mapper.Map<List<UsuarioDTO>>(usuarios));
-    }
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<UsuarioDTO>> Buscar(int id)
-    {
-        var usuario = await _usuarioService.BuscarPorId(id);
-
-        if (usuario == null)
-            return NotFound();
-
-        return Ok(_mapper.Map<UsuarioDTO>(usuario));
-    }
-
+    // 🔓 CRIAR USUÁRIO (público)
+    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Criar(CriarUsuario dto)
     {
@@ -61,14 +47,46 @@ public class UsuarioController : ControllerBase
         return BadRequest("Tipo inválido");
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Deletar(int id)
+    // 🔒 USUÁRIO LOGADO
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<ActionResult<UsuarioDTO>> MeuUsuario()
     {
-        var sucesso = await _usuarioService.Deletar(id);
+        var userId = int.Parse(
+            User.FindFirst(ClaimTypes.NameIdentifier).Value
+        );
+
+        var usuario = await _usuarioService.BuscarPorId(userId);
+
+        if (usuario == null)
+            return NotFound();
+
+        return Ok(_mapper.Map<UsuarioDTO>(usuario));
+    }
+
+    // 🔒 DELETAR PRÓPRIA CONTA
+    [Authorize]
+    [HttpDelete]
+    public async Task<IActionResult> Deletar()
+    {
+        var userId = int.Parse(
+            User.FindFirst(ClaimTypes.NameIdentifier).Value
+        );
+
+        var sucesso = await _usuarioService.Deletar(userId);
 
         if (!sucesso)
             return NotFound();
 
         return NoContent();
+    }
+
+    // 🔒 (OPCIONAL) ADMIN
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UsuarioDTO>>> Listar()
+    {
+        var usuarios = await _usuarioService.Listar();
+        return Ok(_mapper.Map<List<UsuarioDTO>>(usuarios));
     }
 }

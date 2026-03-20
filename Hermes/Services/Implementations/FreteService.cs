@@ -169,11 +169,19 @@ namespace Hermes.Services.Implementations
         }
 
 
-        public async Task<bool> FinalizarFrete(int id)
+        public async Task<bool> FinalizarFrete(int id, int transportadorId)
         {
             var frete = await _context.Fretes.FindAsync(id);
 
-            if(frete ==null )
+            if (frete == null)
+                return false;
+
+            // 🔒 VALIDAÇÃO DE SEGURANÇA
+            if (frete.TransportadorId != transportadorId)
+                return false;
+
+            // 🔒 OPCIONAL: garantir que só finaliza se estiver em andamento
+            if (frete.Status != StatusFrete.EmTransito)
                 return false;
 
             frete.Status = StatusFrete.Concluido;
@@ -189,8 +197,6 @@ namespace Hermes.Services.Implementations
                 TipoNotificacao.FreteFinalizado,
                 frete.Id
             );
-
-
 
             return true;
         }

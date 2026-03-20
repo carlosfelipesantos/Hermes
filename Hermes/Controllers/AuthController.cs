@@ -54,6 +54,9 @@ namespace Hermes.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO login)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var user = await _usuarioService.Autenticar(login.Email, login.Senha);
 
             if (user == null)
@@ -61,7 +64,16 @@ namespace Hermes.Controllers
 
             var token = GerarToken(user);
 
-            return Ok(new { token });
+            return Ok(new
+            {
+                token,
+                usuario = new
+                {
+                    user.Id,
+                    user.Email,
+                    user.Tipo
+                }
+            });
         }
     }
 }
