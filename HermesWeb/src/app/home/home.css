@@ -1,3 +1,41 @@
 img.map-image {
     width: 95%;
 }
+
+img.map-image[_ngcontent-ng-c1254011075] {
+    width: 95%;
+    border-radius: 20px;
+}
+
+.hero-home {
+    position: relative;
+    min-height: 100vh;
+    background: #f7f8f7;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    border-radius: 50%;
+    background: #2d9b6326;
+    z-index: 0;
+}
+
+.hero-bg-left {
+    width: 400px;
+    height: 400px;
+    left: -120px;
+    bottom: -120px;
+}
+
+.hero-bg-right {
+    width: 700px;
+    height: 700px;
+    right: -150px;
+    top: 80px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}

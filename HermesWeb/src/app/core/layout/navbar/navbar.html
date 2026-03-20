@@ -1,26 +1,20 @@
 <nav class="navbar">
   <div class="nav-container">
     <a routerLink="/" class="nav-logo">
-      <img src="assets/images/LogoOficial.png" alt="Logo Hermes" class="logo-img">
+      <img class="nav-logo-brand" src="assets/images/LogoOficial.png" alt="Logo Hermes">
       <span>HERMES</span>
     </a>
 
     <div class="nav-menu">
-      <a routerLink="/" fragment="features" class="nav-link">Como Funciona</a>
+      <a routerLink="/" fragment="how-it-works" class="nav-link">Como funciona</a>
       <a routerLink="/" fragment="benefits" class="nav-link">Vantagens</a>
       <a routerLink="/" fragment="pricing" class="nav-link">Planos</a>
-    </div>
-    <div class="nav-menu-auth">
-      <a routerLink="/login" class="nav-join">
-        <i class="fa-solid fa-user"></i> Entrar
-      </a>
-      <a routerLink="/cadastro" class="nav-link btn-nav">Cadastrar</a>
+      <a routerLink="/" fragment="support" class="nav-link">Suporte</a>
     </div>
 
-    <div class="nav-toggle" id="navToggle">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
+    <div class="nav-menu-auth">
+      <a routerLink="/login" class="nav-join">Entrar</a>
+      <a routerLink="/cadastro" class="nav-link-auth btn-nav">Criar Conta</a>
     </div>
   </div>
 </nav>
