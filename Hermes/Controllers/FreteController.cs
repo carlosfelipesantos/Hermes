@@ -3,11 +3,13 @@ using Hermes.Data;
 using Hermes.DTOs.Frete;
 using Hermes.Enums;
 using Hermes.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class FreteController : ControllerBase
