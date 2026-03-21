@@ -176,11 +176,11 @@ namespace Hermes.Services.Implementations
             if (frete == null)
                 return false;
 
-            // 🔒 VALIDAÇÃO DE SEGURANÇA
+            //validacao para garantir que o transportador é o mesmo que aceitou o frete
             if (frete.TransportadorId != transportadorId)
                 return false;
 
-            // 🔒 OPCIONAL: garantir que só finaliza se estiver em andamento
+            //  só finaliza se estiver em andamento
             if (frete.Status != StatusFrete.EmTransito)
                 return false;
 
