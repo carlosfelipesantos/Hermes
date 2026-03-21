@@ -11,7 +11,6 @@ namespace Hermes.Services.Implementations
         private readonly HermesBD _context;
         private readonly NotificacaoService _notificacaoService;
 
-
         public FreteService(HermesBD context, NotificacaoService notificacaoService)
         {
             _context = context;
@@ -29,7 +28,7 @@ namespace Hermes.Services.Implementations
         public async Task<Frete> BuscarPorId(int id)
         {
             return await _context.Fretes
-                .Include (f => f.Cliente)
+                .Include(f => f.Cliente)
                 .Include(f => f.Transportador)
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
@@ -43,6 +42,18 @@ namespace Hermes.Services.Implementations
             if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
                 throw new Exception("Descrição do destino é obrigatória para sítio");
 
+            // VALIDAÇÃO DE HORÁRIO (se transportador e horário definidos)
+            if (frete.TransportadorId.HasValue && frete.DataAgendada.HasValue && frete.HoraAgendada.HasValue)
+            {
+                bool existe = await _context.Fretes.AnyAsync(f =>
+                    f.TransportadorId == frete.TransportadorId &&
+                    f.DataAgendada == frete.DataAgendada &&
+                    f.HoraAgendada == frete.HoraAgendada
+                );
+
+                if (existe)
+                    throw new Exception("Horário já ocupado para este transportador");
+            }
 
             frete.DataSolicitacao = DateTime.Now;
             frete.Status = StatusFrete.Pendente;
@@ -50,21 +61,25 @@ namespace Hermes.Services.Implementations
             _context.Fretes.Add(frete);
             await _context.SaveChangesAsync();
 
-            // Notificação para todos os transportadores: Frete novo
-            var transportadores = await _context.Transportadores.ToListAsync();
-            foreach (var t in transportadores)
+            // Notificação para todos os transportadores (somente fretes abertos)
+            if (!frete.TransportadorId.HasValue)
             {
-                await _notificacaoService.CriarNotificacao(
-                    t.Id,
-                    "Novo frete disponível",
-                    $"Um novo frete #{frete.Id} foi solicitado.",
-                    TipoNotificacao.FreteNovo,
-                    frete.Id
-                );
+                var transportadores = await _context.Transportadores.ToListAsync();
+                foreach (var t in transportadores)
+                {
+                    await _notificacaoService.CriarNotificacao(
+                        t.Id,
+                        "Novo frete disponível",
+                        $"Um novo frete #{frete.Id} foi solicitado.",
+                        TipoNotificacao.FreteNovo,
+                        frete.Id
+                    );
+                }
             }
 
             return frete;
         }
+
         public async Task<IEnumerable<Frete>> BuscarFretesParaTransportador(int transportadorId)
         {
             var transportador = await _context.Transportadores
@@ -90,6 +105,7 @@ namespace Hermes.Services.Implementations
                         f.LongitudeOrigem
                     ) <= 20
                 );
+
             return fretesProximos;
         }
 
@@ -121,27 +137,18 @@ namespace Hermes.Services.Implementations
                 Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
                 Math.Cos(lat1 * Math.PI / 180) *
                 Math.Cos(lat2 * Math.PI / 180) *
-                Math.Sin(dLon / 2) *
-                Math.Sin(dLon / 2);
+                Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
 
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
 
             return R * c;
         }
 
-
-
         public async Task<bool> AceitarFrete(int freteId, int transportadorId)
         {
             var frete = await _context.Fretes.FindAsync(freteId);
 
-            if (frete == null)
-                return false;
-
-            if (frete.TransportadorId != null)
-                return false;
-
-            if (frete.Status != StatusFrete.Pendente)
+            if (frete == null || frete.TransportadorId != null || frete.Status != StatusFrete.Pendente)
                 return false;
 
             frete.TransportadorId = transportadorId;
@@ -149,7 +156,6 @@ namespace Hermes.Services.Implementations
 
             await _context.SaveChangesAsync();
 
-            // Notificação para o cliente
             await _notificacaoService.CriarNotificacao(
                 frete.ClienteId,
                 "Frete aceito",
@@ -164,24 +170,15 @@ namespace Hermes.Services.Implementations
         public async Task<IEnumerable<Frete>> ListarPorCidade(string cidade)
         {
             return await _context.Fretes
-                .Where(f => f.CidadeOrigem.ToLower() == cidade.ToLower()) //toLower para comparação case-insensitive
+                .Where(f => f.CidadeOrigem.ToLower() == cidade.ToLower())
                 .ToListAsync();
         }
-
 
         public async Task<bool> FinalizarFrete(int id, int transportadorId)
         {
             var frete = await _context.Fretes.FindAsync(id);
 
-            if (frete == null)
-                return false;
-
-            //validacao para garantir que o transportador é o mesmo que aceitou o frete
-            if (frete.TransportadorId != transportadorId)
-                return false;
-
-            //  só finaliza se estiver em andamento
-            if (frete.Status != StatusFrete.EmTransito)
+            if (frete == null || frete.TransportadorId != transportadorId || frete.Status != StatusFrete.EmTransito)
                 return false;
 
             frete.Status = StatusFrete.Concluido;
@@ -189,7 +186,6 @@ namespace Hermes.Services.Implementations
 
             await _context.SaveChangesAsync();
 
-            // Notificação para o cliente
             await _notificacaoService.CriarNotificacao(
                 frete.ClienteId,
                 "Frete concluído",
@@ -230,12 +226,9 @@ namespace Hermes.Services.Implementations
         public async Task<bool> AtualizarStatus(int id, StatusFrete status)
         {
             var frete = await _context.Fretes.FindAsync(id);
-
-            if(frete  == null)
-                return false;
+            if (frete == null) return false;
 
             frete.Status = status;
-
             await _context.SaveChangesAsync();
             return true;
         }
@@ -243,14 +236,10 @@ namespace Hermes.Services.Implementations
         public async Task<bool> Deletar(int id)
         {
             var frete = await _context.Fretes.FindAsync(id);
-
-            if (frete == null)
-                return false;
+            if (frete == null) return false;
 
             _context.Fretes.Remove(frete);
-
             await _context.SaveChangesAsync();
-
             return true;
         }
     }

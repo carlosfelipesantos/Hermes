@@ -35,6 +35,9 @@ namespace Hermes.Entities
         public DateTime DataSolicitacao { get; set; }
         public DateTime? DataConclusao { get; set; }
 
+        public DateTime? DataAgendada { get; set; }
+        public TimeSpan? HoraAgendada { get; set; }
+
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
 

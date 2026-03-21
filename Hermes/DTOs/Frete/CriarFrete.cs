@@ -19,6 +19,10 @@ namespace Hermes.DTOs.Frete
         public string DescricaoCarga { get; set; }
         public double Valor { get; set; }
 
+        public DateTime? DataAgendada { get; set; }
+        public TimeSpan? HoraAgendada { get; set; }
+        public int? TransportadorId { get; set; }
+
         public bool SitioOrigem { get; set; }
         public string? DescricaoOrigem { get; set; }
         public bool SitioDestino { get; set; }

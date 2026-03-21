@@ -15,6 +15,8 @@ namespace Hermes.Data
         public DbSet<Transportador> Transportadores { get; set; }
         public DbSet<Frete> Fretes { get; set; }
 
+        public DbSet<Disponibilidade> Disponibilidades { get; set; }
+
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<Notificacao> Notificacoes { get; set; }
         public DbSet<Veiculo> Veiculos { get; set; }
@@ -77,6 +79,15 @@ namespace Hermes.Data
                 .WithMany()
                 .HasForeignKey(n => n.FreteId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+                modelBuilder.Entity<Frete>()
+                    .Property(f => f.DataAgendada)
+                    .HasColumnType("datetime2");
+
+                modelBuilder.Entity<Frete>()
+                    .Property(f => f.HoraAgendada)
+                    .HasColumnType("time");
+
 
             // Configurações adicionais para propriedades decimal,valor e nota
             modelBuilder.Entity<Frete>()
