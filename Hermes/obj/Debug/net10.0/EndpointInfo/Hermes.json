@@ -176,6 +176,100 @@
         }
       }
     },
+    "/api/Disponibilidade": {
+      "post": {
+        "tags": [
+          "Disponibilidade"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisponibilidadeDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisponibilidadeDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisponibilidadeDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Disponibilidade/{transportadorId}/horarios": {
+      "get": {
+        "tags": [
+          "Disponibilidade"
+        ],
+        "parameters": [
+          {
+            "name": "transportadorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "data",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Frete/paginado": {
+      "get": {
+        "tags": [
+          "Frete"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Frete": {
       "get": {
         "tags": [
@@ -243,21 +337,10 @@
         }
       }
     },
-    "/api/Frete/cliente/{clienteId}": {
+    "/api/Frete/meus": {
       "get": {
         "tags": [
           "Frete"
-        ],
-        "parameters": [
-          {
-            "name": "clienteId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -431,21 +514,10 @@
         }
       }
     },
-    "/api/Frete/transportador/{transportadorId}": {
+    "/api/Frete/meus-transportes": {
       "get": {
         "tags": [
           "Frete"
-        ],
-        "parameters": [
-          {
-            "name": "transportadorId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -502,7 +574,7 @@
         }
       }
     },
-    "/api/Frete/{id}/aceitar/{transportadorId}": {
+    "/api/Frete/{id}/aceitar": {
       "post": {
         "tags": [
           "Frete"
@@ -510,15 +582,6 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "transportadorId",
             "in": "path",
             "required": true,
             "schema": {
@@ -557,21 +620,10 @@
         }
       }
     },
-    "/api/Notificacao/usuario/{usuarioId}": {
+    "/api/Notificacao/minhas": {
       "get": {
         "tags": [
           "Notificacao"
-        ],
-        "parameters": [
-          {
-            "name": "usuarioId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -630,42 +682,6 @@
       }
     },
     "/api/Usuario": {
-      "get": {
-        "tags": [
-          "Usuario"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UsuarioDTO"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UsuarioDTO"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UsuarioDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "Usuario"
@@ -692,46 +708,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Usuario/{id}": {
-      "get": {
-        "tags": [
-          "Usuario"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/UsuarioDTO"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UsuarioDTO"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UsuarioDTO"
-                }
-              }
-            }
           }
         }
       },
@@ -739,25 +715,79 @@
         "tags": [
           "Usuario"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UsuarioDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UsuarioDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UsuarioDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
-    "/api/Veiculo": {
+    "/api/Usuario/me": {
+      "get": {
+        "tags": [
+          "Usuario"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsuarioDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Veiculo/meus": {
       "get": {
         "tags": [
           "Veiculo"
@@ -791,35 +821,6 @@
                 }
               }
             }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Veiculo"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CriarVeiculo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CriarVeiculo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CriarVeiculo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
@@ -918,6 +919,37 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Veiculo": {
+      "post": {
+        "tags": [
+          "Veiculo"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarVeiculo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarVeiculo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarVeiculo"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1061,6 +1093,21 @@
             "type": "number",
             "format": "double"
           },
+          "dataAgendada": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "horaAgendada": {
+            "type": "string",
+            "format": "date-span",
+            "nullable": true
+          },
+          "transportadorId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "sitioOrigem": {
             "type": "boolean"
           },
@@ -1079,10 +1126,6 @@
             "type": "number",
             "format": "double",
             "nullable": true
-          },
-          "clienteId": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -1166,6 +1209,36 @@
           },
           "capacidade": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DayOfWeek": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "DisponibilidadeDTO": {
+        "type": "object",
+        "properties": {
+          "diaSemana": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
+          "horas": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-span"
+            },
             "nullable": true
           }
         },
@@ -1395,6 +1468,9 @@
     },
     {
       "name": "Avaliacao"
+    },
+    {
+      "name": "Disponibilidade"
     },
     {
       "name": "Frete"

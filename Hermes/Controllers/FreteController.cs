@@ -21,6 +21,20 @@ namespace Hermes.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("paginado")]
+        public async Task<ActionResult> ListarPaginado([FromQuery] int page = 1, [FromQuery] int pageSize = 10) //diz que os parâmetros são opcionais e tem valores padrão
+        {
+            var (fretes, total) = await _freteService.ListarPaginado(page, pageSize);
+            var fretesDTO = _mapper.Map<List<FreteDTO>>(fretes);
+            return Ok(new
+            {
+                Data = fretesDTO,
+                Total = total,
+                Page = page,
+                PageSize = pageSize
+            });
+        }
+
         // Listar todos (admin ou uso geral)
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FreteDTO>>> Listar()

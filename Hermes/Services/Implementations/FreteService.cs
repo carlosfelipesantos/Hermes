@@ -17,6 +17,23 @@ namespace Hermes.Services.Implementations
             _notificacaoService = notificacaoService;
         }
 
+        public async Task<(List<Frete> data, int total)> ListarPaginado(int page, int pageSize)
+        { 
+            var query = _context.Fretes 
+                .Include(f => f.Cliente) //diz que ao buscar os fretes, ele deve incluir os dados do cliente relacionado
+                .Include(f => f.Transportador) 
+                .AsQueryable();
+
+                var total = await query.CountAsync();
+
+            var data = await query
+                .Skip((page - 1) * pageSize) //significa pular os primeiros registros, se for a página 2, ele pula os primeiros 10 registros (1-10) e mostra os próximos 10 (11-20)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return(data, total);
+        }
+
         public async Task<IEnumerable<Frete>> Listar()
         {
             return await _context.Fretes

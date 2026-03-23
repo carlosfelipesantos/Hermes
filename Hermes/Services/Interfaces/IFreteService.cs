@@ -5,6 +5,7 @@ namespace Hermes.Services.Interfaces
 {
     public interface IFreteService
     {
+        Task<(List<Frete> data, int total)> ListarPaginado(int page, int pageSize);
         Task<IEnumerable<Frete>> Listar();
 
         Task<Frete> BuscarPorId(int id);
