@@ -34,6 +34,43 @@ namespace Hermes.Services.Implementations
             return(data, total);
         }
 
+        // Paginação para fretes disponíveis (Transportador)
+        public async Task<(List<Frete> data, int total)> ListarDisponiveisPaginado(int transportadorId, int page, int pageSize)
+        {
+            var query = _context.Fretes
+                .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
+                .Include(f => f.Cliente)
+                .AsQueryable();
+
+            var total = await query.CountAsync();
+
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (data, total);
+        }
+
+        // Paginação para fretes por cidade
+        public async Task<(List<Frete> data, int total)> ListarPorCidadePaginado(string cidade, int page, int pageSize)
+        {
+            var query = _context.Fretes
+                .Where(f => f.CidadeOrigem.ToLower() == cidade.ToLower())
+                .Include(f => f.Cliente)
+                .Include(f => f.Transportador)
+                .AsQueryable();
+
+            var total = await query.CountAsync();
+
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (data, total);
+        }
+
         public async Task<IEnumerable<Frete>> Listar()
         {
             return await _context.Fretes
