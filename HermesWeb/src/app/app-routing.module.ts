@@ -4,12 +4,12 @@ import { App } from './app';
 import { Home } from './home/home';
 
 const routes: Routes = [
-    { path: '', component: Home }, // 👈 HOME
-  {
-    path: 'auth',
-    loadChildren: () =>
+    { path: '', component: Home }, 
+    {
+      path: 'auth',
+      loadChildren: () =>
       import('./features/auth/auth.module').then(m => m.AuthModule)
-  }
+    }
 ];
 
 @NgModule({

@@ -272,7 +272,23 @@
     transform: translateY(-1px);
 }
 
-/* ========== RESPONSIVIDADE ========== */
+.nav-logo {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    min-width: fit-content;
+}
+
+.nav-logo-brand {
+    width: 96px;
+    margin: -25px;
+}
 
 @media (max-width: 1024px) {
     .footer-main {
