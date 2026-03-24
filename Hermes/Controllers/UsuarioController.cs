@@ -20,7 +20,7 @@ public class UsuarioController : ControllerBase
         _mapper = mapper;
     }
 
-    // 🔓 CRIAR USUÁRIO (público)
+    //  CRIAR USUÁRIO (público)
     [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Criar(CriarUsuario dto)
@@ -47,7 +47,7 @@ public class UsuarioController : ControllerBase
         return BadRequest("Tipo inválido");
     }
 
-    // 🔒 USUÁRIO LOGADO
+    //  USUÁRIO LOGADO
     [Authorize]
     [HttpGet("me")]
     public async Task<ActionResult<UsuarioDTO>> MeuUsuario()
@@ -64,7 +64,7 @@ public class UsuarioController : ControllerBase
         return Ok(_mapper.Map<UsuarioDTO>(usuario));
     }
 
-    // 🔒 DELETAR PRÓPRIA CONTA
+    //  DELETAR PRÓPRIA CONTA
     [Authorize]
     [HttpDelete]
     public async Task<IActionResult> Deletar()
@@ -81,7 +81,7 @@ public class UsuarioController : ControllerBase
         return NoContent();
     }
 
-    // 🔒 (OPCIONAL) ADMIN
+    //  (OPCIONAL) ADMIN
     [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UsuarioDTO>>> Listar()

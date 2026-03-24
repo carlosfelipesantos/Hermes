@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260324175922_UrgenciaFretes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20260324175922_UrgenciaFretes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\services\\interfaces\\ifreteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:services\\interfaces\\ifreteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\controllers\\fretecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:controllers\\fretecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\controllers\\notificacaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:controllers\\notificacaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\controllers\\disponibilidadecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:controllers\\disponibilidadecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\frete\\fretepublicodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\frete\\fretepublicodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\frete\\fretedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\frete\\fretedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\migrations\\20260324175922_urgenciafretes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:migrations\\20260324175922_urgenciafretes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\services\\implementations\\freteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,10 +43,6 @@
       "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:profiles\\freteprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\frete\\fretedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\frete\\fretedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\frete\\criarfrete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\frete\\criarfrete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -31,16 +51,8 @@
       "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\frete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\controllers\\fretecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:controllers\\fretecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\frete\\atualizarstatusfrete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\frete\\atualizarstatusfrete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\services\\interfaces\\ifreteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:services\\interfaces\\ifreteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\paginacao\\paginacaoparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -74,11 +86,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 284,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "FreteService.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Services\\Implementations\\FreteService.cs",
               "RelativeDocumentMoniker": "Services\\Implementations\\FreteService.cs",
@@ -87,33 +99,71 @@
               "ViewState": "AgIAAAsAAAAAAAAAAAAcwC8AAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-23T17:27:03.385Z",
-              "IsPinned": true,
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NotificacaoController.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\NotificacaoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NotificacaoController.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\NotificacaoController.cs",
+              "RelativeToolTip": "Controllers\\NotificacaoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T18:27:53.09Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FreteController.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\FreteController.cs",
+              "RelativeDocumentMoniker": "Controllers\\FreteController.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\FreteController.cs*",
+              "RelativeToolTip": "Controllers\\FreteController.cs*",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAB8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-23T17:37:07.922Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "20260324175922_UrgenciaFretes.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260324175922_UrgenciaFretes.cs",
-              "RelativeDocumentMoniker": "Migrations\\20260324175922_UrgenciaFretes.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260324175922_UrgenciaFretes.cs",
-              "RelativeToolTip": "Migrations\\20260324175922_UrgenciaFretes.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "IFreteService.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Services\\Interfaces\\IFreteService.cs",
+              "RelativeDocumentMoniker": "Services\\Interfaces\\IFreteService.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Services\\Interfaces\\IFreteService.cs*",
+              "RelativeToolTip": "Services\\Interfaces\\IFreteService.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:59:22.71Z",
+              "WhenOpened": "2026-03-23T17:36:57.364Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "FreteProfile.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Profiles\\FreteProfile.cs",
-              "RelativeDocumentMoniker": "Profiles\\FreteProfile.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Profiles\\FreteProfile.cs",
-              "RelativeToolTip": "Profiles\\FreteProfile.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAgwD0AAAAMAAAAAAAAAA==",
+              "Title": "DisponibilidadeController.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\DisponibilidadeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DisponibilidadeController.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\DisponibilidadeController.cs",
+              "RelativeToolTip": "Controllers\\DisponibilidadeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:50:37.025Z",
+              "WhenOpened": "2026-03-24T18:27:25.967Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FretePublicoDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Frete\\FretePublicoDTO.cs",
+              "RelativeDocumentMoniker": "DTOs\\Frete\\FretePublicoDTO.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Frete\\FretePublicoDTO.cs*",
+              "RelativeToolTip": "DTOs\\Frete\\FretePublicoDTO.cs*",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAcwAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T18:20:14.116Z",
               "EditorCaption": ""
             },
             {
@@ -134,20 +184,45 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "FreteDTO.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Frete\\FreteDTO.cs",
               "RelativeDocumentMoniker": "DTOs\\Frete\\FreteDTO.cs",
               "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Frete\\FreteDTO.cs",
               "RelativeToolTip": "DTOs\\Frete\\FreteDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAAkwCMAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-24T17:02:23.479Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
+              "Title": "20260324175922_UrgenciaFretes.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260324175922_UrgenciaFretes.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260324175922_UrgenciaFretes.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260324175922_UrgenciaFretes.cs",
+              "RelativeToolTip": "Migrations\\20260324175922_UrgenciaFretes.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T17:59:22.71Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FreteProfile.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Profiles\\FreteProfile.cs",
+              "RelativeDocumentMoniker": "Profiles\\FreteProfile.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Profiles\\FreteProfile.cs",
+              "RelativeToolTip": "Profiles\\FreteProfile.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAgwD0AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-24T17:50:37.025Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "FreteFiltroDTO.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Filtro\\FreteFiltroDTO.cs",
               "RelativeDocumentMoniker": "DTOs\\Filtro\\FreteFiltroDTO.cs",
@@ -155,12 +230,11 @@
               "RelativeToolTip": "DTOs\\Filtro\\FreteFiltroDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-23T17:29:37.442Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-23T17:29:37.442Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "CriarFrete.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Frete\\CriarFrete.cs",
               "RelativeDocumentMoniker": "DTOs\\Frete\\CriarFrete.cs",
@@ -168,12 +242,11 @@
               "RelativeToolTip": "DTOs\\Frete\\CriarFrete.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:02:41.508Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-24T17:02:41.508Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "Frete.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Frete.cs",
               "RelativeDocumentMoniker": "Entities\\Frete.cs",
@@ -181,25 +254,11 @@
               "RelativeToolTip": "Entities\\Frete.cs",
               "ViewState": "AgIAAAQAAAAAAAAAAAAkwAoAAABQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-24T17:04:18.797Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-24T17:04:18.797Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "FreteController.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\FreteController.cs",
-              "RelativeDocumentMoniker": "Controllers\\FreteController.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Controllers\\FreteController.cs",
-              "RelativeToolTip": "Controllers\\FreteController.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAqwCAAAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-23T17:37:07.922Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 18,
               "Title": "20260324170508_AlterValorDecimal.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260324170508_AlterValorDecimal.cs",
               "RelativeDocumentMoniker": "Migrations\\20260324170508_AlterValorDecimal.cs",
@@ -211,7 +270,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "AtualizarStatusFrete.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Frete\\AtualizarStatusFrete.cs",
               "RelativeDocumentMoniker": "DTOs\\Frete\\AtualizarStatusFrete.cs",
@@ -223,7 +282,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 13,
               "Title": "PaginacaoParams.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Paginacao\\PaginacaoParams.cs",
               "RelativeDocumentMoniker": "DTOs\\Paginacao\\PaginacaoParams.cs",
@@ -235,19 +294,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "IFreteService.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Services\\Interfaces\\IFreteService.cs",
-              "RelativeDocumentMoniker": "Services\\Interfaces\\IFreteService.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Services\\Interfaces\\IFreteService.cs",
-              "RelativeToolTip": "Services\\Interfaces\\IFreteService.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAAAAsAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-23T17:36:57.364Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "TipoCarga.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Enums\\TipoCarga.cs",
               "RelativeDocumentMoniker": "Enums\\TipoCarga.cs",
@@ -259,7 +306,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 15,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -271,7 +318,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 17,
               "Title": "20260323175752_soTeste.cs",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260323175752_soTeste.cs",
               "RelativeDocumentMoniker": "Migrations\\20260323175752_soTeste.cs",
@@ -283,7 +330,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 16,
               "Title": "Hermes.csproj",
               "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Hermes.csproj",
               "RelativeDocumentMoniker": "Hermes.csproj",

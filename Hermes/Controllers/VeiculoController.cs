@@ -22,7 +22,7 @@ namespace Hermes.Controllers
             _mapper = mapper;
         }
 
-        // 🔒 VEÍCULOS DO USUÁRIO LOGADO
+        // VEÍCULOS DO USUÁRIO LOGADO
         [HttpGet("meus")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> Meus()
         {
@@ -35,7 +35,7 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<List<VeiculoDTO>>(veiculos));
         }
 
-        // 🔒 BUSCAR (SÓ DO DONO)
+        // BUSCAR (SÓ DO DONO)
         [HttpGet("{id}")]
         public async Task<ActionResult<VeiculoDTO>> Buscar(int id)
         {
@@ -51,7 +51,7 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<VeiculoDTO>(veiculo));
         }
 
-        // 🔒 CRIAR (VINCULADO AO LOGADO)
+        // CRIAR (VINCULADO AO LOGADO)
         [HttpPost]
         public async Task<IActionResult> Criar([FromBody] CriarVeiculo dto)
         {
@@ -67,7 +67,7 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<VeiculoDTO>(veiculo));
         }
 
-        // 🔒 ATUALIZAR (SÓ DONO)
+        //  ATUALIZAR (SÓ DONO)
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, [FromBody] AtualizarVeiculo dto)
         {
@@ -87,7 +87,7 @@ namespace Hermes.Controllers
             return NoContent();
         }
 
-        // 🔒 DELETAR (SÓ DONO)
+        //  DELETAR (SÓ DONO)
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(int id)
         {

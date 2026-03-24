@@ -7,6 +7,9 @@ namespace Hermes.Services.Interfaces
 {
     public interface IFreteService
     {
+        //para home
+        Task<List<Frete>> ListarConcluidosRecentes(int quantidade);
+
         //filtrados
         Task<(List<Frete> data, int total)> ListarDisponiveisFiltrado(
             FreteFiltroDTO filtro, PaginacaoParams paginacao);

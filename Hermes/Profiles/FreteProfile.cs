@@ -8,6 +8,24 @@ namespace Hermes.Profiles
     {
         public FreteProfile()
         {
+
+            CreateMap<Frete, FretePublicoDTO>()
+                .ForMember(dest => dest.Origem,
+                    opt => opt.MapFrom(src =>
+                        src.SitioOrigem
+                            ? $"Sítio - {src.DescricaoOrigem}"
+                            : $"{src.CidadeOrigem} - {src.BairroOrigem}"))
+
+                    .ForMember(dest => dest.Destino,
+                        opt => opt.MapFrom(src =>
+                            src.SitioDestino
+                                ? $"Sítio - {src.DescricaoDestino}"
+                                : $"{src.CidadeDestino} - {src.BairroDestino}"))
+
+                    .ForMember(dest => dest.NomeTransportador,
+                        opt => opt.MapFrom(src =>
+                            src.Transportador != null ? src.Transportador.Nome : null));
+
             CreateMap<Frete, FreteDTO>()
                 // ORIGEM (COM SITIO)
                 .ForMember(dest => dest.Origem,
@@ -45,6 +63,9 @@ namespace Hermes.Profiles
                         $" Carga: {src.DescricaoCarga}" +
                         $" Valor: R$ {src.Valor}"
                     ))
+
+                //FretePublicoDTO
+
 
                 // CAMPOS NOVOS
                 .ForMember(dest => dest.SitioOrigem, opt => opt.MapFrom(src => src.SitioOrigem))

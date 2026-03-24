@@ -23,6 +23,16 @@ namespace Hermes.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
+        [HttpGet("concluidos/home")]
+        public async Task<ActionResult<IEnumerable<FretePublicoDTO>>> FretesConcluidosHome()
+        {
+            var fretes = await _freteService.ListarConcluidosRecentes(10); // pega 10 últimos
+            return Ok(_mapper.Map<List<FretePublicoDTO>>(fretes));
+        }
+
+
+        [AllowAnonymous]
         [HttpGet("disponiveis/filtradopaginado")]
         public async Task<IActionResult> GetDisponiveis(
             [FromQuery] FreteFiltroDTO filtro,
@@ -30,7 +40,7 @@ namespace Hermes.Controllers
         {
             var (fretes, total) = await _freteService
                 .ListarDisponiveisFiltrado(filtro, paginacao);
-            var fretesDTO = _mapper.Map<List<FreteDTO>>(fretes);
+            var fretesDTO = _mapper.Map<List<FretePublicoDTO>>(fretes);
 
             return Ok(new
             {
@@ -42,11 +52,12 @@ namespace Hermes.Controllers
         }
 
         //  LISTAR TODOS COM PAGINAÇÃO (admin ou uso geral)
+        [AllowAnonymous]
         [HttpGet("paginado")]
         public async Task<ActionResult> ListarPaginado([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var (fretes, total) = await _freteService.ListarPaginado(page, pageSize);
-            var fretesDTO = _mapper.Map<List<FreteDTO>>(fretes);
+            var fretesDTO = _mapper.Map<List<FretePublicoDTO>>(fretes);
 
             return Ok(new
             {
@@ -58,6 +69,7 @@ namespace Hermes.Controllers
         }
 
         // LISTAR TODOS (sem paginação)
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FreteDTO>>> Listar()
         {
@@ -94,12 +106,13 @@ namespace Hermes.Controllers
         }
 
         //  LISTAR FRETES POR CIDADE COM PAGINAÇÃO
+        [AllowAnonymous]
         [HttpGet("cidade/{cidade}")]
         public async Task<ActionResult> FretesPorCidade(string cidade, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var (fretes, total) = await _freteService.ListarPorCidadePaginado(cidade, page, pageSize);
 
-            var fretesDTO = _mapper.Map<List<FreteDTO>>(fretes);
+            var fretesDTO = _mapper.Map<List<FretePublicoDTO>>(fretes);
             return Ok(new
             {
                 Data = fretesDTO,
@@ -110,12 +123,13 @@ namespace Hermes.Controllers
         }
 
         // BUSCAR FRETE POR ID
+        [AllowAnonymous] // Permite acesso sem autenticação para visualizar detalhes do frete
         [HttpGet("{id}")]
-        public async Task<ActionResult<FreteDTO>> Buscar(int id)
+        public async Task<ActionResult<FretePublicoDTO>> Buscar(int id)
         {
             var frete = await _freteService.BuscarPorId(id);
             if (frete == null) return NotFound();
-            return Ok(_mapper.Map<FreteDTO>(frete));
+            return Ok(_mapper.Map<FretePublicoDTO>(frete));
         }
 
         // LISTAR FRETES DO TRANSPORTADOR LOGADO
@@ -167,18 +181,44 @@ namespace Hermes.Controllers
         }
 
         //  ATUALIZAR STATUS
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, AtualizarStatusFrete dto)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            var frete = await _freteService.BuscarPorId(id);
+            if (frete == null) return NotFound();
+
+            if (role == "Cliente" && frete.ClienteId != userId)
+                return Forbid();
+
+            if (role == "Transportador" && frete.TransportadorId != userId)
+                return Forbid();
+
             var sucesso = await _freteService.AtualizarStatus(id, dto.Status);
             if (!sucesso) return NotFound();
             return Ok();
         }
 
         // DELETAR FRETE
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(int id)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            var frete = await _freteService.BuscarPorId(id);
+            if (frete == null) return NotFound();
+
+            if (role == "Cliente" && frete.ClienteId != userId)
+                return Forbid();
+
+            if (role == "Transportador" && frete.TransportadorId != userId)
+                return Forbid();
+
             var sucesso = await _freteService.Deletar(id);
             if (!sucesso) return NotFound();
             return NoContent();

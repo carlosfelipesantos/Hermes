@@ -19,16 +19,24 @@ namespace Hermes.Services.Implementations
             _notificacaoService = notificacaoService;
         }
 
-        //filtrados
+        public async Task<List<Frete>> ListarConcluidosRecentes(int quantidade)
+        {
+            return await _context.Fretes
+                .AsNoTracking()
+                .Where(f => f.Status == StatusFrete.Concluido)
+                .OrderByDescending(f => f.DataConclusao)
+                .Take(quantidade)
+                .ToListAsync();
+        }
+
         public async Task<(List<Frete> data, int total)> ListarDisponiveisFiltrado(
-    FreteFiltroDTO filtro, PaginacaoParams paginacao)
+            FreteFiltroDTO filtro, PaginacaoParams paginacao)
         {
             var query = _context.Fretes
+                .AsNoTracking()
                 .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
                 .Include(f => f.Cliente)
                 .AsQueryable();
-
-            // FILTROS
 
             if (filtro.Urgente.HasValue)
                 query = query.Where(f => f.Urgente == filtro.Urgente.Value);
@@ -45,15 +53,12 @@ namespace Hermes.Services.Implementations
             if (filtro.ValorMax.HasValue)
                 query = query.Where(f => f.Valor <= filtro.ValorMax.Value);
 
-            // ORDENAÇÃO 
             query = query
                 .OrderByDescending(f => f.Urgente)
                 .ThenByDescending(f => f.DataSolicitacao);
 
-            // TOTAL
             var total = await query.CountAsync();
 
-            // PAGINAÇÃO
             var data = await query
                 .Skip((paginacao.Page - 1) * paginacao.PageSize)
                 .Take(paginacao.PageSize)
@@ -62,31 +67,12 @@ namespace Hermes.Services.Implementations
             return (data, total);
         }
 
-
         public async Task<(List<Frete> data, int total)> ListarPaginado(int page, int pageSize)
-        { 
-            var query = _context.Fretes 
-                .Include(f => f.Cliente) //diz que ao buscar os fretes, ele deve incluir os dados do cliente relacionado
-                .Include(f => f.Transportador) 
-                .AsQueryable();
-
-                var total = await query.CountAsync();
-
-            var data = await query
-                .Skip((page - 1) * pageSize) //significa pular os primeiros registros, se for a página 2, ele pula os primeiros 10 registros (1-10) e mostra os próximos 10 (11-20)
-                .Take(pageSize)
-                .ToListAsync();
-
-            return(data, total);
-        }
-
-        // Paginação para fretes disponíveis (Transportador)
-        public async Task<(List<Frete> data, int total)> ListarDisponiveisPaginado(int transportadorId, int page, int pageSize)
         {
             var query = _context.Fretes
-                .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
+                .AsNoTracking()
                 .Include(f => f.Cliente)
-                .AsQueryable();
+                .Include(f => f.Transportador);
 
             var total = await query.CountAsync();
 
@@ -98,14 +84,30 @@ namespace Hermes.Services.Implementations
             return (data, total);
         }
 
-        // Paginação para fretes por cidade
+        public async Task<(List<Frete> data, int total)> ListarDisponiveisPaginado(int transportadorId, int page, int pageSize)
+        {
+            var query = _context.Fretes
+                .AsNoTracking()
+                .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
+                .Include(f => f.Cliente);
+
+            var total = await query.CountAsync();
+
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (data, total);
+        }
+
         public async Task<(List<Frete> data, int total)> ListarPorCidadePaginado(string cidade, int page, int pageSize)
         {
             var query = _context.Fretes
-                .Where(f => f.CidadeOrigem.ToLower() == cidade.ToLower())
+                .AsNoTracking()
+                .Where(f => f.CidadeOrigem == cidade)
                 .Include(f => f.Cliente)
-                .Include(f => f.Transportador)
-                .AsQueryable();
+                .Include(f => f.Transportador);
 
             var total = await query.CountAsync();
 
@@ -120,14 +122,16 @@ namespace Hermes.Services.Implementations
         public async Task<IEnumerable<Frete>> Listar()
         {
             return await _context.Fretes
-                 .Include(f => f.Cliente)
-                 .Include(f => f.Transportador)
-                 .ToListAsync();
+                .AsNoTracking()
+                .Include(f => f.Cliente)
+                .Include(f => f.Transportador)
+                .ToListAsync();
         }
 
         public async Task<Frete> BuscarPorId(int id)
         {
             return await _context.Fretes
+                .AsNoTracking()
                 .Include(f => f.Cliente)
                 .Include(f => f.Transportador)
                 .FirstOrDefaultAsync(f => f.Id == id);
@@ -135,17 +139,15 @@ namespace Hermes.Services.Implementations
 
         public async Task<Frete> Criar(Frete frete)
         {
-            // VALIDAÇÕES DE SITIO
             if (frete.SitioOrigem && string.IsNullOrWhiteSpace(frete.DescricaoOrigem))
                 throw new Exception("Descrição da origem é obrigatória para sítio");
 
             if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
                 throw new Exception("Descrição do destino é obrigatória para sítio");
 
-            // VALIDAÇÃO DE HORÁRIO (se transportador e horário definidos)
             if (frete.TransportadorId.HasValue && frete.DataAgendada.HasValue && frete.HoraAgendada.HasValue)
             {
-                bool existe = await _context.Fretes.AnyAsync(f =>
+                var existe = await _context.Fretes.AnyAsync(f =>
                     f.TransportadorId == frete.TransportadorId &&
                     f.DataAgendada == frete.DataAgendada &&
                     f.HoraAgendada == frete.HoraAgendada
@@ -158,17 +160,19 @@ namespace Hermes.Services.Implementations
             frete.DataSolicitacao = DateTime.Now;
             frete.Status = StatusFrete.Pendente;
 
-            _context.Fretes.Add(frete);
+            await _context.Fretes.AddAsync(frete);
             await _context.SaveChangesAsync();
 
-            // Notificação para todos os transportadores (somente fretes abertos)
             if (!frete.TransportadorId.HasValue)
             {
-                var transportadores = await _context.Transportadores.ToListAsync();
-                foreach (var t in transportadores)
+                var transportadoresIds = await _context.Transportadores
+                    .Select(t => t.Id)
+                    .ToListAsync();
+
+                foreach (var id in transportadoresIds)
                 {
                     await _notificacaoService.CriarNotificacao(
-                        t.Id,
+                        id,
                         "Novo frete disponível",
                         $"Um novo frete #{frete.Id} foi solicitado.",
                         TipoNotificacao.FreteNovo,
@@ -183,20 +187,22 @@ namespace Hermes.Services.Implementations
         public async Task<IEnumerable<Frete>> BuscarFretesParaTransportador(int transportadorId)
         {
             var transportador = await _context.Transportadores
+                .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == transportadorId);
 
             if (transportador == null)
                 return new List<Frete>();
 
+            if (transportador.Latitude is null || transportador.Longitude is null)
+                throw new Exception("Transportador precisa ativar localização.");
+
             var fretes = await _context.Fretes
+                .AsNoTracking()
                 .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
                 .Include(f => f.Cliente)
                 .ToListAsync();
 
-            if (transportador.Latitude is null || transportador.Longitude is null)
-                throw new Exception("Transportador precisa ativar localização.");
-
-            var fretesProximos = fretes
+            return fretes
                 .Where(f =>
                     CalcularDistancia(
                         transportador.Latitude.Value,
@@ -204,9 +210,8 @@ namespace Hermes.Services.Implementations
                         f.LatitudeOrigem,
                         f.LongitudeOrigem
                     ) <= 20
-                );
-
-            return fretesProximos;
+                )
+                .ToList();
         }
 
         public string GerarMensagemWhatsApp(Frete frete)
@@ -228,7 +233,7 @@ namespace Hermes.Services.Implementations
 
         private double CalcularDistancia(double lat1, double lon1, double lat2, double lon2)
         {
-            var R = 6371;
+            const int R = 6371;
 
             var dLat = (lat2 - lat1) * Math.PI / 180;
             var dLon = (lon2 - lon1) * Math.PI / 180;
@@ -270,7 +275,8 @@ namespace Hermes.Services.Implementations
         public async Task<IEnumerable<Frete>> ListarPorCidade(string cidade)
         {
             return await _context.Fretes
-                .Where(f => f.CidadeOrigem.ToLower() == cidade.ToLower())
+                .AsNoTracking()
+                .Where(f => f.CidadeOrigem == cidade)
                 .ToListAsync();
         }
 
@@ -300,6 +306,7 @@ namespace Hermes.Services.Implementations
         public async Task<IEnumerable<Frete>> ListarPorCliente(int clienteId)
         {
             return await _context.Fretes
+                .AsNoTracking()
                 .Where(f => f.ClienteId == clienteId)
                 .Include(f => f.Cliente)
                 .Include(f => f.Transportador)
@@ -309,6 +316,7 @@ namespace Hermes.Services.Implementations
         public async Task<IEnumerable<Frete>> ListarPorTransportador(int transportadorId)
         {
             return await _context.Fretes
+                .AsNoTracking()
                 .Where(f => f.TransportadorId == transportadorId)
                 .Include(f => f.Transportador)
                 .Include(f => f.Cliente)
@@ -318,6 +326,7 @@ namespace Hermes.Services.Implementations
         public async Task<IEnumerable<Frete>> ListarDisponiveis()
         {
             return await _context.Fretes
+                .AsNoTracking()
                 .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
                 .Include(f => f.Cliente)
                 .ToListAsync();
