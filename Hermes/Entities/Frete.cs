@@ -8,6 +8,7 @@ namespace Hermes.Entities
 
         public int Id { get; set; }
         public TipoCarga TipoCarga { get; set; }
+        public bool Urgente { get; set; } = false;// Indica se o frete é urgente
 
         public double LatitudeOrigem { get; set; }
         public double LongitudeOrigem { get; set; }

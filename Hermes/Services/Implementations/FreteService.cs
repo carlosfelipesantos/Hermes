@@ -30,9 +30,11 @@ namespace Hermes.Services.Implementations
 
             // FILTROS
 
+            if (filtro.Urgente.HasValue)
+                query = query.Where(f => f.Urgente == filtro.Urgente.Value);
+
             if (!string.IsNullOrEmpty(filtro.Cidade))
-                    query = query.Where(f => f.CidadeOrigem.Contains(filtro.Cidade));
-            
+                query = query.Where(f => f.CidadeOrigem.Contains(filtro.Cidade));
 
             if (filtro.Status.HasValue)
                 query = query.Where(f => f.Status == filtro.Status.Value);
@@ -43,10 +45,15 @@ namespace Hermes.Services.Implementations
             if (filtro.ValorMax.HasValue)
                 query = query.Where(f => f.Valor <= filtro.ValorMax.Value);
 
-            // OTAL (antes da paginação)
+            // ORDENAÇÃO 
+            query = query
+                .OrderByDescending(f => f.Urgente)
+                .ThenByDescending(f => f.DataSolicitacao);
+
+            // TOTAL
             var total = await query.CountAsync();
 
-            //  PAGINAÇÃO
+            // PAGINAÇÃO
             var data = await query
                 .Skip((paginacao.Page - 1) * paginacao.PageSize)
                 .Take(paginacao.PageSize)

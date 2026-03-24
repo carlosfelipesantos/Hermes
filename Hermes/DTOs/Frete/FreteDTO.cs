@@ -6,6 +6,7 @@ namespace Hermes.DTOs.Frete
     public class FreteDTO
     {
         public TipoCarga TipoCarga { get; set; }
+        public bool Urgente { get; set; }
 
         public int Id { get; set; }
         public string Origem { get; set; }

@@ -5,6 +5,7 @@ namespace Hermes.DTOs.Frete
     public class CriarFrete
     {
         public TipoCarga TipoCarga { get; set; }
+        public bool Urgente { get; set; } 
         public string CidadeOrigem { get; set; }
         public string BairroOrigem { get; set; }
         public string EstadoOrigem { get; set; }

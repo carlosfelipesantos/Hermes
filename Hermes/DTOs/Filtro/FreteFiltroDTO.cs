@@ -7,6 +7,7 @@ namespace Hermes.DTOs.Filtro
         public decimal? ValorMin { get; set; }
         public decimal? ValorMax { get; set; }
         public string? Cidade { get; set; }
+        public bool? Urgente { get; set; }
         public StatusFrete? Status { get; set; }
      
     }

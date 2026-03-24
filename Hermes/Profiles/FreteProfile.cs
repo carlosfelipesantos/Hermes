@@ -58,6 +58,8 @@ namespace Hermes.Profiles
 
             // ATUALIZAR STATUS
             CreateMap<AtualizarStatusFrete, Frete>();
+
+            
         }
     }
 }
