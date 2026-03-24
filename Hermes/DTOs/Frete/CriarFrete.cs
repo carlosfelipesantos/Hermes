@@ -17,7 +17,7 @@ namespace Hermes.DTOs.Frete
         public string CidadeDestino { get; set; }
         public string EstadoDestino { get; set; }
         public string DescricaoCarga { get; set; }
-        public double Valor { get; set; }
+        public decimal Valor { get; set; }
 
         public DateTime? DataAgendada { get; set; }
         public TimeSpan? HoraAgendada { get; set; }

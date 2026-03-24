@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Hermes.DTOs.Filtro;
 using Hermes.DTOs.Frete;
+using Hermes.DTOs.Paginacao;
 using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +21,24 @@ namespace Hermes.Controllers
         {
             _freteService = freteService;
             _mapper = mapper;
+        }
+
+        [HttpGet("disponiveis/filtradopaginado")]
+        public async Task<IActionResult> GetDisponiveis(
+            [FromQuery] FreteFiltroDTO filtro,
+            [FromQuery] PaginacaoParams paginacao)
+        {
+            var (fretes, total) = await _freteService
+                .ListarDisponiveisFiltrado(filtro, paginacao);
+            var fretesDTO = _mapper.Map<List<FreteDTO>>(fretes);
+
+            return Ok(new
+            {
+                Data = fretesDTO,
+                Total = total,
+                Page = paginacao.Page,
+                PageSize = paginacao.PageSize
+            });
         }
 
         //  LISTAR TODOS COM PAGINAÇÃO (admin ou uso geral)

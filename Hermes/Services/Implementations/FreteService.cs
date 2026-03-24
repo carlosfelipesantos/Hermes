@@ -1,4 +1,6 @@
 ﻿using Hermes.Data;
+using Hermes.DTOs.Filtro;
+using Hermes.DTOs.Paginacao;
 using Hermes.Entities;
 using Hermes.Enums;
 using Hermes.Services.Interfaces;
@@ -16,6 +18,43 @@ namespace Hermes.Services.Implementations
             _context = context;
             _notificacaoService = notificacaoService;
         }
+
+        //filtrados
+        public async Task<(List<Frete> data, int total)> ListarDisponiveisFiltrado(
+    FreteFiltroDTO filtro, PaginacaoParams paginacao)
+        {
+            var query = _context.Fretes
+                .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
+                .Include(f => f.Cliente)
+                .AsQueryable();
+
+            // FILTROS
+
+            if (!string.IsNullOrEmpty(filtro.Cidade))
+                    query = query.Where(f => f.CidadeOrigem.Contains(filtro.Cidade));
+            
+
+            if (filtro.Status.HasValue)
+                query = query.Where(f => f.Status == filtro.Status.Value);
+
+            if (filtro.ValorMin.HasValue)
+                query = query.Where(f => f.Valor >= filtro.ValorMin.Value);
+
+            if (filtro.ValorMax.HasValue)
+                query = query.Where(f => f.Valor <= filtro.ValorMax.Value);
+
+            // OTAL (antes da paginação)
+            var total = await query.CountAsync();
+
+            //  PAGINAÇÃO
+            var data = await query
+                .Skip((paginacao.Page - 1) * paginacao.PageSize)
+                .Take(paginacao.PageSize)
+                .ToListAsync();
+
+            return (data, total);
+        }
+
 
         public async Task<(List<Frete> data, int total)> ListarPaginado(int page, int pageSize)
         { 

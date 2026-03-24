@@ -1,10 +1,16 @@
-﻿using Hermes.Entities;
+﻿using Hermes.DTOs.Filtro;
+using Hermes.DTOs.Paginacao;
+using Hermes.Entities;
 using Hermes.Enums;
 
 namespace Hermes.Services.Interfaces
 {
     public interface IFreteService
     {
+        //filtrados
+        Task<(List<Frete> data, int total)> ListarDisponiveisFiltrado(
+            FreteFiltroDTO filtro, PaginacaoParams paginacao);
+
         // paginação geral
         Task<(List<Frete> data, int total)> ListarPaginado(int page, int pageSize);
 

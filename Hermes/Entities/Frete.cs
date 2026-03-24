@@ -30,7 +30,7 @@ namespace Hermes.Entities
         public string? DescricaoDestino { get; set; }
         public double? DistanciaExtra { get; set; }
 
-        public double Valor { get; set; }
+        public decimal Valor { get; set; }
         public StatusFrete Status { get; set; }
         public DateTime DataSolicitacao { get; set; }
         public DateTime? DataConclusao { get; set; }
