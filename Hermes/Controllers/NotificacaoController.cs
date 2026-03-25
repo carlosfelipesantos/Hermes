@@ -22,7 +22,7 @@ namespace Hermes.Controllers
             _mapper = mapper;
         }
 
-        // 🔒 NOTIFICAÇÕES DO USUÁRIO LOGADO
+        //  NOTIFICAÇÕES DO USUÁRIO LOGADO
         [HttpGet("minhas")]
         public async Task<ActionResult<IEnumerable<NotificacaoDTO>>> MinhasNotificacoes()
         {
@@ -38,7 +38,7 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<List<NotificacaoDTO>>(notificacoes));
         }
 
-        // 🔒 MARCAR COMO LIDA (SÓ DO DONO)
+        // MARCAR COMO LIDA (SÓ DO DONO)
         [HttpPut("{id}/lida")]
         public async Task<IActionResult> MarcarComoLida(int id)
         {
