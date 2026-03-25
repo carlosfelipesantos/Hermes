@@ -191,12 +191,14 @@ namespace Hermes.Controllers
             var frete = await _freteService.BuscarPorId(id);
             if (frete == null) return NotFound();
 
-            if (role == "Cliente" && frete.ClienteId != userId)
-                return Forbid();
+            if (role != "Admin")
+            {
+                if (role == "Cliente" && frete.ClienteId != userId)
+                    return Forbid();
 
-            if (role == "Transportador" && frete.TransportadorId != userId)
-                return Forbid();
-
+                if (role == "Transportador" && frete.TransportadorId != userId)
+                    return Forbid();
+            }
             var sucesso = await _freteService.AtualizarStatus(id, dto.Status);
             if (!sucesso) return NotFound();
             return Ok();
@@ -213,12 +215,14 @@ namespace Hermes.Controllers
             var frete = await _freteService.BuscarPorId(id);
             if (frete == null) return NotFound();
 
-            if (role == "Cliente" && frete.ClienteId != userId)
-                return Forbid();
+            if (role != "Admin")
+            {
+                if (role == "Cliente" && frete.ClienteId != userId)
+                    return Forbid();
 
-            if (role == "Transportador" && frete.TransportadorId != userId)
-                return Forbid();
-
+                if (role == "Transportador" && frete.TransportadorId != userId)
+                    return Forbid();
+            }
             var sucesso = await _freteService.Deletar(id);
             if (!sucesso) return NotFound();
             return NoContent();
