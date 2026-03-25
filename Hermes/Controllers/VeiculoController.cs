@@ -22,6 +22,15 @@ namespace Hermes.Controllers
             _mapper = mapper;
         }
 
+        [Authorize] // qualquer usuário logado
+        [HttpGet("transportador/{transportadorId}")]
+        public async Task<IActionResult> VeiculosPorTransportador(int transportadorId)
+        {
+            var veiculos = await _veiculoService.ListarPorTransportador(transportadorId);
+
+            return Ok(_mapper.Map<List<VeiculoDTO>>(veiculos));
+        }
+
         // VEÍCULOS DO USUÁRIO LOGADO
         [HttpGet("meus")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> Meus()
