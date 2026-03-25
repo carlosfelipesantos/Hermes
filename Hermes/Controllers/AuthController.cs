@@ -1,6 +1,7 @@
 ﻿using Hermes.DTOs.Auth;
 using Hermes.Entities;
 using Hermes.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -51,6 +52,7 @@ namespace Hermes.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO login)
         {
