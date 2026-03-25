@@ -3,6 +3,7 @@
     public enum TipoUsuario
     {
         Cliente,
-        Transportador
+        Transportador,
+        Admin
     }
 }

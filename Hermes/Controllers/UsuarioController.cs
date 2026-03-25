@@ -25,6 +25,10 @@ public class UsuarioController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Criar(CriarUsuario dto)
     {
+        if (dto.Tipo == TipoUsuario.Admin)
+            return BadRequest("Não é permitido criar admin");
+
+
         if (dto.Tipo == TipoUsuario.Cliente)
         {
             var cliente = _mapper.Map<Cliente>(dto);

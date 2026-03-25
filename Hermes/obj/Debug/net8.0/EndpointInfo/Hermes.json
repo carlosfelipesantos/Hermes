@@ -238,6 +238,44 @@
         }
       }
     },
+    "/api/Frete/concluidos/home": {
+      "get": {
+        "tags": [
+          "Frete"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FretePublicoDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FretePublicoDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FretePublicoDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Frete/disponiveis/filtradopaginado": {
       "get": {
         "tags": [
@@ -536,17 +574,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/FreteDTO"
+                  "$ref": "#/components/schemas/FretePublicoDTO"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FreteDTO"
+                  "$ref": "#/components/schemas/FretePublicoDTO"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FreteDTO"
+                  "$ref": "#/components/schemas/FretePublicoDTO"
                 }
               }
             }
@@ -862,6 +900,29 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Veiculo/transportador/{transportadorId}": {
+      "get": {
+        "tags": [
+          "Veiculo"
+        ],
+        "parameters": [
+          {
+            "name": "transportadorId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -1403,6 +1464,38 @@
           "nomeCliente": {
             "type": "string",
             "nullable": true
+          },
+          "nomeTransportador": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FretePublicoDTO": {
+        "type": "object",
+        "properties": {
+          "tipoCarga": {
+            "$ref": "#/components/schemas/TipoCarga"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "origem": {
+            "type": "string",
+            "nullable": true
+          },
+          "destino": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/StatusFrete"
+          },
+          "dataSolicitacao": {
+            "type": "string",
+            "format": "date-time"
           },
           "nomeTransportador": {
             "type": "string",

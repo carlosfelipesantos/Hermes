@@ -182,7 +182,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "Hermes.DTOs.Frete.FreteDTO",
+        "Type": "Hermes.DTOs.Frete.FretePublicoDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -286,6 +286,26 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "FretesConcluidosHome",
+    "RelativePath": "api/Frete/concluidos/home",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[Hermes.DTOs.Frete.FretePublicoDTO, Hermes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "Hermes.Controllers.FreteController",
@@ -615,5 +635,21 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "Hermes.Controllers.VeiculoController",
+    "Method": "VeiculosPorTransportador",
+    "RelativePath": "api/Veiculo/transportador/{transportadorId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "transportadorId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
