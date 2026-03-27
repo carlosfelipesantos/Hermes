@@ -1,9 +1,11 @@
 ﻿using Hermes.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hermes.DTOs.Frete
 {
     public class CriarFrete
     {
+        [Required]
         public TipoCarga TipoCarga { get; set; }
         public bool Urgente { get; set; } 
         public string CidadeOrigem { get; set; }
