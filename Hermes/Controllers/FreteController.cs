@@ -2,6 +2,7 @@
 using Hermes.DTOs.Filtro;
 using Hermes.DTOs.Frete;
 using Hermes.DTOs.Paginacao;
+using Hermes.Enums;
 using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -90,20 +91,13 @@ namespace Hermes.Controllers
         //  FRETES DISPONÍVEIS COM PAGINAÇÃO (Transportador)
         [Authorize(Roles = "Transportador")]
         [HttpGet("disponiveis")]
-        public async Task<ActionResult> FretesDisponiveis([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult> FretesDisponiveis([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] TipoVeiculo? tipoVeiculo = null )
         {
             var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var (fretes, total) = await _freteService.ListarDisponiveisPaginado(transportadorId, page, pageSize);
-
-            var fretesDTO = _mapper.Map<List<FreteDTO>>(fretes);
-            return Ok(new
-            {
-                Data = fretesDTO,
-                Total = total,
-                Page = page,
-                PageSize = pageSize
-            });
+            return Ok(new { Data = fretes, Total = total, Page = page, PageSize = pageSize });
         }
+
 
         //  LISTAR FRETES POR CIDADE COM PAGINAÇÃO
         [AllowAnonymous]

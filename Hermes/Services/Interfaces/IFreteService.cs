@@ -1,4 +1,5 @@
 ﻿using Hermes.DTOs.Filtro;
+using Hermes.DTOs.Frete;        
 using Hermes.DTOs.Paginacao;
 using Hermes.Entities;
 using Hermes.Enums;
@@ -17,8 +18,13 @@ namespace Hermes.Services.Interfaces
         // paginação geral
         Task<(List<Frete> data, int total)> ListarPaginado(int page, int pageSize);
 
-        // paginação específica
-        Task<(List<Frete> data, int total)> ListarDisponiveisPaginado(int transportadorId, int page, int pageSize);
+        // paginação específica 
+        Task<(List<FreteDTO> data, int total)> ListarDisponiveisPaginado(
+            int transportadorId,
+            int page,
+            int pageSize,
+            TipoVeiculo? tipoVeiculo = null);   // Parâmetro opcional para filtro
+
         Task<(List<Frete> data, int total)> ListarPorCidadePaginado(string cidade, int page, int pageSize);
 
         //  sem paginação

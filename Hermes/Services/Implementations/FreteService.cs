@@ -1,5 +1,7 @@
-﻿using Hermes.Data;
+﻿using AutoMapper;
+using Hermes.Data;
 using Hermes.DTOs.Filtro;
+using Hermes.DTOs.Frete;
 using Hermes.DTOs.Paginacao;
 using Hermes.Entities;
 using Hermes.Enums;
@@ -12,12 +14,16 @@ namespace Hermes.Services.Implementations
     {
         private readonly HermesBD _context;
         private readonly NotificacaoService _notificacaoService;
+        private readonly IMapper _mapper;
 
-        public FreteService(HermesBD context, NotificacaoService notificacaoService)
+        public FreteService(HermesBD context, NotificacaoService notificacaoService, IMapper mapper)
         {
             _context = context;
             _notificacaoService = notificacaoService;
+            _mapper = mapper;
         }
+
+      
 
         public async Task<List<Frete>> ListarConcluidosRecentes(int quantidade)
         {
@@ -84,21 +90,34 @@ namespace Hermes.Services.Implementations
             return (data, total);
         }
 
-        public async Task<(List<Frete> data, int total)> ListarDisponiveisPaginado(int transportadorId, int page, int pageSize)
+        public async Task<(List<FreteDTO> data, int total)> ListarDisponiveisPaginado(int transportadorId, int page, int pageSize, TipoVeiculo? tipoVeiculo=null)
         {
+            var transportador = await _context.Transportadores
+                .Include(t => t.Veiculos)
+                .FirstOrDefaultAsync(t => t.Id == transportadorId);
+
+            var tiposVeiculo = transportador?.Veiculos.Select(v => v.TipoVeiculo).Distinct().ToList() ?? new();
+
             var query = _context.Fretes
                 .AsNoTracking()
                 .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
                 .Include(f => f.Cliente);
 
             var total = await query.CountAsync();
-
-            var data = await query
+            var fretes = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            return (data, total);
+            var fretesDTO = new List<FreteDTO>();
+            foreach (var f in fretes)
+            {
+                var dto = _mapper.Map<FreteDTO>(f);
+                dto.Sugerido = tiposVeiculo.Any(tv => CompatibilidadeCarga.IsCompativel(tv, f.TipoCarga));
+                fretesDTO.Add(dto);
+            }
+
+            return (fretesDTO, total);
         }
 
         public async Task<(List<Frete> data, int total)> ListarPorCidadePaginado(string cidade, int page, int pageSize)
@@ -351,5 +370,8 @@ namespace Hermes.Services.Implementations
             await _context.SaveChangesAsync();
             return true;
         }
+
+      
+        
     }
 }
