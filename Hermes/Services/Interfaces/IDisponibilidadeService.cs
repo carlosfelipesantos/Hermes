@@ -5,12 +5,11 @@ namespace Hermes.Services.Interfaces
 
     public interface IDisponibilidadeService
     {
-        Task CriarDisponibilidade(int transportadorId, DisponibilidadeDTO dto);
+        Task<List<DisponibilidadeBaseDTO>> ListarJanelasPorTransportador(int transportadorId);
+        Task CriarJanela(int transportadorId, CriarDisponibilidadeBaseDTO dto);
+        Task AtualizarJanela(int janelaId, CriarDisponibilidadeBaseDTO dto, int transportadorId);
+        Task<bool> DeletarJanela(int janelaId, int transportadorId);
 
-        Task<List<TimeSpan>> ListarHorariosDisponiveis(int transportadorId, DateTime data);
-
-        Task<List<DisponibilidadeDTO>> ListarDisponibilidadesPorTransportador(int transportadorId);
-        Task<bool> AtualizarDisponibilidade(int disponibilidadeId, AtualizarDisponibilidadeDTO dto, int transportadorId);
-        Task<bool> DeletarDisponibilidade(int disponibilidadeId, int transportadorId);
+        Task<List<IntervaloLivreDTO>> ListarIntervalosLivres(int transportadorId, DateTime data, TimeSpan? buffer = null);
     }
 }

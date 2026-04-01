@@ -15,7 +15,7 @@ namespace Hermes.Data
         public DbSet<Transportador> Transportadores { get; set; }
         public DbSet<Frete> Fretes { get; set; }
 
-        public DbSet<Disponibilidade> Disponibilidades { get; set; }
+        public DbSet<DisponibilidadeBase> DisponibilidadesBase { get; set; }
 
         public DbSet<Avaliacao> Avaliacoes { get; set; }
         public DbSet<Notificacao> Notificacoes { get; set; }
@@ -80,13 +80,21 @@ namespace Hermes.Data
                 .HasForeignKey(n => n.FreteId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-                modelBuilder.Entity<Frete>()
-                    .Property(f => f.DataAgendada)
-                    .HasColumnType("datetime2");
+               
 
-                modelBuilder.Entity<Frete>()
-                    .Property(f => f.HoraAgendada)
-                    .HasColumnType("time");
+
+            modelBuilder.Entity<DisponibilidadeBase>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.DiaSemana).IsRequired();
+                entity.Property(e => e.HoraInicio).IsRequired();
+                entity.Property(e => e.HoraFim).IsRequired();
+
+                entity.HasOne(d => d.Transportador)
+                      .WithMany(t => t.Disponibilidades) // Certifique-se que Transportador tenha ICollection<DisponibilidadeBase>
+                      .HasForeignKey(d => d.TransportadorId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
 
 
             // Configurações para propriedades decimal,valor e nota

@@ -35,11 +35,13 @@ namespace Hermes.Entities
 
         public decimal Valor { get; set; }
         public StatusFrete Status { get; set; }
+        public DateTime DataHoraInicio { get; set; }
+        public DateTime DataHoraFimPrevisto { get; set; }
+        public DateTime? DataHoraFimReal { get; set; }
+        public TimeSpan DuracaoEstimada { get; set; }
         public DateTime DataSolicitacao { get; set; }
         public DateTime? DataConclusao { get; set; }
 
-        public DateTime? DataAgendada { get; set; }
-        public TimeSpan? HoraAgendada { get; set; }
 
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }

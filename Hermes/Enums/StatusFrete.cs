@@ -4,6 +4,7 @@
     {
         Pendente,
         Aceito,
+        Agendado,
         EmTransito,
         Concluido,
         Cancelado

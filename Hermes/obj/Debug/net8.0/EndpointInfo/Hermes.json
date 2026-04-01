@@ -5,6 +5,112 @@
     "version": "v1"
   },
   "paths": {
+    "/api/Admin/usuarios": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Admin/fretes": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Admin/usuarios/{id}/status": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Auth/login": {
       "post": {
         "tags": [
@@ -176,6 +282,18 @@
         }
       }
     },
+    "/api/Disponibilidade/meus": {
+      "get": {
+        "tags": [
+          "Disponibilidade"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Disponibilidade": {
       "post": {
         "tags": [
@@ -185,17 +303,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DisponibilidadeDTO"
+                "$ref": "#/components/schemas/CriarDisponibilidadeBaseDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/DisponibilidadeDTO"
+                "$ref": "#/components/schemas/CriarDisponibilidadeBaseDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/DisponibilidadeDTO"
+                "$ref": "#/components/schemas/CriarDisponibilidadeBaseDTO"
               }
             }
           }
@@ -207,7 +325,70 @@
         }
       }
     },
-    "/api/Disponibilidade/{transportadorId}/horarios": {
+    "/api/Disponibilidade/{id}": {
+      "put": {
+        "tags": [
+          "Disponibilidade"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarDisponibilidadeBaseDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarDisponibilidadeBaseDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarDisponibilidadeBaseDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Disponibilidade"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Disponibilidade/{transportadorId}/intervalos": {
       "get": {
         "tags": [
           "Disponibilidade"
@@ -283,6 +464,34 @@
         ],
         "parameters": [
           {
+            "name": "Bairro",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Cidade",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Estado",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "DDD",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "ValorMin",
             "in": "query",
             "schema": {
@@ -296,13 +505,6 @@
             "schema": {
               "type": "number",
               "format": "double"
-            }
-          },
-          {
-            "name": "Cidade",
-            "in": "query",
-            "schema": {
-              "type": "string"
             }
           },
           {
@@ -502,6 +704,13 @@
               "type": "integer",
               "format": "int32",
               "default": 10
+            }
+          },
+          {
+            "name": "tipoVeiculo",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/TipoVeiculo"
             }
           }
         ],
@@ -794,6 +1003,78 @@
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Transportador/sugestao": {
+      "get": {
+        "tags": [
+          "Transportador"
+        ],
+        "parameters": [
+          {
+            "name": "tipoCarga",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/TipoCarga"
+            }
+          },
+          {
+            "name": "latOrigem",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "lonOrigem",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "raio",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransportadorSugestaoDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransportadorSugestaoDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransportadorSugestaoDTO"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1179,7 +1460,25 @@
         },
         "additionalProperties": false
       },
+      "CriarDisponibilidadeBaseDTO": {
+        "type": "object",
+        "properties": {
+          "diaSemana": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
+          "horaInicio": {
+            "$ref": "#/components/schemas/TimeSpan"
+          },
+          "horaFim": {
+            "$ref": "#/components/schemas/TimeSpan"
+          }
+        },
+        "additionalProperties": false
+      },
       "CriarFrete": {
+        "required": [
+          "tipoCarga"
+        ],
         "type": "object",
         "properties": {
           "tipoCarga": {
@@ -1187,6 +1486,10 @@
           },
           "urgente": {
             "type": "boolean"
+          },
+          "dddOrigem": {
+            "type": "string",
+            "nullable": true
           },
           "cidadeOrigem": {
             "type": "string",
@@ -1236,13 +1539,14 @@
             "type": "number",
             "format": "double"
           },
-          "dataAgendada": {
+          "dataHoraInicio": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dataHoraFimPrevisto": {
             "type": "string",
             "format": "date-time",
             "nullable": true
-          },
-          "horaAgendada": {
-            "$ref": "#/components/schemas/TimeSpan"
           },
           "transportadorId": {
             "type": "integer",
@@ -1357,36 +1661,22 @@
       },
       "DayOfWeek": {
         "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
+          "Domingo",
+          "Segunda-feira",
+          "Terça-feira",
+          "Quarta-feira",
+          "Quinta-feira",
+          "Sexta-feira",
+          "Sábado"
         ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "DisponibilidadeDTO": {
-        "type": "object",
-        "properties": {
-          "diaSemana": {
-            "$ref": "#/components/schemas/DayOfWeek"
-          },
-          "horas": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TimeSpan"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
+        "type": "string"
       },
       "FreteDTO": {
         "type": "object",
         "properties": {
+          "sugerido": {
+            "type": "boolean"
+          },
           "tipoCarga": {
             "$ref": "#/components/schemas/TipoCarga"
           },
@@ -1542,14 +1832,14 @@
       },
       "StatusFrete": {
         "enum": [
-          0,
-          1,
-          2,
-          3,
-          4
+          "Pendente",
+          "Aceito",
+          "Agendado",
+          "EmTransito",
+          "Concluido",
+          "Cancelado"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       },
       "TimeSpan": {
         "type": "object",
@@ -1633,30 +1923,67 @@
       },
       "TipoCarga": {
         "enum": [
-          0,
-          1,
-          2
+          "Pequena",
+          "Media",
+          "Grande"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       },
       "TipoUsuario": {
         "enum": [
-          0,
-          1
+          "Cliente",
+          "Transportador",
+          "Admin"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       },
       "TipoVeiculo": {
         "enum": [
-          0,
-          1,
-          2,
-          3
+          "Moto",
+          "Carro",
+          "Van",
+          "Caminhao"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
+      },
+      "TransportadorSugestaoDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nome": {
+            "type": "string",
+            "nullable": true
+          },
+          "telefone": {
+            "type": "string",
+            "nullable": true
+          },
+          "ddd": {
+            "type": "string",
+            "nullable": true
+          },
+          "avaliacaoMedia": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "veiculos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VeiculoDTO"
+            },
+            "nullable": true
+          },
+          "distanciaKm": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "UsuarioDTO": {
         "type": "object",

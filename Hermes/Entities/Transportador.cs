@@ -10,7 +10,7 @@
         public bool Disponivel { get; set; }
 
 
-
+        public ICollection<DisponibilidadeBase> Disponibilidades { get; set; } = new List<DisponibilidadeBase>();
         public ICollection<Frete> FretesAceitos { get; set; } = new List<Frete>();
         public ICollection<Veiculo> Veiculos { get; set; } = new List<Veiculo>();   
     }

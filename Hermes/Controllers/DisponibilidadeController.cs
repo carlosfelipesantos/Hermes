@@ -19,64 +19,49 @@ public class DisponibilidadeController : ControllerBase
         _service = service;
     }
 
-    [Authorize(Roles = "Transportador")]
+    // Listar minhas janelas
     [HttpGet("meus")]
-    public async Task<IActionResult> ListarMinhasDisponibilidades()
+    public async Task<IActionResult> ListarMinhasJanelas()
     {
         var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        var disponibilidades = await _service.ListarDisponibilidadesPorTransportador(transportadorId);
-        return Ok(disponibilidades);
+        var janelas = await _service.ListarJanelasPorTransportador(transportadorId);
+        return Ok(janelas);
     }
 
-
-    [AllowAnonymous]
-    [HttpGet("{transportadorId}/horarios")]
-    public async Task<IActionResult> ListarHorarios(int transportadorId, [FromQuery] DateTime data)
-    {
-        var horarios = await _service.ListarHorariosDisponiveis(transportadorId, data);
-
-        return Ok(horarios);
-    }
-
-
+    // Criar nova janela
     [HttpPost]
-    public async Task<IActionResult> Criar(DisponibilidadeDTO dto)
+    public async Task<IActionResult> CriarJanela(CriarDisponibilidadeBaseDTO dto)
     {
-        var transportadorId = int.Parse(
-            User.FindFirst(ClaimTypes.NameIdentifier).Value
-        );
-
-        await _service.CriarDisponibilidade(transportadorId, dto);
-
+        var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        await _service.CriarJanela(transportadorId, dto);
         return Ok();
     }
 
-
-    // Atualizar um horário especifico
-    [Authorize(Roles = "Transportador")]
+    // Atualizar janela
     [HttpPut("{id}")]
-    public async Task<IActionResult> AtualizarDisponibilidade(int id, [FromBody] AtualizarDisponibilidadeDTO dto)
+    public async Task<IActionResult> AtualizarJanela(int id, CriarDisponibilidadeBaseDTO dto)
     {
         var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        var sucesso = await _service.AtualizarDisponibilidade(id, dto, transportadorId);
-        if (!sucesso)
-            return NotFound();
+        await _service.AtualizarJanela(id, dto, transportadorId);
         return NoContent();
     }
 
-    // Deletar um horário especifico
-    [Authorize(Roles = "Transportador")]
+    // Deletar janela
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeletarDisponibilidade(int id)
+    public async Task<IActionResult> DeletarJanela(int id)
     {
         var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        var sucesso = await _service.DeletarDisponibilidade(id, transportadorId);
-        if (!sucesso)
-            return NotFound();
+        var sucesso = await _service.DeletarJanela(id, transportadorId);
+        if (!sucesso) return NotFound();
         return NoContent();
     }
 
-
-
-   
+    // Consultar intervalos livres (público)
+    [AllowAnonymous]
+    [HttpGet("{transportadorId}/intervalos")]
+    public async Task<IActionResult> ListarIntervalos(int transportadorId, [FromQuery] DateTime data)
+    {
+        var intervalos = await _service.ListarIntervalosLivres(transportadorId, data);
+        return Ok(intervalos);
+    }
 }

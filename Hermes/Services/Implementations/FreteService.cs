@@ -175,34 +175,52 @@ namespace Hermes.Services.Implementations
             if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
                 throw new Exception("Descrição do destino é obrigatória para sítio");
 
-            if (frete.TransportadorId.HasValue && frete.DataAgendada.HasValue && frete.HoraAgendada.HasValue)
+            // Validação para frete agendado (quando transportador é informado)
+            if (frete.TransportadorId.HasValue && frete.DataHoraInicio != default)
             {
-                // Verificar se já existe outro frete no mesmo horário 
-                var existe = await _context.Fretes.AnyAsync(f =>
+                // 1. Se o transportador não informou o fim previsto, calcular automaticamente
+                if (frete.DataHoraFimPrevisto == default)
+                {
+                    var distancia = CalcularDistancia(
+                        frete.LatitudeOrigem, frete.LongitudeOrigem,
+                        frete.LatitudeDestino, frete.LongitudeDestino);
+                    frete.DuracaoEstimada = CalcularDuracaoEstimada(distancia);
+                    frete.DataHoraFimPrevisto = frete.DataHoraInicio + frete.DuracaoEstimada;
+                }
+
+                // 2. Verificar se já existe outro frete sobrepondo o intervalo
+                var conflito = await _context.Fretes.AnyAsync(f =>
                     f.TransportadorId == frete.TransportadorId &&
-                    f.DataAgendada == frete.DataAgendada &&
-                    f.HoraAgendada == frete.HoraAgendada
-                );
+                    f.Status != StatusFrete.Cancelado &&
+                    f.DataHoraInicio < frete.DataHoraFimPrevisto &&
+                    f.DataHoraFimPrevisto > frete.DataHoraInicio);
+                if (conflito)
+                    throw new Exception("Já existe um frete agendado nesse período.");
 
-                if (existe)
-                    throw new Exception("Horário já ocupado para este transportador");
-
-                // Verificar se o horário está na disponibilidade do transportador
-                var horariosDisponiveis = await _disponibilidadeService.ListarHorariosDisponiveis(
+                // 3. Verificar se o intervalo está dentro da disponibilidade do transportador
+                var intervalosLivres = await _disponibilidadeService.ListarIntervalosLivres(
                     frete.TransportadorId.Value,
-                    frete.DataAgendada.Value
+                    frete.DataHoraInicio.Date,
+                    TimeSpan.FromMinutes(20) // buffer global (pode vir de configuração)
                 );
 
-                if (!horariosDisponiveis.Contains(frete.HoraAgendada.Value))
+                bool disponivel = intervalosLivres.Any(i =>
+                    i.Inicio <= frete.DataHoraInicio && i.Fim >= frete.DataHoraFimPrevisto);
+
+                if (!disponivel)
                     throw new Exception("Horário não disponível para este transportador");
             }
 
             frete.DataSolicitacao = DateTime.Now;
-            frete.Status = StatusFrete.Pendente;
+            // Define status: se for agendado (com transportador), começa como Agendado; senão, Pendente
+            frete.Status = frete.TransportadorId.HasValue && frete.DataHoraInicio != default
+                ? StatusFrete.Agendado
+                : StatusFrete.Pendente;
 
             await _context.Fretes.AddAsync(frete);
             await _context.SaveChangesAsync();
 
+            // Notifica transportadores se for frete imediato (sem transportador definido)
             if (!frete.TransportadorId.HasValue)
             {
                 var transportadoresIds = await _context.Transportadores
@@ -274,19 +292,21 @@ namespace Hermes.Services.Implementations
         private double CalcularDistancia(double lat1, double lon1, double lat2, double lon2)
         {
             const int R = 6371;
-
             var dLat = (lat2 - lat1) * Math.PI / 180;
             var dLon = (lon2 - lon1) * Math.PI / 180;
-
-            var a =
-                Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                Math.Cos(lat1 * Math.PI / 180) *
-                Math.Cos(lat2 * Math.PI / 180) *
-                Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
-
+            var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                    Math.Cos(lat1 * Math.PI / 180) * Math.Cos(lat2 * Math.PI / 180) *
+                    Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-
             return R * c;
+        }
+
+        private TimeSpan CalcularDuracaoEstimada(double distanciaKm)
+        {
+            double velocidadeMedia = 40; // km/h (ajustável)
+            double tempoCargaDescarga = 0.5; // 30 minutos
+            double horas = distanciaKm / velocidadeMedia + tempoCargaDescarga;
+            return TimeSpan.FromHours(horas);
         }
 
         public async Task<bool> AceitarFrete(int freteId, int transportadorId)
