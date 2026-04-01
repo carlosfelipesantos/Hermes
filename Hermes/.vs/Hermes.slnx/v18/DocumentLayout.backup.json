@@ -1,14 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\",
+  "WorkspaceRootPath": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos\\documents\\github\\hermes\\hermes\\dtos\\frete\\criarfrete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\frete\\criarfrete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos\\documents\\github\\hermes\\hermes\\dtos\\avaliacao\\criaravaliacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\avaliacao\\criaravaliacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 284,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,28 +34,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CriarAvaliacao.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Avaliacao\\CriarAvaliacao.cs",
-              "RelativeDocumentMoniker": "DTOs\\Avaliacao\\CriarAvaliacao.cs",
-              "ToolTip": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Avaliacao\\CriarAvaliacao.cs",
-              "RelativeToolTip": "DTOs\\Avaliacao\\CriarAvaliacao.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-27T11:01:43.657Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CriarFrete.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Frete\\CriarFrete.cs",
-              "RelativeDocumentMoniker": "DTOs\\Frete\\CriarFrete.cs",
-              "ToolTip": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Frete\\CriarFrete.cs",
-              "RelativeToolTip": "DTOs\\Frete\\CriarFrete.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAxwAcAAAAIAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA4AAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-27T10:59:38.801Z",
+              "WhenOpened": "2026-04-01T16:06:45.129Z",
               "EditorCaption": ""
             }
           ]
