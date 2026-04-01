@@ -10,6 +10,8 @@ namespace Hermes.Entities
         public TipoCarga TipoCarga { get; set; }
         public bool Urgente { get; set; } = false;
 
+        public string? DDDOrigem { get; set; }
+
         public double LatitudeOrigem { get; set; }
         public double LongitudeOrigem { get; set; }
 

@@ -7,7 +7,8 @@ namespace Hermes.DTOs.Frete
     {
         [Required]
         public TipoCarga TipoCarga { get; set; }
-        public bool Urgente { get; set; } 
+        public bool Urgente { get; set; }
+        public string? DDDOrigem { get; set; }
         public string CidadeOrigem { get; set; }
         public string BairroOrigem { get; set; }
         public string EstadoOrigem { get; set; }

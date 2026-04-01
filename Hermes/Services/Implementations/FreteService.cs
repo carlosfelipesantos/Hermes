@@ -52,6 +52,15 @@ namespace Hermes.Services.Implementations
             if (!string.IsNullOrEmpty(filtro.Cidade))
                 query = query.Where(f => f.CidadeOrigem.Contains(filtro.Cidade));
 
+            if (!string.IsNullOrEmpty(filtro.Bairro))
+                query = query.Where(f => f.BairroOrigem.Contains(filtro.Bairro));
+
+            if (!string.IsNullOrEmpty(filtro.Estado))
+                query = query.Where(f => f.EstadoOrigem.Contains(filtro.Estado));
+
+            if (!string.IsNullOrEmpty(filtro.DDD))
+                query = query.Where(f => f.DDDOrigem.Contains(filtro.DDD));
+
             if (filtro.Status.HasValue)
                 query = query.Where(f => f.Status == filtro.Status.Value);
 

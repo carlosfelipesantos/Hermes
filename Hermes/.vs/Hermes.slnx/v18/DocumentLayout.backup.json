@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260401185431_LastMigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20260401185431_LastMigration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260401191331_AddDDDToFrete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20260401191331_AddDDDToFrete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -39,27 +35,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "20260401185431_LastMigration.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260401185431_LastMigration.cs",
-              "RelativeDocumentMoniker": "Migrations\\20260401185431_LastMigration.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260401185431_LastMigration.cs",
-              "RelativeToolTip": "Migrations\\20260401185431_LastMigration.cs",
+              "Title": "20260401191331_AddDDDToFrete.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260401191331_AddDDDToFrete.cs",
+              "RelativeDocumentMoniker": "Migrations\\20260401191331_AddDDDToFrete.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260401191331_AddDDDToFrete.cs",
+              "RelativeToolTip": "Migrations\\20260401191331_AddDDDToFrete.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-01T18:54:31.982Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAowDwAAABOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-01T18:53:58.016Z",
+              "WhenOpened": "2026-04-01T19:13:31.448Z",
               "EditorCaption": ""
             }
           ]
