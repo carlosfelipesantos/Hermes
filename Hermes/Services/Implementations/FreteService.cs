@@ -15,12 +15,14 @@ namespace Hermes.Services.Implementations
         private readonly HermesBD _context;
         private readonly NotificacaoService _notificacaoService;
         private readonly IMapper _mapper;
+        private readonly IDisponibilidadeService _disponibilidadeService;
 
-        public FreteService(HermesBD context, NotificacaoService notificacaoService, IMapper mapper)
+        public FreteService(HermesBD context, NotificacaoService notificacaoService, IMapper mapper, IDisponibilidadeService disponibilidadeService)
         {
             _context = context;
             _notificacaoService = notificacaoService;
             _mapper = mapper;
+            _disponibilidadeService = disponibilidadeService;
         }
 
       
@@ -166,6 +168,7 @@ namespace Hermes.Services.Implementations
 
             if (frete.TransportadorId.HasValue && frete.DataAgendada.HasValue && frete.HoraAgendada.HasValue)
             {
+                // Verificar se já existe outro frete no mesmo horário 
                 var existe = await _context.Fretes.AnyAsync(f =>
                     f.TransportadorId == frete.TransportadorId &&
                     f.DataAgendada == frete.DataAgendada &&
@@ -174,6 +177,15 @@ namespace Hermes.Services.Implementations
 
                 if (existe)
                     throw new Exception("Horário já ocupado para este transportador");
+
+                // Verificar se o horário está na disponibilidade do transportador
+                var horariosDisponiveis = await _disponibilidadeService.ListarHorariosDisponiveis(
+                    frete.TransportadorId.Value,
+                    frete.DataAgendada.Value
+                );
+
+                if (!horariosDisponiveis.Contains(frete.HoraAgendada.Value))
+                    throw new Exception("Horário não disponível para este transportador");
             }
 
             frete.DataSolicitacao = DateTime.Now;
