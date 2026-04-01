@@ -89,7 +89,7 @@ namespace Hermes.Data
                     .HasColumnType("time");
 
 
-            // Configurações adicionais para propriedades decimal,valor e nota
+            // Configurações para propriedades decimal,valor e nota
             modelBuilder.Entity<Frete>()
               .Property(f => f.Valor)
               .HasColumnType("decimal(10,2)");

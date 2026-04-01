@@ -52,7 +52,7 @@ namespace Hermes.Controllers
             });
         }
 
-        //  LISTAR TODOS COM PAGINAÇÃO (admin ou uso geral)
+        // Listar todos com paginacao
         [AllowAnonymous]
         [HttpGet("paginado")]
         public async Task<ActionResult> ListarPaginado([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
@@ -69,7 +69,7 @@ namespace Hermes.Controllers
             });
         }
 
-        // LISTAR TODOS (sem paginação)
+        // Listar todos sem paginacao
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FreteDTO>>> Listar()
@@ -78,7 +78,7 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<List<FreteDTO>>(fretes));
         }
 
-        //  LISTAR FRETES DO CLIENTE LOGADO
+        // Listar fretes do cliente logado
         [Authorize(Roles = "Cliente")]
         [HttpGet("meus")]
         public async Task<ActionResult<IEnumerable<FreteDTO>>> MeusFretes()
@@ -88,7 +88,7 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<List<FreteDTO>>(fretes));
         }
 
-        //  FRETES DISPONÍVEIS COM PAGINAÇÃO (Transportador)
+        //  Listar fretes disponiveis para transportador
         [Authorize(Roles = "Transportador")]
         [HttpGet("disponiveis")]
         public async Task<ActionResult> FretesDisponiveis([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] TipoVeiculo? tipoVeiculo = null )
@@ -99,7 +99,7 @@ namespace Hermes.Controllers
         }
 
 
-        //  LISTAR FRETES POR CIDADE COM PAGINAÇÃO
+        //  Listar fretes por cidade com paginacao
         [AllowAnonymous]
         [HttpGet("cidade/{cidade}")]
         public async Task<ActionResult> FretesPorCidade(string cidade, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
@@ -116,8 +116,8 @@ namespace Hermes.Controllers
             });
         }
 
-        // BUSCAR FRETE POR ID
-        [AllowAnonymous] // Permite acesso sem autenticação para visualizar detalhes do frete
+        // Buscar Frete por ID
+        [AllowAnonymous] 
         [HttpGet("{id}")]
         public async Task<ActionResult<FretePublicoDTO>> Buscar(int id)
         {
@@ -126,7 +126,7 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<FretePublicoDTO>(frete));
         }
 
-        // LISTAR FRETES DO TRANSPORTADOR LOGADO
+        // Listar Fretes do transportador logado
         [Authorize(Roles = "Transportador")]
         [HttpGet("meus-transportes")]
         public async Task<ActionResult<IEnumerable<FreteDTO>>> MeusTransportes()
@@ -136,7 +136,7 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<List<FreteDTO>>(fretes));
         }
 
-        // CRIAR FRETE (Cliente)
+        // Criar Frete (Cliente)
         [Authorize(Roles = "Cliente")]
         [HttpPost]
         public async Task<IActionResult> Criar(CriarFrete dto)
@@ -150,7 +150,7 @@ namespace Hermes.Controllers
             return CreatedAtAction(nameof(Buscar), new { id = freteCriado.Id }, _mapper.Map<FreteDTO>(freteCriado));
         }
 
-        // ACEITAR FRETE (Transportador)
+        // Aceitar Frete (Transportador)
         [Authorize(Roles = "Transportador")]
         [HttpPost("{id}/aceitar")]
         public async Task<IActionResult> AceitarFrete(int id)
@@ -162,7 +162,7 @@ namespace Hermes.Controllers
             return Ok();
         }
 
-        // FINALIZAR FRETE (Transportador dono do frete)
+        // Finalizar Frete (Transportador dono do frete)
         [Authorize(Roles = "Transportador")]
         [HttpPost("{id}/finalizar")]
         public async Task<IActionResult> FinalizarFrete(int id)
@@ -174,7 +174,7 @@ namespace Hermes.Controllers
             return Ok();
         }
 
-        //  ATUALIZAR STATUS
+        //  Atualizar Status do Frete
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, AtualizarStatusFrete dto)
@@ -198,7 +198,7 @@ namespace Hermes.Controllers
             return Ok();
         }
 
-        // DELETAR FRETE
+        // Deletar Frete
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(int id)

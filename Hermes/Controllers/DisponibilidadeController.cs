@@ -52,7 +52,7 @@ public class DisponibilidadeController : ControllerBase
     }
 
 
-    // Atualizar um horário específico
+    // Atualizar um horário especifico
     [Authorize(Roles = "Transportador")]
     [HttpPut("{id}")]
     public async Task<IActionResult> AtualizarDisponibilidade(int id, [FromBody] AtualizarDisponibilidadeDTO dto)
@@ -64,7 +64,7 @@ public class DisponibilidadeController : ControllerBase
         return NoContent();
     }
 
-    // Deletar um horário específico
+    // Deletar um horário especifico
     [Authorize(Roles = "Transportador")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletarDisponibilidade(int id)

@@ -27,21 +27,21 @@ namespace Hermes.Profiles
                             src.Transportador != null ? src.Transportador.Nome : null));
 
             CreateMap<Frete, FreteDTO>()
-                // ORIGEM (COM SITIO)
+             
                 .ForMember(dest => dest.Origem,
                     opt => opt.MapFrom(src =>
                         src.SitioOrigem
                             ? $" Sítio - {src.DescricaoOrigem}"
                             : $"{src.CidadeOrigem} - {src.BairroOrigem}"))
 
-                // DESTINO (COM SITIO)
+             
                 .ForMember(dest => dest.Destino,
                     opt => opt.MapFrom(src =>
                         src.SitioDestino
                             ? $" Sítio - {src.DescricaoDestino}"
                             : $"{src.CidadeDestino} - {src.BairroDestino}"))
 
-                // NOMES
+              
                 .ForMember(dest => dest.NomeCliente,
                     opt => opt.MapFrom(src => src.Cliente.Nome))
 
@@ -49,7 +49,7 @@ namespace Hermes.Profiles
                     opt => opt.MapFrom(src =>
                         src.Transportador != null ? src.Transportador.Nome : null))
 
-                // TELEFONE
+              
                 .ForMember(dest => dest.TelefoneTransportador,
                     opt => opt.MapFrom(src =>
                         src.Transportador != null ? src.Transportador.Telefone : null))
@@ -64,7 +64,7 @@ namespace Hermes.Profiles
                         $" Valor: R$ {src.Valor}"
                     ))
 
-                //FretePublicoDTO
+              
 
 
                 // CAMPOS NOVOS
@@ -74,10 +74,10 @@ namespace Hermes.Profiles
                 .ForMember(dest => dest.DescricaoDestino, opt => opt.MapFrom(src => src.DescricaoDestino))
                 .ForMember(dest => dest.DistanciaExtra, opt => opt.MapFrom(src => src.DistanciaExtra));
 
-            // CRIAR FRETE
+      
             CreateMap<CriarFrete, Frete>();
 
-            // ATUALIZAR STATUS
+        
             CreateMap<AtualizarStatusFrete, Frete>();
 
             

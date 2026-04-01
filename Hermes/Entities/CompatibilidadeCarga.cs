@@ -4,7 +4,7 @@ namespace Hermes.Entities
 {
     public class CompatibilidadeCarga
     {
-        //Mapear tip ode veiculo para tipo de carga
+        //Mapear tipo de veiculo para tipo de carga
         private static readonly Dictionary<TipoVeiculo, List<TipoCarga>> Suporte = new()
         {
             { TipoVeiculo.Moto, new List<TipoCarga> {TipoCarga.Pequena}  },

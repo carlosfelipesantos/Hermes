@@ -65,7 +65,7 @@ namespace Hermes.Controllers
 
         private double CalcularDistancia(double lat1, double lon1, double lat2, double lon2)
         {
-            // mesmo método do FreteService (pode mover para um helper)
+            // mesmo método do FreteService 
             const int R = 6371;
             var dLat = (lat2 - lat1) * Math.PI / 180;
             var dLon = (lon2 - lon1) * Math.PI / 180;
