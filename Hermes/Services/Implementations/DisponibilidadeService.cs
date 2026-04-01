@@ -50,5 +50,53 @@ namespace Hermes.Services.Implementations
 
             return disponiveis;
         }
+
+
+        public async Task<List<DisponibilidadeDTO>> ListarDisponibilidadesPorTransportador(int transportadorId)
+        {
+            var disponibilidades = await _context.Disponibilidades
+                .Where(d => d.TransportadorId == transportadorId)
+                .OrderBy(d => d.DiaSemana)
+                .ThenBy(d => d.Hora)
+                .ToListAsync();
+
+            // Agrupar por dia da semana
+            var grupos = disponibilidades.GroupBy(d => d.DiaSemana)
+                .Select(g => new DisponibilidadeDTO
+                {
+                    DiaSemana = g.Key,
+                    Horas = g.Select(d => d.Hora).OrderBy(h => h).ToList()
+                })
+                .OrderBy(dto => dto.DiaSemana)
+                .ToList();
+
+            return grupos;
+        }
+
+        public async Task<bool> AtualizarDisponibilidade(int disponibilidadeId, AtualizarDisponibilidadeDTO dto, int transportadorId)
+        {
+            var disponibilidade = await _context.Disponibilidades
+                .FirstOrDefaultAsync(d => d.Id == disponibilidadeId && d.TransportadorId == transportadorId);
+            if (disponibilidade == null)
+                return false;
+
+            disponibilidade.DiaSemana = dto.DiaSemana;
+            disponibilidade.Hora = dto.Hora;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeletarDisponibilidade(int disponibilidadeId, int transportadorId)
+        {
+            var disponibilidade = await _context.Disponibilidades
+                .FirstOrDefaultAsync(d => d.Id == disponibilidadeId && d.TransportadorId == transportadorId);
+            if (disponibilidade == null)
+                return false;
+
+            _context.Disponibilidades.Remove(disponibilidade);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
