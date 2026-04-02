@@ -9,9 +9,9 @@ namespace Hermes.Services.Implementations
     public class AvaliacaoService : IAvaliacaoService
     {
         private readonly HermesBD _context;
-        private readonly NotificacaoService _notificacaoService;
+        private readonly INotificacaoService _notificacaoService;
 
-        public AvaliacaoService(HermesBD context, NotificacaoService notificacaoService)
+        public AvaliacaoService(HermesBD context, INotificacaoService notificacaoService)
         {
             _context = context;
             _notificacaoService = notificacaoService;

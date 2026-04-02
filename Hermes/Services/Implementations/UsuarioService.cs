@@ -27,7 +27,16 @@ namespace Hermes.Services.Implementations
 
         public async Task<Usuario> Criar(Usuario usuario)
         {
+            var emailExiste = await _context.Usuarios.AnyAsync(u => u.Email == usuario.Email);
+            if (emailExiste)
+                throw new Exception("Email ja esta em uso");
+
+            var telefoneExiste = await _context.Usuarios.AnyAsync(u => u.Telefone == usuario.Telefone);
+            if (telefoneExiste)
+                throw new Exception("Telefone ja esta em uso");
+
             usuario.DataCadastro = DateTime.Now;
+            usuario.Ativo = true;
 
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();

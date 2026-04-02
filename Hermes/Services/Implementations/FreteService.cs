@@ -13,11 +13,12 @@ namespace Hermes.Services.Implementations
     public class FreteService : IFreteService
     {
         private readonly HermesBD _context;
-        private readonly NotificacaoService _notificacaoService;
+        private readonly INotificacaoService _notificacaoService;
         private readonly IMapper _mapper;
         private readonly IDisponibilidadeService _disponibilidadeService;
+   
 
-        public FreteService(HermesBD context, NotificacaoService notificacaoService, IMapper mapper, IDisponibilidadeService disponibilidadeService)
+        public FreteService(HermesBD context, INotificacaoService notificacaoService, IMapper mapper, IDisponibilidadeService disponibilidadeService)
         {
             _context = context;
             _notificacaoService = notificacaoService;
@@ -167,6 +168,7 @@ namespace Hermes.Services.Implementations
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 
+        
         public async Task<Frete> Criar(Frete frete)
         {
             if (frete.SitioOrigem && string.IsNullOrWhiteSpace(frete.DescricaoOrigem))
@@ -174,6 +176,7 @@ namespace Hermes.Services.Implementations
 
             if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
                 throw new Exception("Descrição do destino é obrigatória para sítio");
+
 
             // Validação para frete agendado (quando transportador é informado)
             if (frete.TransportadorId.HasValue && frete.DataHoraInicio != default)
@@ -212,10 +215,7 @@ namespace Hermes.Services.Implementations
             }
 
             frete.DataSolicitacao = DateTime.Now;
-            // Define status: se for agendado (com transportador), começa como Agendado; senão, Pendente
-            frete.Status = frete.TransportadorId.HasValue && frete.DataHoraInicio != default
-                ? StatusFrete.Agendado
-                : StatusFrete.Pendente;
+            frete.Status = StatusFrete.Pendente;
 
             await _context.Fretes.AddAsync(frete);
             await _context.SaveChangesAsync();
@@ -238,6 +238,18 @@ namespace Hermes.Services.Implementations
                     );
                 }
             }
+            else
+            {
+                // Notifica apenas o transportador específico (frete agendado)
+                await _notificacaoService.CriarNotificacao(
+                    frete.TransportadorId.Value,
+                    "Nova solicitação de frete",
+                    $"Cliente solicitou um frete para {frete.DataHoraInicio:dd/MM/yyyy HH:mm}",
+                    TipoNotificacao.FreteNovo,
+                    frete.Id
+                );
+            
+        }
 
             return frete;
         }
@@ -402,6 +414,58 @@ namespace Hermes.Services.Implementations
             await _context.SaveChangesAsync();
             return true;
         }
+
+
+        // Confirmar frete agendado (transportador aceita)
+        public async Task<bool> ConfirmarFreteAgendado(int freteId, int transportadorId)
+        {
+            var frete = await _context.Fretes.FindAsync(freteId);
+
+            if (frete == null || frete.TransportadorId != transportadorId)
+                return false;
+
+            if (frete.Status != StatusFrete.Pendente)
+                return false;
+
+            frete.Status = StatusFrete.Agendado;
+            await _context.SaveChangesAsync();
+
+            await _notificacaoService.CriarNotificacao(
+                frete.ClienteId,
+                "Frete confirmado",
+                $"Seu frete foi confirmado pelo transportador",
+                TipoNotificacao.FreteAceito,
+                frete.Id
+            );
+
+            return true;
+        }
+
+        // Rejeitar frete agendado (transportador recusa)
+        public async Task<bool> RejeitarFreteAgendado(int freteId, int transportadorId)
+        {
+            var frete = await _context.Fretes.FindAsync(freteId);
+
+            if (frete == null || frete.TransportadorId != transportadorId)
+                return false;
+
+            if (frete.Status != StatusFrete.Pendente)
+                return false;
+
+            frete.Status = StatusFrete.Cancelado;
+            await _context.SaveChangesAsync();
+
+            await _notificacaoService.CriarNotificacao(
+                frete.ClienteId,
+                "Frete rejeitado",
+                $"Infelizmente o transportador não pôde aceitar seu frete",
+                TipoNotificacao.FreteCancelado,
+                frete.Id
+            ); 
+
+            return true;
+        }
+
 
         public async Task<bool> Deletar(int id)
         {

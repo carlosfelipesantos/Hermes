@@ -1,19 +1,23 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Hermes
+public class TimeSpanMinutesConverter : JsonConverter<TimeSpan>
 {
-    public class TimeSpanMinutesConverter : JsonConverter<TimeSpan>
+    public override TimeSpan Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        public override TimeSpan Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            var value = reader.GetString();
-            return TimeSpan.Parse(value);
-        }
+        string value = reader.GetString();
+        if (string.IsNullOrEmpty(value))
+            return TimeSpan.Zero;
 
-        public override void Write(Utf8JsonWriter writer, TimeSpan value, JsonSerializerOptions options)
-        {
-            writer.WriteStringValue(value.ToString(@"hh/mm"));
-        }
+        if (TimeSpan.TryParse(value, out var timeSpan))
+            return timeSpan;
+
+        throw new JsonException($"Formato de hora inválido: {value}. Use HH:mm ou HH:mm:ss");
+    }
+
+    public override void Write(Utf8JsonWriter writer, TimeSpan value, JsonSerializerOptions options)
+    {
+       
+        writer.WriteStringValue(value.ToString(@"hh\:mm"));
     }
 }

@@ -1834,10 +1834,10 @@
         "enum": [
           "Pendente",
           "Aceito",
-          "Agendado",
           "EmTransito",
           "Concluido",
-          "Cancelado"
+          "Cancelado",
+          "Agendado"
         ],
         "type": "string"
       },

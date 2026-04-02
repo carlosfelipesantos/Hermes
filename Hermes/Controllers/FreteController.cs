@@ -198,6 +198,32 @@ namespace Hermes.Controllers
             return Ok();
         }
 
+
+        // Confirmar Frete Agendado (Transportador)
+        [Authorize(Roles = "Transportador")]
+        [HttpPost("{id}/confirmar")]
+        public async Task<IActionResult> ConfirmarFreteAgendado(int id)
+        {
+            var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var sucesso = await _freteService.ConfirmarFreteAgendado(id, transportadorId);
+
+            if (!sucesso) return BadRequest("Não foi possível confirmar o frete");
+            return Ok();
+        }
+
+        // Rejeitar Frete Agendado (Transportador)
+        [Authorize(Roles = "Transportador")]
+        [HttpPost("{id}/rejeitar")]
+        public async Task<IActionResult> RejeitarFreteAgendado(int id)
+        {
+            var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var sucesso = await _freteService.RejeitarFreteAgendado(id, transportadorId);
+
+            if (!sucesso) return BadRequest("Não foi possível rejeitar o frete");
+            return Ok();
+        }
+
+
         // Deletar Frete
         [Authorize]
         [HttpDelete("{id}")]

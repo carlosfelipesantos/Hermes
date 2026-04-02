@@ -62,7 +62,7 @@ builder.Services.AddScoped<IVeiculoService, VeiculoService>();
 builder.Services.AddScoped<IFreteService, FreteService>();
 builder.Services.AddScoped<IAvaliacaoService, AvaliacaoService>();
 builder.Services.AddScoped<IDisponibilidadeService, DisponibilidadeService>();
-builder.Services.AddScoped<NotificacaoService>();
+builder.Services.AddScoped<INotificacaoService, NotificacaoService>();
 
 var jwtSettings = builder.Configuration.GetSection("JWT");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);

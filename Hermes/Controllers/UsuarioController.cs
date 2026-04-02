@@ -25,31 +25,42 @@ public class UsuarioController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Criar(CriarUsuario dto)
     {
-        if (dto.Tipo == TipoUsuario.Admin)
-            return BadRequest("Não é permitido criar admin");
-
-
-        if (dto.Tipo == TipoUsuario.Cliente)
+        try
         {
-            var cliente = _mapper.Map<Cliente>(dto);
-            cliente.DataCadastro = DateTime.Now;
-            cliente.Ativo = true;
+            if (string.IsNullOrWhiteSpace(dto.Email) || !dto.Email.Contains("@") || !dto.Email.Contains("."))
+                return BadRequest(new { mensagem = "E-mail inválido" });
 
-            await _usuarioService.Criar(cliente);
-            return Ok(_mapper.Map<UsuarioDTO>(cliente));
-        }
-        else if (dto.Tipo == TipoUsuario.Transportador)
+            if (dto.Tipo == TipoUsuario.Admin)
+                return BadRequest("Não é permitido criar admin");
+
+
+            if (dto.Tipo == TipoUsuario.Cliente)
+            {
+                var cliente = _mapper.Map<Cliente>(dto);
+                cliente.DataCadastro = DateTime.Now;
+                cliente.Ativo = true;
+
+                await _usuarioService.Criar(cliente);
+                return Ok(_mapper.Map<UsuarioDTO>(cliente));
+            }
+            else if (dto.Tipo == TipoUsuario.Transportador)
+            {
+                var transportador = _mapper.Map<Transportador>(dto);
+                transportador.DataCadastro = DateTime.Now;
+                transportador.Ativo = true;
+
+                await _usuarioService.Criar(transportador);
+                return Ok(_mapper.Map<UsuarioDTO>(transportador));
+            }
+
+            return BadRequest("Tipo inválido");
+        } 
+        catch(Exception ex)
         {
-            var transportador = _mapper.Map<Transportador>(dto);
-            transportador.DataCadastro = DateTime.Now;
-            transportador.Ativo = true;
-
-            await _usuarioService.Criar(transportador);
-            return Ok(_mapper.Map<UsuarioDTO>(transportador));
+            return BadRequest(new { mensagem = ex.Message });
         }
 
-        return BadRequest("Tipo inválido");
-    }
+       }
 
     //  Perfil do usuario logado
     [Authorize]

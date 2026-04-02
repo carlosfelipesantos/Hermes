@@ -80,7 +80,24 @@ namespace Hermes.Data
                 .HasForeignKey(n => n.FreteId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-               
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.Property(u => u.DDD).HasMaxLength(5);   // DDD tem no máximo 5 caracteres
+                entity.Property(u => u.Telefone).HasMaxLength(15); 
+
+                // Índice único composto
+                entity.HasIndex(u => new { u.DDD, u.Telefone }).IsUnique();
+            });
+
+            // Índice único para Email
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            // Índice único para Telefone + DDD
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => new { u.DDD, u.Telefone })
+                .IsUnique();
 
 
             modelBuilder.Entity<DisponibilidadeBase>(entity =>

@@ -6,7 +6,8 @@
         FreteAceito,
         FreteIniciado,
         FreteFinalizado,
-        AvaliacaoRecebida
+        AvaliacaoRecebida,
+        FreteCancelado
     }
 
 }

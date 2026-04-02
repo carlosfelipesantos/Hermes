@@ -1,11 +1,12 @@
 ﻿using Hermes.Data;
 using Hermes.Entities;
 using Hermes.Enums;
+using Hermes.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Services.Implementations
 {
-    public class NotificacaoService
+    public class NotificacaoService: INotificacaoService
     {
         private readonly HermesBD _context;
 
@@ -30,7 +31,8 @@ namespace Hermes.Services.Implementations
                 Mensagem = mensagem,
                 Tipo = tipo,
                 FreteId = freteId,
-                Lida = false
+                Lida = false,
+                DataCriacao = DateTime.Now
             };
 
             _context.Notificacoes.Add(notificacao);
