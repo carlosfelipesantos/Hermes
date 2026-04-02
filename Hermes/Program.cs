@@ -1,3 +1,4 @@
+using Hermes;
 using Hermes.Data;
 using Hermes.Services.Implementations;
 using Hermes.Services.Interfaces;
@@ -11,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+        options.JsonSerializerOptions.Converters.Add(new TimeSpanMinutesConverter());
         options.JsonSerializerOptions.Converters.Add(new PortugueseDayOfWeekConverter());
         options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
     });

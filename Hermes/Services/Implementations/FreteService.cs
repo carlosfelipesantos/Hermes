@@ -349,6 +349,7 @@ namespace Hermes.Services.Implementations
 
             frete.Status = StatusFrete.Concluido;
             frete.DataConclusao = DateTime.Now;
+            frete.DataHoraFimReal = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

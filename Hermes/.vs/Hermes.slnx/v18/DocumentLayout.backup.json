@@ -3,28 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\migrations\\20260401205636_changedisponibilidade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:migrations\\20260401205636_changedisponibilidade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\data\\hermesbd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:data\\hermesbd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\disponibilidade\\intervalolivredto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\disponibilidade\\intervalolivredto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\usuario\\criarusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\usuario\\criarusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\veiculo\\atualizarveiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\veiculo\\atualizarveiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\veiculo\\criarveiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\veiculo\\criarveiculo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\dtos\\veiculo\\veiculodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:dtos\\veiculo\\veiculodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos felipe\\documents\\github\\hermes\\hermes\\timespanminutesconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:timespanminutesconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 284,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -54,76 +42,42 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "20260401205636_ChangeDisponibilidade.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260401205636_ChangeDisponibilidade.cs",
-              "RelativeDocumentMoniker": "Migrations\\20260401205636_ChangeDisponibilidade.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Migrations\\20260401205636_ChangeDisponibilidade.cs",
-              "RelativeToolTip": "Migrations\\20260401205636_ChangeDisponibilidade.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "IntervaloLivreDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Disponibilidade\\IntervaloLivreDTO.cs",
+              "RelativeDocumentMoniker": "DTOs\\Disponibilidade\\IntervaloLivreDTO.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Disponibilidade\\IntervaloLivreDTO.cs",
+              "RelativeToolTip": "DTOs\\Disponibilidade\\IntervaloLivreDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-01T20:56:36.871Z",
+              "WhenOpened": "2026-04-02T15:01:53.257Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HermesBD.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Data\\HermesBD.cs",
-              "RelativeDocumentMoniker": "Data\\HermesBD.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Data\\HermesBD.cs",
-              "RelativeToolTip": "Data\\HermesBD.cs",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAmwFIAAAAPAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAgwGwAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-01T20:54:39.772Z"
+              "WhenOpened": "2026-04-02T15:00:58.966Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "CriarUsuario.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Usuario\\CriarUsuario.cs",
-              "RelativeDocumentMoniker": "DTOs\\Usuario\\CriarUsuario.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Usuario\\CriarUsuario.cs",
-              "RelativeToolTip": "DTOs\\Usuario\\CriarUsuario.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "TimeSpanMinutesConverter.cs",
+              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\TimeSpanMinutesConverter.cs",
+              "RelativeDocumentMoniker": "TimeSpanMinutesConverter.cs",
+              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\TimeSpanMinutesConverter.cs",
+              "RelativeToolTip": "TimeSpanMinutesConverter.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-01T20:54:31.522Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AtualizarVeiculo.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Veiculo\\AtualizarVeiculo.cs",
-              "RelativeDocumentMoniker": "DTOs\\Veiculo\\AtualizarVeiculo.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Veiculo\\AtualizarVeiculo.cs",
-              "RelativeToolTip": "DTOs\\Veiculo\\AtualizarVeiculo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-01T20:54:29.244Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CriarVeiculo.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Veiculo\\CriarVeiculo.cs",
-              "RelativeDocumentMoniker": "DTOs\\Veiculo\\CriarVeiculo.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Veiculo\\CriarVeiculo.cs",
-              "RelativeToolTip": "DTOs\\Veiculo\\CriarVeiculo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-01T20:54:28.24Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "VeiculoDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Veiculo\\VeiculoDTO.cs",
-              "RelativeDocumentMoniker": "DTOs\\Veiculo\\VeiculoDTO.cs",
-              "ToolTip": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\DTOs\\Veiculo\\VeiculoDTO.cs",
-              "RelativeToolTip": "DTOs\\Veiculo\\VeiculoDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-01T20:54:27.186Z"
+              "WhenOpened": "2026-04-02T14:54:49.181Z",
+              "EditorCaption": ""
             }
           ]
         }

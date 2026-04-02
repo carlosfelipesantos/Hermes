@@ -17,7 +17,7 @@ namespace Hermes.Services.Implementations
             _context = context;
         }
 
-        // --- Gestão de janelas ---
+     
         public async Task<List<DisponibilidadeBaseDTO>> ListarJanelasPorTransportador(int transportadorId)
         {
             return await _context.DisponibilidadesBase
@@ -77,13 +77,13 @@ namespace Hermes.Services.Implementations
             return true;
         }
 
-        // --- Consulta de intervalos livres ---
+
         public async Task<List<IntervaloLivreDTO>> ListarIntervalosLivres(int transportadorId, DateTime data, TimeSpan? buffer = null)
         {
             buffer ??= _bufferPadrao;
             var diaSemana = data.DayOfWeek;
 
-            // 1. Obter janelas de trabalho para o dia da semana
+            //  Obter janelas de trabalho para o dia da semana
             var janelas = await _context.DisponibilidadesBase
                 .Where(d => d.TransportadorId == transportadorId && d.DiaSemana == diaSemana)
                 .Select(d => new { d.HoraInicio, d.HoraFim })
@@ -92,7 +92,7 @@ namespace Hermes.Services.Implementations
             if (!janelas.Any())
                 return new List<IntervaloLivreDTO>();
 
-            // 2. Obter fretes agendados para esse transportador que começam no dia (ou cruzam)
+            // Obter fretes agendados para esse transportador que começam no dia (ou cruzam)
             var inicioDia = data.Date;
             var fimDia = data.Date.AddDays(1);
             var fretes = await _context.Fretes
@@ -102,7 +102,7 @@ namespace Hermes.Services.Implementations
                 .Select(f => new { f.DataHoraInicio, f.DataHoraFimPrevisto })
                 .ToListAsync();
 
-            // 3. Para cada janela, calcular intervalos livres
+            // Para cada janela, calcular intervalos livres
             var intervalosLivres = new List<IntervaloLivreDTO>();
             foreach (var janela in janelas)
             {
