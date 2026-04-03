@@ -9,6 +9,7 @@ namespace Hermes.Entities
         {
             { TipoVeiculo.Moto, new List<TipoCarga> {TipoCarga.Pequena}  },
             { TipoVeiculo.Carro, new List<TipoCarga> {TipoCarga.Pequena, TipoCarga.Media} },
+             { TipoVeiculo.Carretinha, new List<TipoCarga> { TipoCarga.Pequena, TipoCarga.Media } },
             { TipoVeiculo.Van, new List<TipoCarga> {TipoCarga.Pequena, TipoCarga.Media} },
             {TipoVeiculo.Caminhao, new List<TipoCarga> {TipoCarga.Pequena, TipoCarga.Media, TipoCarga.Grande} }
         };

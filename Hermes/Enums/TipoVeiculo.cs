@@ -4,6 +4,7 @@
     { 
             Moto,
             Carro,
+            Carretinha,
             Van,
             Caminhao
         }

@@ -357,8 +357,40 @@
   },
   {
     "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "ConfirmarFreteAgendado",
+    "RelativePath": "api/Frete/{id}/confirmar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
     "Method": "FinalizarFrete",
     "RelativePath": "api/Frete/{id}/finalizar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "RejeitarFreteAgendado",
+    "RelativePath": "api/Frete/{id}/rejeitar",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
