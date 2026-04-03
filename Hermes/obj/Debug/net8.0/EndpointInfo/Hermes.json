@@ -1987,6 +1987,7 @@
         "enum": [
           "Moto",
           "Carro",
+          "Carretinha",
           "Van",
           "Caminhao"
         ],
