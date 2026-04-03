@@ -181,7 +181,7 @@ namespace Hermes.Services.Implementations
             // Validação para frete agendado (quando transportador é informado)
             if (frete.TransportadorId.HasValue && frete.DataHoraInicio != default)
             {
-                // 1. Se o transportador não informou o fim previsto, calcular automaticamente
+                // Se o transportador não informou o fim previsto, calcular automaticamente
                 if (frete.DataHoraFimPrevisto == default)
                 {
                     var distancia = CalcularDistancia(
@@ -191,7 +191,7 @@ namespace Hermes.Services.Implementations
                     frete.DataHoraFimPrevisto = frete.DataHoraInicio + frete.DuracaoEstimada;
                 }
 
-                // 2. Verificar se já existe outro frete sobrepondo o intervalo
+                // Verificar se já existe outro frete sobrepondo o intervalo
                 var conflito = await _context.Fretes.AnyAsync(f =>
                     f.TransportadorId == frete.TransportadorId &&
                     f.Status != StatusFrete.Cancelado &&
@@ -200,7 +200,7 @@ namespace Hermes.Services.Implementations
                 if (conflito)
                     throw new Exception("Já existe um frete agendado nesse período.");
 
-                // 3. Verificar se o intervalo está dentro da disponibilidade do transportador
+                // Verificar se o intervalo está dentro da disponibilidade do transportador
                 var intervalosLivres = await _disponibilidadeService.ListarIntervalosLivres(
                     frete.TransportadorId.Value,
                     frete.DataHoraInicio.Date,
