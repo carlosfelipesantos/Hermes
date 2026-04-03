@@ -22,12 +22,7 @@ namespace Hermes.DTOs.Frete
         public string EstadoDestino { get; set; }
         public string DescricaoCarga { get; set; }
         public decimal Valor { get; set; }
-
-        public DateTime DataHoraInicio { get; set; }
-        public DateTime? DataHoraFimPrevisto { get; set; }
-
-        public int? TransportadorId { get; set; }
-
+        
         public bool SitioOrigem { get; set; }
         public string? DescricaoOrigem { get; set; }
         public bool SitioDestino { get; set; }

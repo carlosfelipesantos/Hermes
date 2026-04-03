@@ -2,6 +2,7 @@
 using Hermes.DTOs.Filtro;
 using Hermes.DTOs.Frete;
 using Hermes.DTOs.Paginacao;
+using Hermes.Entities;
 using Hermes.Enums;
 using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -136,17 +137,27 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<List<FreteDTO>>(fretes));
         }
 
-        // Criar Frete (Cliente)
         [Authorize(Roles = "Cliente")]
-        [HttpPost]
-        public async Task<IActionResult> Criar(CriarFrete dto)
+        [HttpPost("imediato")]
+        public async Task<IActionResult> CriarFreteImediato([FromBody] CriarFrete dto)
         {
             var clienteId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var frete = _mapper.Map<Entities.Frete>(dto);
+            var frete = _mapper.Map<Frete>(dto);
             frete.ClienteId = clienteId;
 
-            var freteCriado = await _freteService.Criar(frete);
+            var freteCriado = await _freteService.CriarFreteImediato(frete);
+            return CreatedAtAction(nameof(Buscar), new { id = freteCriado.Id }, _mapper.Map<FreteDTO>(freteCriado));
+        }
 
+        [Authorize(Roles = "Cliente")]
+        [HttpPost("agendado")]
+        public async Task<IActionResult> CriarFreteAgendado([FromBody] CriarFreteAgendadoDTO dto)
+        {
+            var clienteId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var frete = _mapper.Map<Frete>(dto);
+            frete.ClienteId = clienteId;
+
+            var freteCriado = await _freteService.CriarFreteAgendado(frete);
             return CreatedAtAction(nameof(Buscar), new { id = freteCriado.Id }, _mapper.Map<FreteDTO>(freteCriado));
         }
 

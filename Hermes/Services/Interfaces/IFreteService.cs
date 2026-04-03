@@ -39,7 +39,8 @@ namespace Hermes.Services.Interfaces
         Task<IEnumerable<Frete>> BuscarFretesParaTransportador(int transportadorId);
         Task<IEnumerable<Frete>> ListarPorCidade(string cidade);
         Task<IEnumerable<Frete>> ListarDisponiveis();
-        Task<Frete> Criar(Frete frete);
+        Task<Frete> CriarFreteImediato(Frete frete);
+        Task<Frete> CriarFreteAgendado(Frete frete);
         Task<bool> AceitarFrete(int freteId, int transportadorId);
         Task<bool> FinalizarFrete(int id, int transportadorId);
         Task<bool> AtualizarStatus(int id, StatusFrete status);

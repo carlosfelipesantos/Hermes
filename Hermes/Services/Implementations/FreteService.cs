@@ -168,88 +168,96 @@ namespace Hermes.Services.Implementations
                 .FirstOrDefaultAsync(f => f.Id == id);
         }
 
-        
-        public async Task<Frete> Criar(Frete frete)
+
+        public async Task<Frete> CriarFreteImediato(Frete frete)
         {
+            // Validações de sítio
             if (frete.SitioOrigem && string.IsNullOrWhiteSpace(frete.DescricaoOrigem))
                 throw new Exception("Descrição da origem é obrigatória para sítio");
 
             if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
                 throw new Exception("Descrição do destino é obrigatória para sítio");
 
-
-            // Validação para frete agendado (quando transportador é informado)
-            if (frete.TransportadorId.HasValue && frete.DataHoraInicio != default)
-            {
-                // Se o transportador não informou o fim previsto, calcular automaticamente
-                if (frete.DataHoraFimPrevisto == default)
-                {
-                    var distancia = CalcularDistancia(
-                        frete.LatitudeOrigem, frete.LongitudeOrigem,
-                        frete.LatitudeDestino, frete.LongitudeDestino);
-                    frete.DuracaoEstimada = CalcularDuracaoEstimada(distancia);
-                    frete.DataHoraFimPrevisto = frete.DataHoraInicio + frete.DuracaoEstimada;
-                }
-
-                // Verificar se já existe outro frete sobrepondo o intervalo
-                var conflito = await _context.Fretes.AnyAsync(f =>
-                    f.TransportadorId == frete.TransportadorId &&
-                    f.Status != StatusFrete.Cancelado &&
-                    f.DataHoraInicio < frete.DataHoraFimPrevisto &&
-                    f.DataHoraFimPrevisto > frete.DataHoraInicio);
-                if (conflito)
-                    throw new Exception("Já existe um frete agendado nesse período.");
-
-                // Verificar se o intervalo está dentro da disponibilidade do transportador
-                var intervalosLivres = await _disponibilidadeService.ListarIntervalosLivres(
-                    frete.TransportadorId.Value,
-                    frete.DataHoraInicio.Date,
-                    TimeSpan.FromMinutes(20) // buffer global (pode vir de configuração)
-                );
-
-                bool disponivel = intervalosLivres.Any(i =>
-                    i.Inicio <= frete.DataHoraInicio && i.Fim >= frete.DataHoraFimPrevisto);
-
-                if (!disponivel)
-                    throw new Exception("Horário não disponível para este transportador");
-            }
-
             frete.DataSolicitacao = DateTime.Now;
-            frete.Status = StatusFrete.Pendente;
+            frete.Status = StatusFrete.Pendente;  // Aguardando aceitação
 
-            await _context.Fretes.AddAsync(frete);
+            _context.Fretes.Add(frete);
             await _context.SaveChangesAsync();
 
-            // Notifica transportadores se for frete imediato (sem transportador definido)
-            if (!frete.TransportadorId.HasValue)
-            {
-                var transportadoresIds = await _context.Transportadores
-                    .Select(t => t.Id)
-                    .ToListAsync();
+            // Notificar todos os transportadores ativos
+            var transportadoresIds = await _context.Transportadores
+                .Where(t => t.Ativo)
+                .Select(t => t.Id)
+                .ToListAsync();
 
-                foreach (var id in transportadoresIds)
-                {
-                    await _notificacaoService.CriarNotificacao(
-                        id,
-                        "Novo frete disponível",
-                        $"Um novo frete #{frete.Id} foi solicitado.",
-                        TipoNotificacao.FreteNovo,
-                        frete.Id
-                    );
-                }
-            }
-            else
+            foreach (var id in transportadoresIds)
             {
-                // Notifica apenas o transportador específico (frete agendado)
                 await _notificacaoService.CriarNotificacao(
-                    frete.TransportadorId.Value,
-                    "Nova solicitação de frete",
-                    $"Cliente solicitou um frete para {frete.DataHoraInicio:dd/MM/yyyy HH:mm}",
+                    id,
+                    "Novo frete disponível",
+                    $"Um novo frete #{frete.Id} foi solicitado.",
                     TipoNotificacao.FreteNovo,
                     frete.Id
                 );
-            
+            }
+
+            return frete;
         }
+
+        public async Task<Frete> CriarFreteAgendado(Frete frete)
+        {
+            // Validações de sítio
+            if (frete.SitioOrigem && string.IsNullOrWhiteSpace(frete.DescricaoOrigem))
+                throw new Exception("Descrição da origem é obrigatória para sítio");
+
+            if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
+                throw new Exception("Descrição do destino é obrigatória para sítio");
+
+            // Calcular duração estimada se não informada
+            if (frete.DataHoraFimPrevisto == default)
+            {
+                var distancia = CalcularDistancia(
+                    frete.LatitudeOrigem, frete.LongitudeOrigem,
+                    frete.LatitudeDestino, frete.LongitudeDestino);
+                frete.DuracaoEstimada = CalcularDuracaoEstimada(distancia);
+                frete.DataHoraFimPrevisto = frete.DataHoraInicio + frete.DuracaoEstimada;
+            }
+
+            // Verificar conflito com outro frete no mesmo período
+            var conflito = await _context.Fretes.AnyAsync(f =>
+                f.TransportadorId == frete.TransportadorId &&
+                f.Status != StatusFrete.Cancelado &&
+                f.DataHoraInicio < frete.DataHoraFimPrevisto &&
+                f.DataHoraFimPrevisto > frete.DataHoraInicio);
+            if (conflito)
+                throw new Exception("Já existe um frete agendado nesse período.");
+
+            // Verificar disponibilidade do transportador (janela de trabalho + buffer)
+            var intervalosLivres = await _disponibilidadeService.ListarIntervalosLivres(
+                frete.TransportadorId.Value,
+                frete.DataHoraInicio.Date,
+                TimeSpan.FromMinutes(20) // buffer
+            );
+
+            bool disponivel = intervalosLivres.Any(i =>
+                i.Inicio <= frete.DataHoraInicio && i.Fim >= frete.DataHoraFimPrevisto);
+            if (!disponivel)
+                throw new Exception("Horário não disponível para este transportador");
+
+            frete.DataSolicitacao = DateTime.Now;
+            frete.Status = StatusFrete.Pendente;  // Aguardando confirmação do transportador
+
+            _context.Fretes.Add(frete);
+            await _context.SaveChangesAsync();
+
+            // Notificar apenas o transportador escolhido
+            await _notificacaoService.CriarNotificacao(
+                frete.TransportadorId.Value,
+                "Nova solicitação de frete",
+                $"Cliente solicitou um frete para {frete.DataHoraInicio:dd/MM/yyyy HH:mm}",
+                TipoNotificacao.FreteNovo,
+                frete.Id
+            );
 
             return frete;
         }
