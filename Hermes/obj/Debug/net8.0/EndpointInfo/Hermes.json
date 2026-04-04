@@ -419,6 +419,29 @@
         }
       }
     },
+    "/api/Frete/{id}/duracao-estimada": {
+      "get": {
+        "tags": [
+          "Frete"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/Frete/concluidos/home": {
       "get": {
         "tags": [
@@ -611,35 +634,6 @@
                 }
               }
             }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Frete"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CriarFrete"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CriarFrete"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CriarFrete"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
           }
         }
       }
@@ -896,6 +890,68 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Frete/imediato": {
+      "post": {
+        "tags": [
+          "Frete"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarFrete"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarFrete"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarFrete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Frete/agendado": {
+      "post": {
+        "tags": [
+          "Frete"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarFreteAgendadoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarFreteAgendadoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CriarFreteAgendadoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -1585,6 +1641,35 @@
             "type": "number",
             "format": "double"
           },
+          "sitioOrigem": {
+            "type": "boolean"
+          },
+          "descricaoOrigem": {
+            "type": "string",
+            "nullable": true
+          },
+          "sitioDestino": {
+            "type": "boolean"
+          },
+          "descricaoDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "distanciaExtra": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CriarFreteAgendadoDTO": {
+        "type": "object",
+        "properties": {
+          "transportadorId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "dataHoraInicio": {
             "type": "string",
             "format": "date-time"
@@ -1594,10 +1679,63 @@
             "format": "date-time",
             "nullable": true
           },
-          "transportadorId": {
-            "type": "integer",
-            "format": "int32",
+          "tipoCarga": {
+            "$ref": "#/components/schemas/TipoCarga"
+          },
+          "urgente": {
+            "type": "boolean"
+          },
+          "dddOrigem": {
+            "type": "string",
             "nullable": true
+          },
+          "cidadeOrigem": {
+            "type": "string",
+            "nullable": true
+          },
+          "bairroOrigem": {
+            "type": "string",
+            "nullable": true
+          },
+          "estadoOrigem": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitudeOrigem": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitudeOrigem": {
+            "type": "number",
+            "format": "double"
+          },
+          "bairroDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidadeDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "estadoDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitudeDestino": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitudeDestino": {
+            "type": "number",
+            "format": "double"
+          },
+          "descricaoCarga": {
+            "type": "string",
+            "nullable": true
+          },
+          "valor": {
+            "type": "number",
+            "format": "double"
           },
           "sitioOrigem": {
             "type": "boolean"

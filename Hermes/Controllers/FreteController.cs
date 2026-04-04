@@ -211,12 +211,26 @@ namespace Hermes.Controllers
 
             if (role != "Admin")
             {
-                if (role == "Cliente" && frete.ClienteId != userId)
-                    return Forbid();
+                if (role == "Cliente")
+                {
+                    // Cliente só pode cancelar (mudar para Cancelado)
+                    if (frete.ClienteId != userId)
+                        return Forbid();
 
-                if (role == "Transportador" && frete.TransportadorId != userId)
-                    return Forbid();
+                    if (dto.Status != StatusFrete.Cancelado)
+                        return BadRequest("Cliente só pode cancelar o frete");
+                }
+                else if (role == "Transportador")
+                {
+                    if (frete.TransportadorId != userId)
+                        return Forbid();
+
+                    // Transportador não pode mudar para Pendente, Agendado ou Aceito (já passou dessa fase)
+                    if (dto.Status == StatusFrete.Pendente || dto.Status == StatusFrete.Agendado || dto.Status == StatusFrete.Aceito)
+                        return BadRequest("Transportador não pode retroceder o status do frete");
+                }
             }
+
             var sucesso = await _freteService.AtualizarStatus(id, dto.Status);
             if (!sucesso) return NotFound();
             return Ok();

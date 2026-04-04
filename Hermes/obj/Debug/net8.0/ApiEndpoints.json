@@ -262,22 +262,6 @@
   },
   {
     "ContainingType": "Hermes.Controllers.FreteController",
-    "Method": "Criar",
-    "RelativePath": "api/Frete",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "dto",
-        "Type": "Hermes.DTOs.Frete.CriarFrete",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Hermes.Controllers.FreteController",
     "Method": "Buscar",
     "RelativePath": "api/Frete/{id}",
     "HttpMethod": "GET",
@@ -373,6 +357,22 @@
   },
   {
     "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "ObterDuracaoEstimada",
+    "RelativePath": "api/Frete/{id}/duracao-estimada",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
     "Method": "FinalizarFrete",
     "RelativePath": "api/Frete/{id}/finalizar",
     "HttpMethod": "POST",
@@ -398,6 +398,22 @@
       {
         "Name": "id",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "CriarFreteAgendado",
+    "RelativePath": "api/Frete/agendado",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Hermes.DTOs.Frete.CriarFreteAgendadoDTO",
         "IsRequired": true
       }
     ],
@@ -532,6 +548,22 @@
         "Name": "PageSize",
         "Type": "System.Int32",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Hermes.Controllers.FreteController",
+    "Method": "CriarFreteImediato",
+    "RelativePath": "api/Frete/imediato",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Hermes.DTOs.Frete.CriarFrete",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
