@@ -8,6 +8,7 @@ namespace Hermes.Services.Interfaces
 {
     public interface IFreteService
     {
+        Task<TimeSpan> ObterDuracaoEstimada(int freteId);
 
         Task<bool> ConfirmarFreteAgendado(int freteId, int transportadorId);
         Task<bool> RejeitarFreteAgendado(int freteId, int transportadorId);

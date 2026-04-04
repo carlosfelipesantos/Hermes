@@ -25,6 +25,19 @@ namespace Hermes.Controllers
             _mapper = mapper;
         }
 
+        // GET /api/Frete/{id}/duracao-estimada
+        [Authorize(Roles = "Transportador")]
+        [HttpGet("{id}/duracao-estimada")]
+        public async Task<IActionResult> ObterDuracaoEstimada(int id)
+        {
+            var frete = await _freteService.BuscarPorId(id);
+            if (frete == null) return NotFound();
+
+           var duracao = await _freteService.ObterDuracaoEstimada(id);
+
+            return Ok(new { duracaoEstimada = duracao });
+        }
+
         [AllowAnonymous]
         [HttpGet("concluidos/home")]
         public async Task<ActionResult<IEnumerable<FretePublicoDTO>>> FretesConcluidosHome()

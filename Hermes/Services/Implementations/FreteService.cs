@@ -309,6 +309,18 @@ namespace Hermes.Services.Implementations
                    $"Valor: R$ {frete.Valor}";
         }
 
+
+        public async Task<TimeSpan> ObterDuracaoEstimada(int freteId)
+        {
+            var frete = await BuscarPorId(freteId);
+            if (frete == null) throw new Exception("Frete não encontrado");
+
+            var distancia = CalcularDistancia(
+                frete.LatitudeOrigem, frete.LongitudeOrigem,
+                frete.LatitudeDestino, frete.LongitudeDestino);
+            return CalcularDuracaoEstimada(distancia);
+        }
+
         private double CalcularDistancia(double lat1, double lon1, double lat2, double lon2)
         {
             const int R = 6371;
