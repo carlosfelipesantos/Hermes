@@ -4,6 +4,8 @@ import { App } from './app';
 import { Home } from './home/home';
 import { ClientePage } from './home/cliente-page/cliente-page';
 import { TransportadorPage } from './home/transportador-page/transportador-page';
+import { AuthGuard } from './guards/auth/auth.guard';
+import { RoleGuard } from './guards/role/role.guard';
 
 const routes: Routes = [
     { path: '', component: Home }, 

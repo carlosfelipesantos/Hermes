@@ -9,6 +9,14 @@ import { LayoutModule } from './core/layout/layout.module';
 import { ClientePage } from './home/cliente-page/cliente-page';
 import { TransportadorPage } from './home/transportador-page/transportador-page';
 
+import { AuthService } from './services/auth/auth.service';
+import { UsuarioService } from './services/usuario/usuario.service';
+import { FreteService } from './services/frete/frete.service';
+import { VeiculoService } from './services/veiculo/veiculo.service';
+import { DisponibilidadeService } from './services/disponibilidade/disponibilidade.service';
+import { AdminService } from './services/admin/admin.service';
+import { NotificacaoService } from './services/notificacoes/notificacoes.service';
+
 @NgModule({
   declarations: [
     App,
@@ -25,6 +33,13 @@ import { TransportadorPage } from './home/transportador-page/transportador-page'
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideClientHydration(withEventReplay()),
+    AuthService,
+    UsuarioService,
+    FreteService,
+    VeiculoService,
+    DisponibilidadeService,
+    AdminService,
+    NotificacaoService
   ],
   bootstrap: [App]
 })
