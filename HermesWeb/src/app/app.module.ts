@@ -4,7 +4,7 @@ import { BrowserModule, provideClientHydration, withEventReplay } from '@angular
 import { AppRoutingModule } from './app-routing.module';
 import { App } from './app';
 import { Home } from './home/home';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LayoutModule } from './core/layout/layout.module';
 import { ClientePage } from './home/cliente-page/cliente-page';
 import { TransportadorPage } from './home/transportador-page/transportador-page';
@@ -28,7 +28,8 @@ import { NotificacaoService } from './services/notificacoes/notificacoes.service
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    LayoutModule
+    LayoutModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

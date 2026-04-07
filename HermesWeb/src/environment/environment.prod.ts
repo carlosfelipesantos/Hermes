@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://seudominio.com/api', 
-  swaggerUrl: 'https://seudominio.com/swagger'
+  apiUrl: 'https://localhost:7207/api', 
+  swaggerUrl: 'https://localhost:7207/swagger'
 };

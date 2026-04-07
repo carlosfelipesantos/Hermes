@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Hermes"
+    "\\Hermes",
+    "\\Hermes\\Controllers"
   ],
-  "SelectedNode": "\\Hermes\\Program.cs",
+  "SelectedNode": "\\Hermes\\Hermes.slnx",
   "PreviewInSolutionExplorer": false
 }

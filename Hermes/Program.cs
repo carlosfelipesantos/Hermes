@@ -9,6 +9,19 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Permitir Angular",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200") 
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();  
+        });
+});
+
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -100,6 +113,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
+app.UseCors("Permitir Angular");
 
 app.UseAuthentication();
 app.UseAuthorization();

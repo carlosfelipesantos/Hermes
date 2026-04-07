@@ -2,7 +2,7 @@
   <div class="nav-container">
     <a routerLink="/" class="nav-logo">
       <img routerLink="/" class="nav-logo-brand" src="assets/images/LogoOficial.png" alt="Logo Hermes">
-      <span routerLink="/" >HERMES</span>
+      <span routerLink="/">HERMES</span>
     </a>
 
     <div class="nav-menu">
@@ -12,9 +12,31 @@
       <a routerLink="/" fragment="support" class="nav-link">Suporte</a>
     </div>
 
-    <div class="nav-menu-auth">
+    <div class="nav-menu-auth" *ngIf="!usuario; else loggedIn">
       <a routerLink="/auth/login" class="nav-join">Entrar</a>
       <a routerLink="/auth/cadastro" class="nav-link-auth btn-nav">Criar Conta</a>
     </div>
+
+    <ng-template #loggedIn>
+      <div class="user-menu" (click)="toggleDropdown()">
+        <div class="user-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <span class="user-name">{{ nomeCurto }}</span>
+        <i class="fas fa-chevron-down" [class.rotate]="dropdownOpen"></i>
+        <div class="dropdown-menu" *ngIf="dropdownOpen">
+          <a [routerLink]="getDashboardLink()" class="dropdown-item">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+          </a>
+          <a routerLink="/perfil" class="dropdown-item">
+            <i class="fas fa-user"></i> Meu Perfil
+          </a>
+          <div class="dropdown-divider"></div>
+          <a (click)="logout()" class="dropdown-item logout">
+            <i class="fas fa-sign-out-alt"></i> Sair
+          </a>
+        </div>
+      </div>
+    </ng-template>
   </div>
 </nav>

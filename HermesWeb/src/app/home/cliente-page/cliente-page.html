@@ -1,131 +1,47 @@
 <app-navbar></app-navbar>
 
-<section class="hero-cliente">
-  <div class="hero-content">
-    <span class="hero-badge">Área do Cliente</span>
-    <h1>Solicite fretes com mais praticidade, clareza e confiança</h1>
-    <p>
-      Na Hermes, você encontra uma experiência moderna para organizar sua solicitação
-      de frete, informar os detalhes da carga e se conectar com transportadores de forma
-      mais simples e profissional.
-    </p>
-
-    <div class="hero-actions">
-      <a routerLink="/auth/login" class="btn btn-primary">Já tenho cadastro</a>
-      <a routerLink="/auth/cadastro" class="btn btn-secondary">Quero me cadastrar</a>
-    </div>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Olá, {{ nomeCliente }}!</h1>
+    <p>Gerencie seus fretes, acompanhe solicitações e muito mais.</p>
   </div>
 
-  <div class="hero-card">
-    <div class="status-chip">
-      <i class="fas fa-box-open"></i>
-      <span>Solicitações com mais organização</span>
-    </div>
+  <div class="dashboard-actions">
+    <a routerLink="/cliente/frete/novo/imediato" class="btn-primary">
+      <i class="fas fa-truck"></i> Solicitar Frete Imediato
+    </a>
+    <a routerLink="/cliente/frete/novo/agendado" class="btn-secondary">
+      <i class="fas fa-calendar-alt"></i> Agendar Frete
+    </a>
+    <a routerLink="/cliente/fretes" class="btn-outline">
+      <i class="fas fa-list"></i> Meus Fretes
+    </a>
+  </div>
 
-    <div class="mini-stats">
-      <div class="mini-stat">
-        <strong>+ praticidade</strong>
-        <span>Solicite seu frete em uma interface clara e moderna</span>
+  <div class="recent-fretes">
+    <h2>Últimos fretes</h2>
+    <div *ngIf="fretes.length === 0" class="no-fretes">
+      <p>Você ainda não solicitou nenhum frete.</p>
+      <a routerLink="/cliente/frete/novo/imediato" class="btn-primary">Solicitar agora</a>
+    </div>
+    <div *ngFor="let frete of fretes" class="frete-card">
+      <div class="frete-info">
+        <strong>Destino:</strong> {{ frete.cidadeDestino }} - {{ frete.estadoDestino }}
       </div>
-      <div class="mini-stat">
-        <strong>+ organização</strong>
-        <span>Informe origem, destino e detalhes da carga com mais estrutura</span>
+      <div class="frete-info">
+        <strong>Status:</strong> 
+        <span [class]="'status-badge status-' + (frete.status | lowercase)">
+          {{ frete.status }}
+        </span>
       </div>
-      <div class="mini-stat">
-        <strong>+ confiança</strong>
-        <span>Tenha uma experiência mais segura e profissional dentro da plataforma</span>
+      <div class="frete-info">
+        <strong>Valor:</strong> R$ {{ frete.valor | number:'1.2-2' }}
+      </div>
+      <div class="frete-info">
+        <strong>Carga:</strong> {{ frete.tipoCarga }} - {{ frete.descricaoCarga }}
       </div>
     </div>
   </div>
-</section>
-
-<section class="benefits-section">
-  <div class="section-header">
-    <span class="section-tag">Vantagens para você</span>
-    <h2>O que a Hermes oferece para quem precisa de frete</h2>
-    <p>
-      Uma plataforma pensada para facilitar sua jornada desde o cadastro até a solicitação.
-    </p>
-  </div>
-
-  <div class="benefits-grid">
-    <article class="benefit-card">
-      <div class="icon-box"><i class="fas fa-file-alt"></i></div>
-      <h3>Solicitação organizada</h3>
-      <p>
-        Publique sua necessidade com informações claras, estruturadas e mais fáceis de acompanhar.
-      </p>
-    </article>
-
-    <article class="benefit-card">
-      <div class="icon-box"><i class="fas fa-users"></i></div>
-      <h3>Conexão com transportadores</h3>
-      <p>
-        A Hermes aproxima você de transportadores prontos para atender diferentes demandas.
-      </p>
-    </article>
-
-    <article class="benefit-card">
-      <div class="icon-box"><i class="fas fa-clock"></i></div>
-      <h3>Mais praticidade no processo</h3>
-      <p>
-        Tenha uma navegação simples para preencher dados e seguir com sua solicitação.
-      </p>
-    </article>
-
-    <article class="benefit-card">
-      <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
-      <h3>Experiência mais confiável</h3>
-      <p>
-        Use uma plataforma com visual moderno e estrutura pensada para transmitir segurança.
-      </p>
-    </article>
-  </div>
-</section>
-
-<section class="steps-section">
-  <div class="section-header">
-    <span class="section-tag">Como funciona</span>
-    <h2>Seu caminho dentro da Hermes</h2>
-  </div>
-
-  <div class="steps-grid">
-    <div class="step-card">
-      <span class="step-number">01</span>
-      <h3>Cadastre-se</h3>
-      <p>Crie sua conta para começar a usar a plataforma e acessar os recursos disponíveis.</p>
-    </div>
-
-    <div class="step-card">
-      <span class="step-number">02</span>
-      <h3>Informe sua necessidade</h3>
-      <p>Preencha os dados do frete, incluindo origem, destino e detalhes da carga.</p>
-    </div>
-
-    <div class="step-card">
-      <span class="step-number">03</span>
-      <h3>Tenha mais praticidade</h3>
-      <p>Use a Hermes como um ambiente mais moderno e organizado para solicitar seu frete.</p>
-    </div>
-  </div>
-</section>
-
-<section class="cta-section">
-  <div class="cta-box">
-    <div>
-      <span class="section-tag">Pronto para começar?</span>
-      <h2>Entre agora ou crie sua conta para solicitar um frete</h2>
-      <p>
-        Se você já possui cadastro, basta acessar sua conta. Se ainda não faz parte da Hermes,
-        crie seu perfil e comece a usar a plataforma com mais praticidade.
-      </p>
-    </div>
-
-    <div class="cta-actions">
-      <a routerLink="/auth/login" class="btn btn-primary">Entrar</a>
-      <a routerLink="/auth/cadastro" class="btn btn-secondary">Criar conta</a>
-    </div>
-  </div>
-</section>
+</div>
 
 <app-footer></app-footer>

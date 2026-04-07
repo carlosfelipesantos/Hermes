@@ -4,131 +4,145 @@
       <div class="login-header">
         <div class="login-logo">
           <a routerLink="/" class="nav-logo">
-            <img
-              src="assets/images/LogoOficial.png"
-              alt="Logo Hermes"
-              class="logo-img"
-            >
+            <img src="assets/images/LogoOficial.png" alt="Logo Hermes" class="logo-img">
           </a>
         </div>
-
         <h1 class="login-title">Crie sua conta</h1>
-        <p class="login-subtitle">
-          Preencha os campos abaixo para começar
-        </p>
+        <p class="login-subtitle">Preencha os campos abaixo para começar</p>
       </div>
 
-      <form class="login-form">
+      <div class="message error animated-message" *ngIf="errorMessage">
+        <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+      </div>
+      <div class="message success animated-message" *ngIf="successMessage">
+        <i class="fas fa-check-circle"></i> {{ successMessage }}
+      </div>
+
+      <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" class="login-form">
         <div class="form-group floating animated-input">
-          <input type="text" class="form-input" placeholder=" " required>
-          <label class="form-label">
-            <i class="fas fa-user"></i>
-            Nome completo
-          </label>
+          <input type="text" id="nome" formControlName="nome" class="form-input" placeholder=" ">
+          <label for="nome" class="form-label"><i class="fas fa-user"></i> Nome completo</label>
           <div class="input-focus-line"></div>
         </div>
 
         <div class="form-group floating animated-input">
-          <input type="email" class="form-input" placeholder=" " required>
-          <label class="form-label">
-            <i class="fas fa-envelope"></i>
-            E-mail
-          </label>
+          <input type="email" id="email" formControlName="email" class="form-input" placeholder=" ">
+          <label for="email" class="form-label"><i class="fas fa-envelope"></i> E-mail</label>
           <div class="input-focus-line"></div>
         </div>
 
         <div class="form-group floating animated-input">
-          <input type="password" class="form-input" placeholder=" " required>
-          <label class="form-label">
-            <i class="fas fa-lock"></i>
-            Senha
-          </label>
+          <input type="date" id="dataNascimento" formControlName="dataNascimento" class="form-input" placeholder=" ">
+          <label for="dataNascimento" class="form-label"><i class="fas fa-calendar-alt"></i> Data de Nascimento</label>
           <div class="input-focus-line"></div>
+        </div>
+
+        <div class="form-group floating animated-input">
+          <input type="text" id="documento" formControlName="documento" class="form-input" (input)="aplicarMascaraCpfCnpj($event)">
+          <label for="documento" class="form-label"><i class="fas fa-id-card"></i> {{ tipoSelecionado === 'Cliente' ? 'CPF' : 'CNPJ' }}</label>
+          <div class="input-focus-line"></div>
+        </div>
+
+        <div class="form-group floating animated-input">
+          <input type="password" id="senha" formControlName="senha" class="form-input" placeholder=" ">
+          <label for="senha" class="form-label"><i class="fas fa-lock"></i> Senha (mínimo 6 caracteres)</label>
+          <div class="input-focus-line"></div>
+        </div>
+
+        <div class="form-group floating animated-input">
+          <input type="password" id="confirmarSenha" formControlName="confirmarSenha" class="form-input" placeholder=" ">
+          <label for="confirmarSenha" class="form-label"><i class="fas fa-lock"></i> Confirmar senha</label>
+          <div class="input-focus-line"></div>
+          <div class="invalid-feedback" *ngIf="cadastroForm.hasError('mismatch') && cadastroForm.get('confirmarSenha')?.touched">
+            As senhas não coincidem.
+          </div>
         </div>
 
         <div class="form-group animated-input">
           <label class="form-label" style="position: relative; transform: none; top: 0; margin-bottom: 0.5rem;">
-            <i class="fas fa-user-tag"></i>
-            Tipo de usuário
+            <i class="fas fa-user-tag"></i> Tipo de usuário
           </label>
-
           <div class="radio-group">
             <label class="radio-option">
-              <input type="radio" name="tipoUsuario" value="cliente">
-              Cliente
+              <input type="radio" value="Cliente" formControlName="tipo" (change)="onTipoChange('Cliente')"> Cliente
             </label>
-
             <label class="radio-option">
-              <input type="radio" name="tipoUsuario" value="transportador">
-              Transportador
+              <input type="radio" value="Transportador" formControlName="tipo" (change)="onTipoChange('Transportador')"> Transportador
             </label>
           </div>
         </div>
 
+        <div style="display: flex; gap: 1rem;">
+          <div class="form-group floating animated-input" style="flex: 1;">
+            <input type="text" id="ddd" formControlName="ddd" class="form-input" placeholder=" " maxlength="2">
+            <label for="ddd" class="form-label"><i class="fas fa-code"></i> DDD</label>
+            <div class="input-focus-line"></div>
+          </div>
+          <div class="form-group floating animated-input" style="flex: 2;">
+            <input type="text" id="telefone" formControlName="telefone" class="form-input" placeholder=" " (input)="aplicarMascaraTelefone($event)">
+            <label for="telefone" class="form-label"><i class="fas fa-phone"></i> Telefone</label>
+            <div class="input-focus-line"></div>
+          </div>
+        </div>
+
         <div class="form-group floating animated-input">
-          <input type="text" class="form-input" placeholder=" " required>
-          <label class="form-label">
-            <i class="fas fa-phone"></i>
-            Telefone
-          </label>
+          <input type="text" id="cep" formControlName="cep" class="form-input" placeholder=" " (input)="aplicarMascaraCep($event)">
+          <label for="cep" class="form-label"><i class="fas fa-mail-bulk"></i> CEP</label>
           <div class="input-focus-line"></div>
         </div>
 
         <div class="form-group floating animated-input">
-          <select class="form-input" required>
-            <option value="" disabled selected hidden></option>
-            <option>SP</option>
-            <option>RJ</option>
-            <option>MG</option>
-            <option>RS</option>
-          </select>
-          <label class="form-label">
-            <i class="fas fa-flag"></i>
-            Estado
-          </label>
+          <input type="text" id="logradouro" formControlName="logradouro" class="form-input" placeholder=" ">
+          <label for="logradouro" class="form-label"><i class="fas fa-road"></i> Logradouro</label>
           <div class="input-focus-line"></div>
+        </div>
+
+        <div style="display: flex; gap: 1rem;">
+          <div class="form-group floating animated-input" style="flex: 1;">
+            <input type="text" id="numero" formControlName="numero" class="form-input" placeholder=" ">
+            <label for="numero" class="form-label"><i class="fas fa-hashtag"></i> Número</label>
+            <div class="input-focus-line"></div>
+          </div>
+          <div class="form-group floating animated-input" style="flex: 2;">
+            <input type="text" id="complemento" formControlName="complemento" class="form-input" placeholder=" ">
+            <label for="complemento" class="form-label"><i class="fas fa-building"></i> Complemento</label>
+            <div class="input-focus-line"></div>
+          </div>
         </div>
 
         <div class="form-group floating animated-input">
-          <input type="text" class="form-input" placeholder=" " required>
-          <label class="form-label">
-            <i class="fas fa-city"></i>
-            Cidade
-          </label>
+          <input type="text" id="bairro" formControlName="bairro" class="form-input" placeholder=" ">
+          <label for="bairro" class="form-label"><i class="fas fa-map-pin"></i> Bairro</label>
           <div class="input-focus-line"></div>
         </div>
 
-        <div class="form-group floating animated-input">
-          <input type="text" class="form-input" placeholder=" " required>
-          <label class="form-label">
-            <i class="fas fa-map-marker-alt"></i>
-            Endereço
-          </label>
-          <div class="input-focus-line"></div>
+        <div style="display: flex; gap: 1rem;">
+          <div class="form-group floating animated-input" style="flex: 2;">
+            <input type="text" id="cidade" formControlName="cidade" class="form-input" placeholder=" ">
+            <label for="cidade" class="form-label"><i class="fas fa-city"></i> Cidade</label>
+            <div class="input-focus-line"></div>
+          </div>
+          <div class="form-group floating animated-input" style="flex: 1;">
+            <input type="text" id="estado" formControlName="estado" class="form-input" placeholder=" ">
+            <label for="estado" class="form-label"><i class="fas fa-flag"></i> Estado</label>
+            <div class="input-focus-line"></div>
+          </div>
         </div>
 
-        <button type="submit" class="btn-login animated-input">
-          <span class="btn-text">Cadastrar</span>
+        <button type="submit" class="btn-login animated-input" [disabled]="loading">
+          <span class="btn-text">{{ loading ? 'Cadastrando...' : 'Cadastrar' }}</span>
           <i class="fas fa-user-plus btn-icon"></i>
           <div class="btn-shine"></div>
         </button>
 
         <div class="register-button animated-input">
-          <p>
-            Já possui conta?
-            <a routerLink="/auth/login">Entrar</a>
-          </p>
+          <p>Já possui conta? <a routerLink="/auth/login">Entrar</a></p>
         </div>
-
       </form>
 
       <div class="login-footer">
-        <p>
-          Voltar para
-          <a routerLink="/">página inicial</a>
-        </p>
+        <p>Voltar para <a routerLink="/">página inicial</a></p>
       </div>
-
     </div>
   </div>
 </div>

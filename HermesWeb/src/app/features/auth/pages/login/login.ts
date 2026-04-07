@@ -9,10 +9,11 @@ import { AuthService } from '../../../../services/auth/auth.service';
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
-export class LoginComponent {
+export class Login {
   loginForm: FormGroup;
   errorMessage: string = '';
   loading: boolean = false;
+  mostrarSenha: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -21,32 +22,46 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      senha: ['', Validators.required]
+      senha: ['', Validators.required],
+      lembrar: [false]
     });
   }
 
+  toggleSenha(): void {
+    this.mostrarSenha = !this.mostrarSenha;
+  }
+
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      this.loading = true;
-      this.errorMessage = '';
-      
-      this.authService.login(this.loginForm.value).subscribe({
-        next: (response) => {
-          // Redirecionar baseado no tipo de usuário
-          const tipo = response.usuario.tipo;
-          if (tipo === 'Cliente') {
-            this.router.navigate(['/cliente/dashboard']);
-          } else if (tipo === 'Transportador') {
-            this.router.navigate(['/transportador/dashboard']);
-          } else if (tipo === 'Admin') {
-            this.router.navigate(['/admin/dashboard']);
-          }
-        },
-        error: (error) => {
-          this.errorMessage = 'Email ou senha inválidos';
-          this.loading = false;
-        }
-      });
+    if (this.loginForm.invalid) {
+      return;
     }
+
+    this.loading = true;
+    this.errorMessage = '';
+
+    const { email, senha } = this.loginForm.value;
+
+    this.authService.login({ email, senha }).subscribe({
+      next: (response) => {
+        const tipo = response.usuario.tipo;
+        switch (tipo) {
+          case 'Cliente':
+            this.router.navigate(['/cliente/dashboard']);
+            break;
+          case 'Transportador':
+            this.router.navigate(['/transportador/dashboard']);
+            break;
+          case 'Admin':
+            this.router.navigate(['/admin/dashboard']);
+            break;
+          default:
+            this.router.navigate(['/']);
+        }
+      },
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Email ou senha inválidos';
+        this.loading = false;
+      }
+    });
   }
 }
