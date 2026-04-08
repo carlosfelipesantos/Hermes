@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://localhost:7207/api', 
+  apiUrl: '/api', 
   swaggerUrl: 'https://localhost:7207/swagger'
 };

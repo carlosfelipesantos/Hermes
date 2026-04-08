@@ -46,13 +46,13 @@ export class Login {
         const tipo = response.usuario.tipo;
         switch (tipo) {
           case 'Cliente':
-            this.router.navigate(['/cliente/dashboard']);
+            this.router.navigate(['/cliente']);
             break;
           case 'Transportador':
-            this.router.navigate(['/transportador/dashboard']);
+            this.router.navigate(['/transportador']);
             break;
           case 'Admin':
-            this.router.navigate(['/admin/dashboard']);
+            this.router.navigate(['/admin']);
             break;
           default:
             this.router.navigate(['/']);

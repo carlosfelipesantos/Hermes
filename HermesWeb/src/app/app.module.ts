@@ -17,6 +17,9 @@ import { DisponibilidadeService } from './services/disponibilidade/disponibilida
 import { AdminService } from './services/admin/admin.service';
 import { NotificacaoService } from './services/notificacoes/notificacoes.service';
 
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth/auth.interceptor';
+
 @NgModule({
   declarations: [
     App,
@@ -29,7 +32,8 @@ import { NotificacaoService } from './services/notificacoes/notificacoes.service
     AppRoutingModule,
     FormsModule,
     LayoutModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -40,7 +44,11 @@ import { NotificacaoService } from './services/notificacoes/notificacoes.service
     VeiculoService,
     DisponibilidadeService,
     AdminService,
-    NotificacaoService
+    NotificacaoService,
+    provideHttpClient(
+      withInterceptors([authInterceptor]),
+      withFetch()
+    ),
   ],
   bootstrap: [App]
 })

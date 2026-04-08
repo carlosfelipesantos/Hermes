@@ -1,131 +1,86 @@
 <app-navbar></app-navbar>
 
-<section class="hero-transportador">
-  <div class="hero-content">
-    <span class="hero-badge">Área do Transportador</span>
-    <h1>Encontre cargas, amplie oportunidades e trabalhe com mais visibilidade</h1>
-    <p>
-      Na Hermes, transportadores encontram novas oportunidades de frete, aumentam
-      sua presença na plataforma e se conectam com usuários que precisam de entregas
-      com agilidade e confiança.
-    </p>
-
-    <div class="hero-actions">
-      <a routerLink="/auth/login" class="btn btn-primary">Já tenho cadastro</a>
-      <a routerLink="/auth/cadastro" class="btn btn-secondary">Quero me cadastrar</a>
-    </div>
+<div class="dashboard-container" *ngIf="!loading; else loadingTemplate">
+  <div class="dashboard-header">
+    <h1>Olá, {{ nomeTransportador }}!</h1>
+    <p>Gerencie seus fretes, veículos e disponibilidade.</p>
   </div>
 
-  <div class="hero-card">
-    <div class="status-chip">
-      <i class="fas fa-truck"></i>
-      <span>Transportadores em destaque</span>
-    </div>
+  <div class="dashboard-actions">
+    <a routerLink="/transportador/veiculos/novo" class="btn-primary">
+      <i class="fas fa-plus-circle"></i> Cadastrar Veículo
+    </a>
+    <a routerLink="/transportador/disponibilidade/novo" class="btn-secondary">
+      <i class="fas fa-calendar-week"></i> Definir Disponibilidade
+    </a>
+    <a routerLink="/transportador/fretes/disponiveis" class="btn-secondary">
+      <i class="fas fa-truck-moving"></i> Ver Fretes Disponíveis
+    </a>
+    <a routerLink="/transportador/fretes" class="btn-outline">
+      <i class="fas fa-list"></i> Meus Fretes (Aceitos)
+    </a>
+  </div>
 
-    <div class="mini-stats">
-      <div class="mini-stat">
-        <strong>+ oportunidades</strong>
-        <span>Mais chances de encontrar fretes compatíveis</span>
+  <!-- Seção: Fretes Aceitos Recentes -->
+  <div class="recent-fretes">
+    <h2>Últimos fretes aceitos</h2>
+    <div *ngIf="fretesAceitos.length === 0" class="no-fretes">
+      <p>Você ainda não aceitou nenhum frete.</p>
+      <a routerLink="/transportador/fretes/disponiveis" class="btn-primary">Ver fretes disponíveis</a>
+    </div>
+    <div *ngFor="let frete of fretesAceitos.slice(0, 3)" class="frete-card">
+      <div class="frete-info"><strong>Destino:</strong> {{ frete.cidadeDestino }} - {{ frete.estadoDestino }}</div>
+      <div class="frete-info">
+        <strong>Status:</strong>
+        <span [class]="'status-badge status-' + (frete.status | lowercase)">{{ frete.status }}</span>
       </div>
-      <div class="mini-stat">
-        <strong>+ alcance</strong>
-        <span>Visibilidade para diferentes regiões e demandas</span>
-      </div>
-      <div class="mini-stat">
-        <strong>+ praticidade</strong>
-        <span>Uma experiência mais simples para acompanhar solicitações</span>
+      <div class="frete-info"><strong>Valor:</strong> R$ {{ frete.valor | number:'1.2-2' }}</div>
+      <div class="frete-info"><strong>Carga:</strong> {{ frete.tipoCarga }} - {{ frete.descricaoCarga }}</div>
+      <div class="frete-actions" *ngIf="frete.status === 'Pendente' || frete.status === 'Aceito'">
+        <a [routerLink]="['/transportador/frete', frete.id, 'confirmar']" class="btn-small">Confirmar</a>
+        <a [routerLink]="['/transportador/frete', frete.id, 'finalizar']" class="btn-small btn-outline-small">Finalizar</a>
       </div>
     </div>
   </div>
-</section>
 
-<section class="benefits-section">
-  <div class="section-header">
-    <span class="section-tag">Vantagens para você</span>
-    <h2>O que a Hermes oferece ao transportador</h2>
-    <p>
-      Uma plataforma pensada para facilitar a conexão entre quem transporta e quem precisa enviar.
-    </p>
-  </div>
-
-  <div class="benefits-grid">
-    <article class="benefit-card">
-      <div class="icon-box"><i class="fas fa-route"></i></div>
-      <h3>Novas oportunidades de frete</h3>
-      <p>
-        Visualize demandas publicadas por usuários e encontre cargas alinhadas ao seu perfil de atuação.
-      </p>
-    </article>
-
-    <article class="benefit-card">
-      <div class="icon-box"><i class="fas fa-bullhorn"></i></div>
-      <h3>Mais visibilidade</h3>
-      <p>
-        Destaque seu serviço em uma plataforma voltada para conexão entre oferta e necessidade de transporte.
-      </p>
-    </article>
-
-    <article class="benefit-card">
-      <div class="icon-box"><i class="fas fa-clock"></i></div>
-      <h3>Agilidade no processo</h3>
-      <p>
-        Tenha uma navegação simples para acompanhar solicitações e responder com mais rapidez.
-      </p>
-    </article>
-
-    <article class="benefit-card">
-      <div class="icon-box"><i class="fas fa-map-marked-alt"></i></div>
-      <h3>Atuação por região</h3>
-      <p>
-        Encontre fretes mais compatíveis com sua localidade e estratégia de operação.
-      </p>
-    </article>
-  </div>
-</section>
-
-<section class="steps-section">
-  <div class="section-header">
-    <span class="section-tag">Como funciona</span>
-    <h2>Seu caminho dentro da Hermes</h2>
-  </div>
-
-  <div class="steps-grid">
-    <div class="step-card">
-      <span class="step-number">01</span>
-      <h3>Cadastre-se</h3>
-      <p>Crie seu perfil de transportador para começar a usar a plataforma.</p>
+  <!-- Seção: Veículos -->
+  <div class="info-section">
+    <h2>Meus Veículos</h2>
+    <div *ngIf="veiculos.length === 0" class="no-info">
+      <p>Nenhum veículo cadastrado.</p>
+      <a routerLink="/transportador/veiculos/novo" class="btn-primary">Cadastrar agora</a>
     </div>
-
-    <div class="step-card">
-      <span class="step-number">02</span>
-      <h3>Complete suas informações</h3>
-      <p>Organize seus dados para tornar sua presença mais clara e profissional.</p>
-    </div>
-
-    <div class="step-card">
-      <span class="step-number">03</span>
-      <h3>Encontre oportunidades</h3>
-      <p>Explore solicitações de frete e acompanhe possibilidades de atuação.</p>
+    <div class="cards-grid">
+      <div *ngFor="let veiculo of veiculos" class="info-card">
+        <div class="card-icon"><i class="fas fa-truck"></i></div>
+        <div><strong>{{ veiculo.tipoVeiculo }}</strong> - {{ veiculo.modelo }}</div>
+        <div>Placa: {{ veiculo.placa }}</div>
+        <div>Capacidade: {{ veiculo.capacidade }}</div>
+      </div>
     </div>
   </div>
-</section>
 
-<section class="cta-section">
-  <div class="cta-box">
-    <div>
-      <span class="section-tag">Pronto para começar?</span>
-      <h2>Entre agora ou crie sua conta de transportador</h2>
-      <p>
-        Se você já possui cadastro, basta acessar sua conta. Se ainda não faz parte da Hermes,
-        cadastre-se e comece a explorar novas oportunidades.
-      </p>
+  <!-- Seção: Disponibilidade -->
+  <div class="info-section">
+    <h2>Minha Disponibilidade</h2>
+    <div *ngIf="disponibilidades.length === 0" class="no-info">
+      <p>Nenhuma janela de trabalho definida.</p>
+      <a routerLink="/transportador/disponibilidade/novo" class="btn-primary">Definir agora</a>
     </div>
-
-    <div class="cta-actions">
-      <a routerLink="/auth/login" class="btn btn-primary">Entrar</a>
-      <a routerLink="/auth/cadastro" class="btn btn-secondary">Criar conta</a>
+    <div class="cards-grid">
+      <div *ngFor="let disp of disponibilidades" class="info-card">
+        <div class="card-icon"><i class="fas fa-clock"></i></div>
+        <div><strong>{{ disp.diaSemana }}</strong></div>
+        <div>{{ disp.horaInicio }} - {{ disp.horaFim }}</div>
+      </div>
     </div>
   </div>
-</section>
+</div>
+
+<ng-template #loadingTemplate>
+  <div class="loading-container">
+    <i class="fas fa-spinner fa-spin"></i> Carregando dados...
+  </div>
+</ng-template>
 
 <app-footer></app-footer>
