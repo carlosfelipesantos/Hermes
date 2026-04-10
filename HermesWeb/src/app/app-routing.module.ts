@@ -5,6 +5,7 @@ import { ClientePage } from './home/cliente-page/cliente-page';
 import { TransportadorPage } from './home/transportador-page/transportador-page';
 import { AuthGuard } from './guards/auth/auth.guard';
 import { RoleGuard } from './guards/role/role.guard';
+import { PerfilComponent } from './perfil/pages/perfil/perfil';
 
 const routes: Routes = [
   { path: '', component: Home },
@@ -15,6 +16,13 @@ const routes: Routes = [
   {
     path: 'fretes',
     loadChildren: () => import('./fretes/fretes.module').then(m => m.FretesModule)
+  },
+
+  {
+    path: 'perfil',
+    component: PerfilComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['AuthGuard'] }
   },
 
   {

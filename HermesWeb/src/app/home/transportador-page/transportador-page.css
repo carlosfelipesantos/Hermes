@@ -310,7 +310,7 @@
 
 .dashboard-container {
   max-width: 1200px;
-  margin: 2rem auto;
+  margin: 7rem auto;
   padding: 0 1rem;
 }
 
@@ -333,22 +333,6 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 500;
-}
-
-.btn-primary {
-  background: #007bff;
-  color: white;
-}
-
-.btn-secondary {
-  background: #6c757d;
-  color: white;
-}
-
-.btn-outline {
-  border: 1px solid #007bff;
-  color: #007bff;
-  background: transparent;
 }
 
 .recent-fretes h2, .info-section h2 {
@@ -381,11 +365,6 @@
   font-size: 0.8rem;
 }
 
-.btn-outline-small {
-  background: transparent;
-  border: 1px solid #007bff;
-  color: #007bff;
-}
 
 .status-badge {
   padding: 0.25rem 0.5rem;
@@ -418,11 +397,7 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.card-icon {
-  font-size: 1.5rem;
-  color: #007bff;
-  margin-bottom: 0.5rem;
-}
+
 
 .no-fretes, .no-info {
   text-align: center;

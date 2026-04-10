@@ -4,6 +4,7 @@ export interface Usuario {
   email: string;
   senha?: string;
   tipo: 'Cliente' | 'Transportador' | 'Admin';
+  documento: string;
   telefone: string;
   ddd: string;
   estado: string;

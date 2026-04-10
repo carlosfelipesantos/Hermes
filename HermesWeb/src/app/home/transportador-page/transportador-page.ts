@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { Usuario } from '../../models/usuario/usuario.model';
 import { FreteService } from '../../services/frete/frete.service';
@@ -24,7 +24,8 @@ export class TransportadorPage implements OnInit {
     private authService: AuthService,
     private freteService: FreteService,
     private veiculoService: VeiculoService,
-    private disponibilidadeService: DisponibilidadeService
+    private disponibilidadeService: DisponibilidadeService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +33,7 @@ export class TransportadorPage implements OnInit {
       this.usuario = user;
     });
     this.carregarDados();
+    this.cdr.detectChanges();
   }
 
   get nomeTransportador(): string {
@@ -47,20 +49,39 @@ export class TransportadorPage implements OnInit {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     this.freteService.getMeusTransportes().subscribe({
       next: (data) => this.fretesAceitos = data,
-      error: (err) => console.error('Erro ao carregar meus transportes', err)
+      error: (err) => console.error('Erro ao carregar meus transportes', err),
+      complete: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
+
     this.freteService.getFretesDisponiveis().subscribe({
       next: (data) => this.fretesDisponiveis = data,
-      error: (err) => console.error('Erro ao carregar fretes disponíveis', err)
+      error: (err) => console.error('Erro ao carregar fretes disponíveis', err),
+      complete: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
+
     this.veiculoService.getMeusVeiculos().subscribe({
       next: (data) => this.veiculos = data,
-      error: (err) => console.error('Erro ao carregar veículos', err)
+      error: (err) => console.error('Erro ao carregar veículos', err),
+      complete: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
+
     this.disponibilidadeService.getMinhasDisponibilidades().subscribe({
       next: (data) => this.disponibilidades = data,
       error: (err) => console.error('Erro ao carregar disponibilidade', err),
-      complete: () => this.loading = false
+      complete: () => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
     });
+
   }
 }

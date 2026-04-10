@@ -88,11 +88,6 @@
   transform: translateY(-2px);
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #04553a, #08875c);
-  color: #ffffff;
-  box-shadow: 0 14px 30px rgba(4, 85, 58, 0.2);
-}
 
 .btn-secondary {
   background: rgba(255, 255, 255, 0.9);

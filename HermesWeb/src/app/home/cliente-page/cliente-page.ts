@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../services/auth/auth.service';
 import { Usuario } from '../../models/usuario/usuario.model';
 import { FreteService } from '../../services/frete/frete.service';
@@ -15,7 +15,8 @@ export class ClientePage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private freteService: FreteService
+    private freteService: FreteService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -23,6 +24,8 @@ export class ClientePage implements OnInit {
       this.usuario = user;
     });
     this.carregarFretes();
+   
+    this.cdr.detectChanges();
   }
 
   carregarFretes(): void {
@@ -30,6 +33,7 @@ export class ClientePage implements OnInit {
       next: (data) => this.fretes = data,
       error: (err) => console.error('Erro ao carregar fretes', err)
     });
+    
   }
 
   get nomeCliente(): string {

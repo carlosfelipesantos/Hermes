@@ -28,7 +28,7 @@ export interface Frete {
 }
 
 export interface FreteImediatoRequest extends Frete {
-  // Sem transportadorId e dataHoraInicio
+  transportadorId: number;
 }
 
 export interface FreteAgendadoRequest extends Frete {

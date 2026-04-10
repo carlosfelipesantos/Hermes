@@ -24,6 +24,10 @@ export class UsuarioService {
     return this.http.get<Usuario>(`${this.apiUrl}/me`);
   }
 
+  atualizarPerfil(usuario: Usuario): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.apiUrl}/${usuario.id}`, usuario);
+  }
+
   deleteConta(): Observable<any> {
     return this.http.delete(this.apiUrl);
   }

@@ -86,10 +86,7 @@
     background: white;
     border-radius: 999px;
     padding: 0.5rem 1rem;
-}
-
-.nav-link:hover {
-    color: var(--primary);
+    cursor: pointer;
 }
 
 .nav-link-profile {
@@ -100,6 +97,7 @@
     font-weight: 600;
     transition: 0.25s ease;
     align-items: center;
+    cursor: pointer;
 }
 
 .nav-link-profile:hover{
