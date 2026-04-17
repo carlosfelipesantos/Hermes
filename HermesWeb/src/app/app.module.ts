@@ -1,6 +1,5 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { App } from './app';
 import { Home } from './home/home';
@@ -17,38 +16,52 @@ import { DisponibilidadeService } from './services/disponibilidade/disponibilida
 import { AdminService } from './services/admin/admin.service';
 import { NotificacaoService } from './services/notificacoes/notificacoes.service';
 
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './interceptors/auth/auth.interceptor';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withFetch,
+  withInterceptorsFromDi
+} from '@angular/common/http';
+
+import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
+import { Perfil} from './perfil/pages/perfil/perfil';
 
 @NgModule({
   declarations: [
     App,
     Home,
     ClientePage,
-    TransportadorPage  
+    TransportadorPage,
+    Perfil
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     LayoutModule,
-    ReactiveFormsModule,
-    BrowserModule
+    ReactiveFormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideClientHydration(withEventReplay()),
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+
+    provideHttpClient(
+      withInterceptorsFromDi(),
+      withFetch()
+    ),
+
     AuthService,
     UsuarioService,
     FreteService,
     VeiculoService,
     DisponibilidadeService,
     AdminService,
-    NotificacaoService,
-    provideHttpClient(
-      withInterceptors([authInterceptor]),
-      withFetch()
-    ),
+    NotificacaoService
   ],
   bootstrap: [App]
 })

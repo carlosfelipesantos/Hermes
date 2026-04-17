@@ -7,13 +7,13 @@
   </div>
 
   <div class="dashboard-actions">
-    <a routerLink="/cliente/frete/novo/imediato" class="btn-primary">
+    <a routerLink="/cliente/frete/novo/imediato" class="btn btn-large btn-primary">
       <i class="fas fa-truck"></i> Solicitar Frete Imediato
     </a>
-    <a routerLink="/cliente/frete/novo/agendado" class="btn-secondary">
+    <a routerLink="/cliente/frete/novo/agendado" class="btn btn-large btn-secondary">
       <i class="fas fa-calendar-alt"></i> Agendar Frete
     </a>
-    <a routerLink="/cliente/fretes" class="btn-secondary">
+    <a routerLink="/cliente/fretes" class="btn btn-large btn-secondary">
       <i class="fas fa-list"></i> Meus Fretes
     </a>
   </div>
@@ -22,7 +22,7 @@
     <h2>Últimos fretes</h2>
     <div *ngIf="fretes.length === 0" class="no-fretes">
       <p>Você ainda não solicitou nenhum frete.</p>
-      <a routerLink="/cliente/frete/novo/imediato" class="btn-primary">Solicitar agora</a>
+      <a routerLink="/cliente/frete/novo/imediato" class="btn btn-large btn-primary">Solicitar agora</a>
     </div>
     <div *ngFor="let frete of fretes" class="frete-card">
       <div class="frete-info">

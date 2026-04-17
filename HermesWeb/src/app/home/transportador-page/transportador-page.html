@@ -7,16 +7,16 @@
   </div>
 
   <div class="dashboard-actions">
-    <a routerLink="/transportador/veiculos/novo" class="btn-primary">
+    <a routerLink="/transportador/veiculos/novo" class="btn btn-large btn-primary">
       <i class="fas fa-plus-circle"></i> Cadastrar Veículo
     </a>
-    <a routerLink="/transportador/disponibilidade/novo" class="btn-secondary">
+    <a routerLink="/transportador/disponibilidade/novo" class="btn btn-large btn-secondary">
       <i class="fas fa-calendar-week"></i> Definir Disponibilidade
     </a>
-    <a routerLink="/transportador/fretes/disponiveis" class="btn-secondary">
+    <a routerLink="/transportador/fretes/disponiveis" class="btn btn-large btn-secondary">
       <i class="fas fa-truck-moving"></i> Ver Fretes Disponíveis
     </a>
-    <a routerLink="/transportador/fretes" class="btn-secondary">
+    <a routerLink="/transportador/fretes" class="btn btn-large btn-secondary">
       <i class="fas fa-list"></i> Meus Fretes (Aceitos)
     </a>
   </div>
@@ -26,7 +26,7 @@
     <h2>Últimos fretes aceitos</h2>
     <div *ngIf="fretesAceitos.length === 0" class="no-fretes">
       <p>Você ainda não aceitou nenhum frete.</p>
-      <a routerLink="/transportador/fretes/disponiveis" class="btn-primary">Ver fretes disponíveis</a>
+      <a routerLink="/transportador/fretes/disponiveis" class="btn btn-large btn-primary">Ver fretes disponíveis</a>
     </div>
     <div *ngFor="let frete of fretesAceitos.slice(0, 3)" class="frete-card">
       <div class="frete-info"><strong>Destino:</strong> {{ frete.cidadeDestino }} - {{ frete.estadoDestino }}</div>
@@ -48,7 +48,7 @@
     <h2>Meus Veículos</h2>
     <div *ngIf="veiculos.length === 0" class="no-info">
       <p>Nenhum veículo cadastrado.</p>
-      <a routerLink="/transportador/veiculos/novo" class="btn-primary">Cadastrar agora</a>
+      <a routerLink="/transportador/veiculos/novo" class="btn btn-large btn-primary">Cadastrar agora</a>
     </div>
     <div class="cards-grid">
       <div *ngFor="let veiculo of veiculos" class="info-card">
@@ -65,7 +65,7 @@
     <h2>Minha Disponibilidade</h2>
     <div *ngIf="disponibilidades.length === 0" class="no-info">
       <p>Nenhuma janela de trabalho definida.</p>
-      <a routerLink="/transportador/disponibilidade/novo" class="btn-primary">Definir agora</a>
+      <a routerLink="/transportador/disponibilidade/novo" class="btn btn-large btn-primary">Definir agora</a>
     </div>
     <div class="cards-grid">
       <div *ngFor="let disp of disponibilidades" class="info-card">

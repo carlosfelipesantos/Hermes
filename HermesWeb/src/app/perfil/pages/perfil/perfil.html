@@ -1,290 +1,189 @@
-<div class="perfil-page">
-  <a routerLink="/" class="perfil-back-btn">
-    <i class="fa-solid fa-arrow-left"></i>
-    <span>Voltar</span>
-  </a>
+<div *ngIf="sucesso" class="alert-overlay">
+  <div class="alert-box success">
+    <i class="fa-solid fa-check-circle"></i>
+    <span>Perfil atualizado com sucesso!</span>
+  </div>
+</div>
 
+<div class="perfil-page">
   <div class="perfil-wrapper">
     <div class="perfil-header">
       <div>
         <h1>Meu Perfil</h1>
-        <p>
-          <ng-container *ngIf="usuario?.tipo === 'Transportador'; else clienteTexto">
-            Gerencie seus dados, veículo e acompanhe seus fretes e avaliações.
-          </ng-container>
-          <ng-template #clienteTexto>
-            Atualize suas informações e acompanhe o histórico de fretes e avaliações.
-          </ng-template>
+        <p *ngIf="isTransportador(); else clienteTexto">
+          Gerencie seus dados, veículo e acompanhe seus fretes.
         </p>
+        <ng-template #clienteTexto>
+          <p>Atualize suas informações e acompanhe seus dados.</p>
+        </ng-template>
       </div>
+
       <div class="perfil-tag">
-        <i class="fa-solid fa-user-gear"></i>
-        <span>{{ tipoUsuarioLabel }}</span>
+        <span>{{ isTransportador() ? 'Transportador' : 'Cliente' }}</span>
       </div>
     </div>
 
-    <div class="perfil-main" *ngIf="!loading; else loadingTemplate">
-      <!-- SIDEBAR ESQUERDA -->
+    <div class="perfil-main">
       <aside class="perfil-sidebar">
-        <div class="perfil-card perfil-user-card">
-          <div class="perfil-avatar-wrapper">
-            <div class="perfil-avatar">
-              <span>{{ inicial }}</span>
-            </div>
-            <button type="button" class="btn-avatar-upload">
-              <i class="fa-solid fa-camera"></i>
-            </button>
+        <div class="perfil-card">
+          <div class="perfil-avatar">
+            <span>{{ inicial || '?' }}</span>
           </div>
 
-          <h2 class="perfil-name">{{ usuario?.nome }}</h2>
-          <p class="perfil-email"><i class="fa-solid fa-envelope"></i> {{ usuario?.email }}</p>
-          <p class="perfil-phone"><i class="fa-solid fa-phone"></i> {{ usuario?.telefone }}</p>
-
-          <div class="perfil-location">
-            <i class="fa-solid fa-location-dot"></i>
-            <span>{{ enderecoCompleto }}</span>
-          </div>
-
-          <!-- Média de avaliações (transportador) -->
-          <div class="perfil-rating" *ngIf="usuario?.tipo === 'Transportador' && mediaAvaliacoes">
-            <div class="rating-stars">
-              <i *ngFor="let star of [1,2,3,4,5]" class="fas fa-star" [class.active]="star <= mediaAvaliacoes"></i>
-            </div>
-            <span class="rating-text">{{ mediaAvaliacoes | number:'1.1-1' }} ({{ avaliacoesRecebidas.length }} avaliações)</span>
-          </div>
-
-          <div class="perfil-badge">
-            <i class="fa-solid fa-badge-check"></i>
-            <span>Conta ativa Hermes</span>
-          </div>
+          <h2>{{ usuario.nome || 'Nome não informado' }}</h2>
+          <p>{{ usuario.email || 'E-mail não informado' }}</p>
+          <p>{{ usuario.telefone || 'Telefone não informado' }}</p>
+          <p>{{ localizacao || 'Localização não informada' }}</p>
         </div>
 
-        <div class="perfil-card perfil-stats">
-          <h3>Resumo</h3>
-          <div class="perfil-stats-grid">
-            <div class="perfil-stat">
-              <span class="perfil-stat-number">{{ historicoFretes.length }}</span>
-              <span class="perfil-stat-label">
-                {{ usuario?.tipo === 'Transportador' ? 'Fretes realizados' : 'Fretes solicitados' }}
-              </span>
-            </div>
-            <div class="perfil-stat">
-              <span class="perfil-stat-number">DDD {{ dddExibido }}</span>
-              <span class="perfil-stat-label">Região de atuação</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Zona de perigo -->
         <div class="perfil-card perfil-delete-card">
-          <h3><i class="fas fa-exclamation-triangle" style="color: #e74c3c;"></i> Zona de Perigo</h3>
-          <p style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 1rem;">
-            Esta ação é irreversível. Todos seus dados serão permanentemente excluídos.
-          </p>
-          <button type="button" class="btn btn-danger btn-block" (click)="abrirModalExclusao()">
-            <i class="fas fa-trash"></i> Excluir minha conta
+          <h3>Zona de Perigo</h3>
+          <p>Esta ação é irreversível.</p>
+          <button type="button" class="btn btn-danger" (click)="abrirModalExclusao()">
+            Excluir minha conta
           </button>
         </div>
       </aside>
 
-      <!-- CONTEÚDO PRINCIPAL -->
       <section class="perfil-content">
-        <!-- Formulário de edição -->
-        <div class="perfil-card perfil-form-card">
+        <div class="perfil-card">
           <h3>Informações da conta</h3>
-          <p class="perfil-card-subtitle">Atualize seus dados pessoais e de contato.</p>
 
-          <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()" class="perfil-form">
+          <form (ngSubmit)="salvarPerfil()" #perfilForm="ngForm">
             <div class="perfil-form-grid">
               <div class="perfil-form-group">
                 <label for="nome">Nome completo</label>
-                <input id="nome" formControlName="nome" required>
-              </div>
-              <div class="perfil-form-group">
-                <label for="email">E-mail</label>
-                <input id="email" formControlName="email" type="email" required>
-              </div>
-              <div class="perfil-form-group">
-                <label for="telefone">Telefone</label>
-                <input id="telefone" formControlName="telefone" required>
-                <span class="field-info">Inclua o DDD no número. O sistema atualiza sua região automaticamente.</span>
-              </div>
-              <div class="perfil-form-group">
-                <label for="estado">Estado</label>
-                <input id="estado" formControlName="estado">
-              </div>
-              <div class="perfil-form-group">
-                <label for="cidade">Cidade</label>
-                <input id="cidade" formControlName="cidade">
-              </div>
-              <div class="perfil-form-group perfil-form-group-full">
-                <label for="endereco">Endereço</label>
-                <input id="endereco" formControlName="endereco">
-              </div>
-              <div class="perfil-form-group">
-                <label for="documento">Documento</label>
-                <input id="documento" formControlName="documento">
-              </div>
-              <div class="perfil-form-group">
-                <label for="ddd">DDD</label>
-                <input id="ddd" formControlName="ddd" readonly>
-                <span class="field-info">O DDD é calculado a partir do telefone.</span>
+                <input
+                  id="nome"
+                  type="text"
+                  name="nome"
+                  [(ngModel)]="usuario.nome"
+                  required
+                />
               </div>
 
-              <div class="perfil-form-group perfil-form-group-full" *ngIf="usuario?.tipo === 'Transportador'">
-                <label for="veiculo">Veículo</label>
-                <input id="veiculo" formControlName="veiculo">
-                <span class="field-info">Ex.: Caminhão 3/4, Fiorino, Carro de passeio, etc.</span>
+              <div class="perfil-form-group">
+                <label for="email">E-mail</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  [(ngModel)]="usuario.email"
+                  required
+                />
+              </div>
+
+              <div class="perfil-form-group">
+                <label for="telefone">Telefone</label>
+                <input
+                  id="telefone"
+                  type="text"
+                  name="telefone"
+                  [(ngModel)]="usuario.telefone"
+                  placeholder="Telefone não informado"
+                />
+              </div>
+
+              <div class="perfil-form-group">
+                <label for="estado">Estado</label>
+                <input
+                  id="estado"
+                  type="text"
+                  name="estado"
+                  [(ngModel)]="usuario.estado"
+                  placeholder="Estado não informado"
+                />
+              </div>
+
+              <div class="perfil-form-group">
+                <label for="cidade">Cidade</label>
+                <input
+                  id="cidade"
+                  type="text"
+                  name="cidade"
+                  [(ngModel)]="usuario.cidade"
+                  placeholder="Cidade não informada"
+                />
+              </div>
+
+              <div class="perfil-form-group perfil-form-group-full">
+                <label for="endereco">Endereço</label>
+                <input
+                  id="endereco"
+                  type="text"
+                  name="endereco"
+                  [(ngModel)]="usuario.endereco"
+                  placeholder="Endereço não informado"
+                />
+              </div>
+
+              <div class="perfil-form-group">
+                <label for="documento">Documento</label>
+                <input
+                  id="documento"
+                  type="text"
+                  name="documento"
+                  [(ngModel)]="usuario.documento"
+                  placeholder="Documento não informado"
+                />
+              </div>
+
+              <div class="perfil-form-group">
+                <label for="ddd">DDD</label>
+                <input
+                  id="ddd"
+                  type="text"
+                  name="ddd"
+                  [(ngModel)]="usuario.ddd"
+                  readonly
+                  placeholder="DDD não informado"
+                />
               </div>
             </div>
 
             <div class="perfil-form-actions">
               <button type="submit" class="btn btn-primary">
-                <i class="fa-solid fa-floppy-disk"></i> Salvar alterações
+                Salvar alterações
               </button>
             </div>
-            <div *ngIf="salvo" class="alert success">Perfil atualizado com sucesso!</div>
           </form>
-        </div>
-
-        <!-- Histórico de fretes -->
-        <div class="perfil-card perfil-history-card">
-          <div class="perfil-history-header">
-            <h3>Histórico de fretes</h3>
-            <p class="perfil-card-subtitle">Acompanhe os últimos fretes vinculados à sua conta.</p>
-          </div>
-          <div *ngIf="historicoFretes.length === 0" class="empty-state">
-            <i class="fa-regular fa-box-archive"></i>
-            <p>Nenhum frete encontrado no histórico.</p>
-          </div>
-          <div class="perfil-history-list" *ngIf="historicoFretes.length > 0">
-            <div *ngFor="let frete of historicoFretes" class="perfil-history-item">
-              <div class="history-main">
-                <div class="history-route">
-                  <span class="history-label">Origem</span>
-                  <p>{{ frete.origem }}</p>
-                </div>
-                <div class="history-route">
-                  <span class="history-label">Destino</span>
-                  <p>{{ frete.destino }}</p>
-                </div>
-              </div>
-              <div class="history-meta">
-                <span class="history-status" [class]="'history-status-' + (frete.status | lowercase)">
-                  {{ frete.status }}
-                </span>
-                <span class="history-value">
-                  <i class="fa-solid fa-coins"></i> R$ {{ frete.valor | number:'1.2-2' }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Avaliações recebidas (transportador) -->
-        <div class="perfil-card perfil-avaliacoes-card" *ngIf="usuario?.tipo === 'Transportador'">
-          <div class="perfil-avaliacoes-header">
-            <h3>Avaliações dos Clientes</h3>
-            <div class="avaliacoes-summary" *ngIf="mediaAvaliacoes">
-              <div class="avaliacoes-rating">
-                <span class="rating-number">{{ mediaAvaliacoes | number:'1.1-1' }}</span>
-                <div class="rating-stars-large">
-                  <i *ngFor="let star of [1,2,3,4,5]" class="fas fa-star" [class.active]="star <= mediaAvaliacoes"></i>
-                </div>
-                <span class="rating-count">{{ avaliacoesRecebidas.length }} avaliações</span>
-              </div>
-            </div>
-          </div>
-          <div *ngIf="avaliacoesRecebidas.length === 0" class="empty-state">
-            <i class="fa-regular fa-star"></i>
-            <p>Nenhuma avaliação recebida ainda.</p>
-            <small>As avaliações aparecerão aqui quando os clientes avaliarem seus serviços.</small>
-          </div>
-          <div class="avaliacoes-list" *ngIf="avaliacoesRecebidas.length > 0">
-            <div *ngFor="let av of avaliacoesRecebidas" class="avaliacao-item">
-              <div class="avaliacao-header">
-                <div class="avaliacao-user">
-                  <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-                  <div class="user-info">
-                    <span class="user-name">Cliente #{{ av.freteId }}</span>
-                    <div class="avaliacao-stars">
-                      <i *ngFor="let star of [1,2,3,4,5]" class="fas fa-star" [class.active]="star <= av.nota"></i>
-                    </div>
-                  </div>
-                </div>
-                <span class="avaliacao-date">{{ av.dataAvaliacao | date:'dd/MM/yyyy' }}</span>
-              </div>
-              <div class="avaliacao-comentario" *ngIf="av.comentario">
-                <p>"{{ av.comentario }}"</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Avaliações feitas pelo cliente -->
-        <div class="perfil-card perfil-avaliacoes-card" *ngIf="usuario?.tipo === 'Cliente'">
-          <div class="perfil-avaliacoes-header">
-            <h3>Minhas Avaliações</h3>
-            <p class="perfil-card-subtitle">Avaliações que você fez sobre os transportadores.</p>
-          </div>
-          <div *ngIf="avaliacoesFeitas.length === 0" class="empty-state">
-            <i class="fa-regular fa-comment"></i>
-            <p>Você ainda não fez nenhuma avaliação.</p>
-            <small>As avaliações aparecerão aqui após você avaliar os fretes concluídos.</small>
-          </div>
-          <div class="avaliacoes-list" *ngIf="avaliacoesFeitas.length > 0">
-            <div *ngFor="let av of avaliacoesFeitas" class="avaliacao-item">
-              <div class="avaliacao-header">
-                <div class="avaliacao-user">
-                  <div class="user-avatar"><i class="fa-solid fa-truck"></i></div>
-                  <div class="user-info">
-                    <span class="user-name">Transportador</span>
-                    <div class="avaliacao-stars">
-                      <i *ngFor="let star of [1,2,3,4,5]" class="fas fa-star" [class.active]="star <= av.nota"></i>
-                    </div>
-                  </div>
-                </div>
-                <span class="avaliacao-date">{{ av.dataAvaliacao | date:'dd/MM/yyyy' }}</span>
-              </div>
-              <div class="avaliacao-comentario" *ngIf="av.comentario">
-                <p>"{{ av.comentario }}"</p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
     </div>
-
-    <ng-template #loadingTemplate>
-      <div class="loading-container"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>
-    </ng-template>
   </div>
 </div>
 
-<!-- MODAL DE EXCLUSÃO -->
-<div class="modal-exclusao-overlay" *ngIf="modalExclusaoAberto" (click)="fecharModalExclusao()">
-  <div class="modal-exclusao-container" (click)="$event.stopPropagation()">
+<div *ngIf="modalExcluirAberto" class="modal-exclusao-overlay">
+  <div class="modal-exclusao-container">
     <div class="modal-header-danger">
-      <h3><i class="fas fa-exclamation-triangle"></i> Confirmar Exclusão</h3>
-      <button class="modal-close" (click)="fecharModalExclusao()">&times;</button>
+      <h3>Confirmar Exclusão</h3>
+      <button type="button" class="btn-close" (click)="fecharModalExclusao()">&times;</button>
     </div>
-    <div class="modal-body">
+
+    <div class="modal-body-danger">
       <p><strong>Atenção! Esta ação é irreversível.</strong></p>
-      <p>TODOS os seus dados serão excluídos permanentemente:</p>
-      <ul>
-        <li>Seu perfil e dados pessoais</li>
-        <li>Todos os seus fretes</li>
-        <li>Histórico de atividades</li>
-        <li>Avaliações realizadas/recebidas</li>
-        <li *ngIf="usuario?.tipo === 'Transportador'">Seus veículos cadastrados</li>
-      </ul>
       <p>Digite <strong>EXCLUIR CONTA</strong> para confirmar:</p>
-      <input type="text" [(ngModel)]="confirmacaoTexto" placeholder="Digite EXCLUIR CONTA aqui">
+
+      <input
+        type="text"
+        name="confirmacaoTexto"
+        [(ngModel)]="confirmacaoTexto"
+        placeholder="Digite EXCLUIR CONTA aqui"
+      />
     </div>
-    <div class="modal-footer">
-      <button class="btn-secondary" (click)="fecharModalExclusao()">Cancelar</button>
-      <button class="btn-danger" (click)="confirmarExclusao()" [disabled]="confirmacaoTexto !== 'EXCLUIR CONTA' || excluirLoading">
-        <i class="fas fa-trash"></i> {{ excluirLoading ? 'Excluindo...' : 'Excluir Conta' }}
+
+    <div class="modal-footer-danger">
+      <button type="button" class="btn btn-secondary" (click)="fecharModalExclusao()">
+        Cancelar
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-danger"
+        [disabled]="!podeExcluir() || excluindoConta"
+        (click)="confirmarExclusaoConta()"
+      >
+        {{ excluindoConta ? 'Excluindo...' : 'Excluir Conta' }}
       </button>
     </div>
   </div>
