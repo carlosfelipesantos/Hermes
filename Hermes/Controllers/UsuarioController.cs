@@ -25,6 +25,9 @@ public class UsuarioController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Criar(CriarUsuario dto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         try
         {
             if (string.IsNullOrWhiteSpace(dto.Email) || !dto.Email.Contains("@") || !dto.Email.Contains("."))

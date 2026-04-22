@@ -42,6 +42,9 @@ namespace Hermes.Controllers
         [HttpPut("{id}/lida")]
         public async Task<IActionResult> MarcarComoLida(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var userId = int.Parse(
                 User.FindFirst(ClaimTypes.NameIdentifier).Value
             );

@@ -41,6 +41,9 @@ namespace Hermes.Controllers
         [HttpPost]
         public async Task<ActionResult<AvaliacaoDTO>> Criar(CriarAvaliacao dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
                 var clienteId = int.Parse(

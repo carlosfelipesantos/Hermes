@@ -64,6 +64,9 @@ namespace Hermes.Controllers
         [HttpPost]
         public async Task<IActionResult> Criar([FromBody] CriarVeiculo dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var transportadorId = int.Parse(
                 User.FindFirst(ClaimTypes.NameIdentifier).Value
             );
@@ -80,6 +83,9 @@ namespace Hermes.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, [FromBody] AtualizarVeiculo dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var transportadorId = int.Parse(
                 User.FindFirst(ClaimTypes.NameIdentifier).Value
             );

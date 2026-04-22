@@ -154,6 +154,9 @@ namespace Hermes.Controllers
         [HttpPost("imediato")]
         public async Task<IActionResult> CriarFreteImediato([FromBody] CriarFrete dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var clienteId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var frete = _mapper.Map<Frete>(dto);
             frete.ClienteId = clienteId;
@@ -166,6 +169,9 @@ namespace Hermes.Controllers
         [HttpPost("agendado")]
         public async Task<IActionResult> CriarFreteAgendado([FromBody] CriarFreteAgendadoDTO dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var clienteId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var frete = _mapper.Map<Frete>(dto);
             frete.ClienteId = clienteId;
@@ -179,6 +185,9 @@ namespace Hermes.Controllers
         [HttpPost("{id}/aceitar")]
         public async Task<IActionResult> AceitarFrete(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var sucesso = await _freteService.AceitarFrete(id, transportadorId);
 
@@ -191,6 +200,9 @@ namespace Hermes.Controllers
         [HttpPost("{id}/finalizar")]
         public async Task<IActionResult> FinalizarFrete(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var sucesso = await _freteService.FinalizarFrete(id, transportadorId);
 
@@ -203,6 +215,9 @@ namespace Hermes.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, AtualizarStatusFrete dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
@@ -242,6 +257,9 @@ namespace Hermes.Controllers
         [HttpPost("{id}/confirmar")]
         public async Task<IActionResult> ConfirmarFreteAgendado(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var sucesso = await _freteService.ConfirmarFreteAgendado(id, transportadorId);
 
@@ -254,6 +272,9 @@ namespace Hermes.Controllers
         [HttpPost("{id}/rejeitar")]
         public async Task<IActionResult> RejeitarFreteAgendado(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var sucesso = await _freteService.RejeitarFreteAgendado(id, transportadorId);
 

@@ -32,6 +32,9 @@ public class DisponibilidadeController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CriarJanela(CriarDisponibilidadeBaseDTO dto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
         await _service.CriarJanela(transportadorId, dto);
         return Ok();
@@ -41,6 +44,9 @@ public class DisponibilidadeController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> AtualizarJanela(int id, CriarDisponibilidadeBaseDTO dto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
         await _service.AtualizarJanela(id, dto, transportadorId);
         return NoContent();
