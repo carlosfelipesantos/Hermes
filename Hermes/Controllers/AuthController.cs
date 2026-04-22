@@ -64,6 +64,9 @@ namespace Hermes.Controllers
             if (user == null)
                 return Unauthorized("Credenciais inválidas");
 
+            if (!user.Ativo)
+                return Unauthorized("Conta desativada. Entre em contato com o suporte.");
+
             var token = GerarToken(user);
 
             return Ok(new

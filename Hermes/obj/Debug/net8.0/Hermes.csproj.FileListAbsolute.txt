@@ -135,7 +135,6 @@ C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\staticweb
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\swae.build.ex.cache
-C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\Hermes.csproj.Up2Date
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\Hermes.dll
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\refint\Hermes.dll
@@ -318,3 +317,36 @@ C:\Users\Aluno\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\staticwebassets.b
 C:\Users\Aluno\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Users\Aluno\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\swae.build.ex.cache
 C:\Users\Aluno\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Build.Locator.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\System.ClientModel.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\System.Formats.Asn1.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\System.IO.Pipelines.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\System.Text.Encodings.Web.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\System.Text.Json.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll

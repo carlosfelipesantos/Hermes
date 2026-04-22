@@ -1,25 +1,25 @@
 ﻿using Hermes.Data;
-using Hermes.DTOs.Usuario;
 using Hermes.Entities;
 using Hermes.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using BCrypt.Net;
 
 namespace Hermes.Services.Implementations
 {
     public class UsuarioService : IUsuarioService
     {
         private readonly HermesBD _context;
+
         public UsuarioService(HermesBD context)
         {
             _context = context;
         }
+
         public async Task<IEnumerable<Usuario>> Listar()
         {
             return await _context.Usuarios.ToListAsync();
         }
 
- 
         public async Task<Usuario> BuscarPorId(int id)
         {
             return await _context.Usuarios.FindAsync(id);
@@ -29,11 +29,14 @@ namespace Hermes.Services.Implementations
         {
             var emailExiste = await _context.Usuarios.AnyAsync(u => u.Email == usuario.Email);
             if (emailExiste)
-                throw new Exception("Email ja esta em uso");
+                throw new Exception("Email já está em uso");
 
             var telefoneExiste = await _context.Usuarios.AnyAsync(u => u.Telefone == usuario.Telefone);
             if (telefoneExiste)
-                throw new Exception("Telefone ja esta em uso");
+                throw new Exception("Telefone já está em uso");
+
+            // 🔐 Gera o hash da senha usando BCrypt
+            usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
 
             usuario.DataCadastro = DateTime.Now;
             usuario.Ativo = true;
@@ -46,24 +49,29 @@ namespace Hermes.Services.Implementations
 
         public async Task<Usuario> Autenticar(string email, string senha)
         {
-            return await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.Email == email && u.Senha == senha);
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Email == email);
+
+            if (usuario == null)
+                return null;
+
+            // 🔐 Verifica a senha com BCrypt
+            bool senhaValida = BCrypt.Net.BCrypt.Verify(senha, usuario.Senha);
+            if (!senhaValida)
+                return null;
+
+            return usuario;
         }
 
         public async Task<bool> Deletar(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
-
             if (usuario == null)
                 return false;
 
             _context.Usuarios.Remove(usuario);
             await _context.SaveChangesAsync();
-
             return true;
         }
     }
-
-        
-    }
-
+}
