@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using Hermes.Data;
 using Hermes.DTOs.Frete;
 using Hermes.DTOs.Usuario;
+using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Controllers
 {
@@ -13,45 +12,40 @@ namespace Hermes.Controllers
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
     {
-        private readonly HermesBD _context;
+        private readonly IAdminService _adminService;
         private readonly IMapper _mapper;
 
-        public AdminController(HermesBD context, IMapper mapper)
+        public AdminController(IAdminService adminService, IMapper mapper)
         {
-            _context = context;
+            _adminService = adminService;
             _mapper = mapper;
         }
 
         [HttpGet("usuarios")]
         public async Task<IActionResult> ListarUsuarios([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var query = _context.Usuarios.AsNoTracking();
+            // Limitar pageSize para evitar sobrecarga
+            pageSize = pageSize > 100 ? 100 : pageSize;
 
-            var total = await query.CountAsync();
-
-            var usuarios = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
+            var (usuarios, total) = await _adminService.ListarUsuarios(page, pageSize);
             var usuariosDTO = _mapper.Map<List<UsuarioDTO>>(usuarios);
 
-            return Ok(new {
-
+            return Ok(new
+            {
                 Data = usuariosDTO,
                 Total = total,
                 Page = page,
                 PageSize = pageSize
-
             });
         }
 
         [HttpGet("fretes")]
         public async Task<IActionResult> ListarFretes([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var query = _context.Fretes.AsNoTracking().Include(f => f.Cliente).Include(f => f.Transportador);
+            // Limitar pageSize para evitar sobrecarga
+            pageSize = pageSize > 100 ? 100 : pageSize;
 
-            var total = await query.CountAsync();
-
-            var fretes = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
+            var (fretes, total) = await _adminService.ListarFretes(page, pageSize);
             var fretesDTO = _mapper.Map<List<FreteDTO>>(fretes);
 
             return Ok(new
@@ -66,16 +60,11 @@ namespace Hermes.Controllers
         [HttpPut("usuarios/{id}/status")]
         public async Task<IActionResult> AtualizarStatusUsuario(int id, [FromBody] bool ativo)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null)
+            var sucesso = await _adminService.AtualizarStatusUsuario(id, ativo);
+            if (!sucesso)
                 return NotFound();
-
-            usuario.Ativo = ativo;
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
-
-    } 
+    }
 }
-
