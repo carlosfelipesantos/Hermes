@@ -1,5 +1,6 @@
 using Hermes;
 using Hermes.Data;
+using Hermes.Middlewares;
 using Hermes.Services.Implementations;
 using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,18 +10,26 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//  Carregar configurações específicas do ambiente
+var environment = builder.Environment;
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+//  CORS configurável por ambiente (lê do appsettings)
+var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? new[] { "http://localhost:4200" };
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Permitir Angular",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:4200") 
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();  
-        });
+    options.AddPolicy("PermitirFrontend", policy =>
+    {
+        policy.WithOrigins(corsOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
 });
-
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -80,7 +89,7 @@ builder.Services.AddScoped<IDisponibilidadeService, DisponibilidadeService>();
 builder.Services.AddScoped<INotificacaoService, NotificacaoService>();
 
 var jwtSettings = builder.Configuration.GetSection("JWT");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+var key = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? throw new InvalidOperationException("JWT Key não configurada"));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -89,7 +98,8 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false; // dev
+    // HTTPS obrigatório em produção, opcional em desenvolvimento
+    options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -100,7 +110,8 @@ builder.Services.AddAuthentication(options =>
 
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ClockSkew = TimeSpan.Zero // Remove tolerância padrão de 5 minutos
     };
 });
 
@@ -113,11 +124,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    // Em produção, redireciona para HTTPS
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
 
-
-app.UseCors("Permitir Angular");
+//  Usar a política de CORS configurada
+app.UseCors("PermitirFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
