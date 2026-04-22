@@ -8,6 +8,9 @@
 <div class="perfil-page">
   <div class="perfil-wrapper">
     <div class="perfil-header">
+      <button type="button" class="btn-voltar" [routerLink]="getDashboardLink()">
+      <i class="fa-solid fa-arrow-left"></i>
+      </button>
       <div>
         <h1>Meu Perfil</h1>
         <p *ngIf="isTransportador(); else clienteTexto">

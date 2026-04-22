@@ -2187,6 +2187,18 @@
           },
           "tipo": {
             "$ref": "#/components/schemas/TipoUsuario"
+          },
+          "telefone": {
+            "type": "string",
+            "nullable": true
+          },
+          "cidade": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { UsuarioService } from '../../../services/usuario/usuario.service';
 import { Usuario } from '../../../models/usuario/usuario.model';
 
@@ -18,7 +19,8 @@ export class Perfil implements OnInit {
 
   constructor(
     private usuarioService: UsuarioService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +59,19 @@ export class Perfil implements OnInit {
     });
   }
 
+  getDashboardLink(): string {
+    if (!this.usuario) return '/';
+    switch (this.usuario.tipo) {
+      case 'Cliente':
+        return '/cliente';
+      case 'Transportador':
+        return '/transportador';
+      case 'Admin':
+        return '/admin/dashboard';  
+      default: return '/';
+    }
+  }
+
   abrirModalExclusao(): void {
     this.modalExcluirAberto = true;
   }
@@ -86,6 +101,23 @@ export class Perfil implements OnInit {
         this.excluindoConta = false;
         this.cdr.detectChanges();
       }
+    });
+  }
+
+  onFotoSelecionada(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+    const formData = new FormData();
+    formData.append('foto', file);
+
+    this.usuarioService.uploadFoto(formData).subscribe({
+      next: (response: { fotoUrl: any; }) => {
+        this.usuario.fotoPerfil = response.fotoUrl;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => console.error('Erro ao enviar foto', err)
     });
   }
 

@@ -14,7 +14,7 @@ export class FreteService {
 
   // Cliente
   criarFreteImediato(frete: FreteImediatoRequest): Observable<Frete> {
-    return this.http.post<Frete>(`${this.apiUrl}/imediató`, frete);
+    return this.http.post<Frete>(`${this.apiUrl}/imediato`, frete);
   }
 
   criarFreteAgendado(frete: FreteAgendadoRequest): Observable<Frete> {

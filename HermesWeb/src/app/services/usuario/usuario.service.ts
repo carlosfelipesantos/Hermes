@@ -24,6 +24,10 @@ export class UsuarioService {
     return this.http.get<Usuario>(`${this.apiUrl}/me`);
   }
 
+  uploadFoto(formData: FormData): Observable<{ fotoUrl: string }> {
+    return this.http.post<{ fotoUrl: string }>(`${this.apiUrl}/usuarios/foto`, formData);
+  }
+
   atualizarPerfil(usuario: Usuario): Observable<Usuario> {
     return this.http.put<Usuario>(`${this.apiUrl}/${usuario.id}`, usuario);
   }
