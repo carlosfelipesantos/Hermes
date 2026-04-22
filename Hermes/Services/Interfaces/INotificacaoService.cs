@@ -12,5 +12,8 @@ namespace Hermes.Services.Interfaces
             TipoNotificacao tipo,
             int? freteId = null
         );
+
+        Task<List<Notificacao>> ListarNotificacoesPorUsuario(int usuarioId);
+        Task<bool> MarcarComoLida(int notificacaoId, int usuarioId);
     }
 }

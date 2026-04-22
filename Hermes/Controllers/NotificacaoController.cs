@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Hermes.Data;
 using Hermes.DTOs.Notificacao;
+using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Hermes.Controllers
@@ -13,12 +12,12 @@ namespace Hermes.Controllers
     [Route("api/[controller]")]
     public class NotificacaoController : ControllerBase
     {
-        private readonly HermesBD _context;
+        private readonly INotificacaoService _notificacaoService;
         private readonly IMapper _mapper;
 
-        public NotificacaoController(HermesBD context, IMapper mapper)
+        public NotificacaoController(INotificacaoService notificacaoService, IMapper mapper)
         {
-            _context = context;
+            _notificacaoService = notificacaoService;
             _mapper = mapper;
         }
 
@@ -26,14 +25,9 @@ namespace Hermes.Controllers
         [HttpGet("minhas")]
         public async Task<ActionResult<IEnumerable<NotificacaoDTO>>> MinhasNotificacoes()
         {
-            var userId = int.Parse(
-                User.FindFirst(ClaimTypes.NameIdentifier).Value
-            );
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var notificacoes = await _context.Notificacoes
-                .Where(n => n.UsuarioId == userId)
-                .OrderByDescending(n => n.DataCriacao)
-                .ToListAsync();
+            var notificacoes = await _notificacaoService.ListarNotificacoesPorUsuario(userId);
 
             return Ok(_mapper.Map<List<NotificacaoDTO>>(notificacoes));
         }
@@ -42,22 +36,12 @@ namespace Hermes.Controllers
         [HttpPut("{id}/lida")]
         public async Task<IActionResult> MarcarComoLida(int id)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var userId = int.Parse(
-                User.FindFirst(ClaimTypes.NameIdentifier).Value
-            );
+            var sucesso = await _notificacaoService.MarcarComoLida(id, userId);
 
-            var notificacao = await _context.Notificacoes
-                .FirstOrDefaultAsync(n => n.Id == id && n.UsuarioId == userId);
-
-            if (notificacao == null)
+            if (!sucesso)
                 return NotFound();
-
-            notificacao.Lida = true;
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

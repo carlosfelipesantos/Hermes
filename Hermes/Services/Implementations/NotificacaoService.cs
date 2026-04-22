@@ -15,6 +15,29 @@ namespace Hermes.Services.Implementations
             _context = context;
         }
 
+        //Listar notificações de um usuário
+        public async Task<List<Notificacao>> ListarNotificacoesPorUsuario(int usuarioId)
+        {
+            return await _context.Notificacoes
+                .Where(n => n.UsuarioId == usuarioId)
+                .OrderByDescending(n => n.DataCriacao)
+                .ToListAsync();
+        }
+
+         //Marcar notificação como lida
+        public async Task<bool> MarcarComoLida(int notificacaoId, int usuarioId)
+        {
+            var notificacao = await _context.Notificacoes
+                .FirstOrDefaultAsync(n => n.Id == notificacaoId && n.UsuarioId == usuarioId);
+
+            if (notificacao == null)
+                return false;
+
+            notificacao.Lida = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         // Cria notificação genérica
         public async Task<Notificacao> CriarNotificacao(
             int usuarioId,
