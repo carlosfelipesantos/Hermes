@@ -27,15 +27,18 @@ namespace Hermes.Services.Implementations
 
         public async Task<Usuario> Criar(Usuario usuario)
         {
+            
             var emailExiste = await _context.Usuarios.AnyAsync(u => u.Email == usuario.Email);
             if (emailExiste)
                 throw new Exception("Email já está em uso");
 
-            var telefoneExiste = await _context.Usuarios.AnyAsync(u => u.Telefone == usuario.Telefone);
+           
+            var telefoneExiste = await _context.Usuarios
+                .AnyAsync(u => u.DDD == usuario.DDD && u.Telefone == usuario.Telefone);
             if (telefoneExiste)
                 throw new Exception("Telefone já está em uso");
 
-            // 🔐 Gera o hash da senha usando BCrypt
+            // Gera o hash da senha usando BCrypt
             usuario.Senha = BCrypt.Net.BCrypt.HashPassword(usuario.Senha);
 
             usuario.DataCadastro = DateTime.Now;
@@ -55,7 +58,7 @@ namespace Hermes.Services.Implementations
             if (usuario == null)
                 return null;
 
-            // 🔐 Verifica a senha com BCrypt
+            // Verifica a senha com BCrypt
             bool senhaValida = BCrypt.Net.BCrypt.Verify(senha, usuario.Senha);
             if (!senhaValida)
                 return null;

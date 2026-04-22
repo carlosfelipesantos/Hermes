@@ -29,7 +29,14 @@ namespace Hermes.Services.Implementations
         }
         public async Task<Veiculo> Criar(Veiculo veiculo)
         {
+           
+            var placaExiste = await _context.Veiculos
+                .AnyAsync(v => v.Placa == veiculo.Placa);
+            if (placaExiste)
+                throw new Exception("Esta placa já está cadastrada no sistema");
+
             veiculo.DataCadastro = DateTime.Now;
+            veiculo.Disponivel = true; 
 
             _context.Veiculos.Add(veiculo);
             await _context.SaveChangesAsync();

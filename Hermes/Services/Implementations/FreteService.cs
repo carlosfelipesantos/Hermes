@@ -343,20 +343,65 @@ namespace Hermes.Services.Implementations
 
         public async Task<bool> AceitarFrete(int freteId, int transportadorId)
         {
-            var frete = await _context.Fretes.FindAsync(freteId);
+            var frete = await _context.Fretes
+                .Include(f => f.Cliente)
+                .FirstOrDefaultAsync(f => f.Id == freteId);
 
             if (frete == null || frete.TransportadorId != null || frete.Status != StatusFrete.Pendente)
                 return false;
 
+            // Verificar se o transportador existe e está ativo
+            var transportador = await _context.Transportadores
+                .Include(t => t.Veiculos)
+                .FirstOrDefaultAsync(t => t.Id == transportadorId && t.Ativo);
+
+            if (transportador == null)
+                throw new Exception("Transportador não encontrado ou inativo");
+
+            // Verificar compatibilidade de veículo
+            bool veiculoCompativel = transportador.Veiculos
+                .Any(v => CompatibilidadeCarga.IsCompativel(v.TipoVeiculo, frete.TipoCarga));
+
+            if (!veiculoCompativel)
+                throw new Exception("Você não possui um veículo compatível com este tipo de carga");
+
+            // ✅ Definir data/hora de início (ex: 30 minutos a partir de agora)
+            var dataHoraInicio = DateTime.Now.AddMinutes(30);
+
+            // Calcular duração estimada com base na distância
+            var distancia = CalcularDistancia(
+                frete.LatitudeOrigem, frete.LongitudeOrigem,
+                frete.LatitudeDestino, frete.LongitudeDestino);
+            var duracaoEstimada = CalcularDuracaoEstimada(distancia);
+            var dataHoraFimPrevisto = dataHoraInicio + duracaoEstimada;
+
+            // Verificar conflito de agenda
+            var intervalosLivres = await _disponibilidadeService.ListarIntervalosLivres(
+                transportadorId,
+                dataHoraInicio.Date,
+                TimeSpan.FromMinutes(20) // buffer
+            );
+
+            bool horarioDisponivel = intervalosLivres.Any(i =>
+                i.Inicio <= dataHoraInicio && i.Fim >= dataHoraFimPrevisto);
+
+            if (!horarioDisponivel)
+                throw new Exception("Não há disponibilidade na agenda para o horário calculado");
+
+            //  Atualizar o frete
             frete.TransportadorId = transportadorId;
             frete.Status = StatusFrete.Aceito;
+            frete.DataHoraInicio = dataHoraInicio;
+            frete.DataHoraFimPrevisto = dataHoraFimPrevisto;
+            frete.DuracaoEstimada = duracaoEstimada;
 
             await _context.SaveChangesAsync();
 
+            //  Notificar o cliente
             await _notificacaoService.CriarNotificacao(
                 frete.ClienteId,
                 "Frete aceito",
-                $"Seu frete #{frete.Id} foi aceito pelo transportador {frete.TransportadorId}.",
+                $"Seu frete #{frete.Id} foi aceito por {transportador.Nome}. Início previsto: {dataHoraInicio:dd/MM/yyyy HH:mm}",
                 TipoNotificacao.FreteAceito,
                 frete.Id
             );

@@ -27,27 +27,37 @@ namespace Hermes.Services.Implementations
             if (frete == null)
                 throw new Exception("Frete não encontrado");
 
-            if (frete.Status != Enums.StatusFrete.Concluido)
+            //  verifica se o cliente é o dono do frete
+            if (frete.ClienteId != avaliacao.ClienteId)
+                throw new Exception("Você só pode avaliar fretes que solicitou");
+
+            if (frete.Status != StatusFrete.Concluido)
                 throw new Exception("Frete ainda não foi concluído");
 
             if (frete.Avaliacao != null)
                 throw new Exception("Frete já avaliado");
 
-            // Busca o transportador
+            // verifica se o transportador da avaliação é o mesmo do frete
+            if (frete.TransportadorId != avaliacao.TransportadorId)
+                throw new Exception("O transportador informado não corresponde ao frete");
+
+         
             var transportador = await _context.Transportadores
                 .FirstOrDefaultAsync(t => t.Id == avaliacao.TransportadorId);
 
             if (transportador == null)
                 throw new Exception("Transportador não encontrado");
 
-      
             avaliacao.Frete = frete;
             avaliacao.Transportador = transportador;
-
             avaliacao.DataAvaliacao = DateTime.Now;
 
+        
 
-            // Notificação para o transportador
+            _context.Avaliacoes.Add(avaliacao);
+            await _context.SaveChangesAsync();
+
+           
             await _notificacaoService.CriarNotificacao(
                 avaliacao.TransportadorId,
                 "Você recebeu uma avaliação",
@@ -56,13 +66,8 @@ namespace Hermes.Services.Implementations
                 avaliacao.FreteId
             );
 
-         
-            _context.Avaliacoes.Add(avaliacao);
-            await _context.SaveChangesAsync();
-
             return avaliacao;
         }
-
 
 
 
