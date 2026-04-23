@@ -2,6 +2,7 @@
 using Hermes.DTOs.Disponibilidade;
 using Hermes.Entities;
 using Hermes.Enums;
+using Hermes.Exceptions;
 using Hermes.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,17 +11,16 @@ namespace Hermes.Services.Implementations
     public class DisponibilidadeService : IDisponibilidadeService
     {
         private readonly HermesBD _context;
-        private readonly TimeSpan _bufferPadrao = TimeSpan.FromMinutes(20); // ou buscar de configuração
+        private readonly TimeSpan _bufferPadrao = TimeSpan.FromMinutes(20);
 
         public DisponibilidadeService(HermesBD context)
         {
             _context = context;
         }
 
-     
         public async Task<List<DisponibilidadeBaseDTO>> ListarJanelasPorTransportador(int transportadorId)
         {
-            return await _context.DisponibilidadesBase
+            var janelas = await _context.DisponibilidadesBase
                 .Where(d => d.TransportadorId == transportadorId)
                 .Select(d => new DisponibilidadeBaseDTO
                 {
@@ -30,15 +30,20 @@ namespace Hermes.Services.Implementations
                     HoraFim = d.HoraFim
                 })
                 .ToListAsync();
+
+            if (!janelas.Any())
+                throw new NotFoundException($"Nenhuma janela de disponibilidade encontrada para o transportador {transportadorId}");
+
+            return janelas;
         }
 
         public async Task CriarJanela(int transportadorId, CriarDisponibilidadeBaseDTO dto)
         {
             // Validação básica
             if (dto.HoraInicio >= dto.HoraFim)
-                throw new Exception("Horário de início deve ser menor que o horário de fim.");
+                throw new BusinessException("Horário de início deve ser menor que o horário de fim.");
 
-            //  Validar sobreposição com janelas existentes
+            // Validar sobreposição com janelas existentes
             var sobreposicao = await _context.DisponibilidadesBase
                 .AnyAsync(d => d.TransportadorId == transportadorId &&
                                d.DiaSemana == dto.DiaSemana &&
@@ -46,7 +51,7 @@ namespace Hermes.Services.Implementations
                                d.HoraFim > dto.HoraInicio);
 
             if (sobreposicao)
-                throw new Exception("Já existe uma janela de disponibilidade neste horário.");
+                throw new ConflictException("Já existe uma janela de disponibilidade neste horário.");
 
             var janela = new DisponibilidadeBase
             {
@@ -64,10 +69,10 @@ namespace Hermes.Services.Implementations
             var janela = await _context.DisponibilidadesBase
                 .FirstOrDefaultAsync(d => d.Id == janelaId && d.TransportadorId == transportadorId);
             if (janela == null)
-                throw new Exception("Janela não encontrada.");
+                throw new NotFoundException($"Janela {janelaId} não encontrada para o transportador {transportadorId}");
 
             if (dto.HoraInicio >= dto.HoraFim)
-                throw new Exception("Horário de início deve ser menor que o horário de fim.");
+                throw new BusinessException("Horário de início deve ser menor que o horário de fim.");
 
             // Validar sobreposição com outras janelas (exceto a própria)
             var sobreposicao = await _context.DisponibilidadesBase
@@ -78,7 +83,7 @@ namespace Hermes.Services.Implementations
                                d.HoraFim > dto.HoraInicio);
 
             if (sobreposicao)
-                throw new Exception("Já existe uma janela de disponibilidade neste horário.");
+                throw new ConflictException("Já existe uma janela de disponibilidade neste horário.");
 
             janela.DiaSemana = dto.DiaSemana;
             janela.HoraInicio = dto.HoraInicio;
@@ -91,20 +96,19 @@ namespace Hermes.Services.Implementations
             var janela = await _context.DisponibilidadesBase
                 .FirstOrDefaultAsync(d => d.Id == janelaId && d.TransportadorId == transportadorId);
             if (janela == null)
-                return false;
+                throw new NotFoundException($"Janela {janelaId} não encontrada para o transportador {transportadorId}");
 
             _context.DisponibilidadesBase.Remove(janela);
             await _context.SaveChangesAsync();
             return true;
         }
 
-
         public async Task<List<IntervaloLivreDTO>> ListarIntervalosLivres(int transportadorId, DateTime data, TimeSpan? buffer = null)
         {
             buffer ??= _bufferPadrao;
             var diaSemana = data.DayOfWeek;
 
-            //  Obter janelas de trabalho para o dia da semana
+            // Obter janelas de trabalho para o dia da semana
             var janelas = await _context.DisponibilidadesBase
                 .Where(d => d.TransportadorId == transportadorId && d.DiaSemana == diaSemana)
                 .Select(d => new { d.HoraInicio, d.HoraFim })
@@ -119,7 +123,7 @@ namespace Hermes.Services.Implementations
             var fretes = await _context.Fretes
                 .Where(f => f.TransportadorId == transportadorId &&
                             f.DataHoraInicio >= inicioDia && f.DataHoraInicio < fimDia &&
-                            f.Status != StatusFrete.Cancelado) // apenas ativos
+                            f.Status != StatusFrete.Cancelado)
                 .Select(f => new { f.DataHoraInicio, f.DataHoraFimPrevisto })
                 .ToListAsync();
 
@@ -145,9 +149,7 @@ namespace Hermes.Services.Implementations
                 var ocupacoesComBuffer = new List<(DateTime Inicio, DateTime Fim)>();
                 foreach (var o in ocupacoes)
                 {
-                    // Adiciona a ocupação
                     ocupacoesComBuffer.Add((o.Inicio, o.Fim));
-                    // Adiciona o buffer após a ocupação (se não ultrapassar o fim da janela)
                     var bufferFim = o.Fim + buffer.Value;
                     if (bufferFim < fimJanela)
                         ocupacoesComBuffer.Add((o.Fim, bufferFim));

@@ -1,5 +1,6 @@
 ﻿using Hermes.DTOs.Auth;
 using Hermes.Entities;
+using Hermes.Exceptions;
 using Hermes.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,24 +28,24 @@ namespace Hermes.Controllers
         {
             var jwtSettings = _configuration.GetSection("JWT");
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(jwtSettings["Key"])
+                Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? throw new InvalidOperationException("JWT Key não configurada"))
             );
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        new Claim(ClaimTypes.Email, user.Email),
-        new Claim(ClaimTypes.Role, user.Tipo.ToString())
-    };
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Tipo.ToString())
+            };
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(
-                    double.Parse(jwtSettings["ExpireMinutes"])
+                expires: DateTime.UtcNow.AddMinutes(
+                    double.Parse(jwtSettings["ExpireMinutes"] ?? "60")
                 ),
                 signingCredentials: creds
             );
@@ -59,26 +60,30 @@ namespace Hermes.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = await _usuarioService.Autenticar(login.Email, login.Senha);
-
-            if (user == null)
-                return Unauthorized("Credenciais inválidas");
-
-            if (!user.Ativo)
-                return Unauthorized("Conta desativada. Entre em contato com o suporte.");
-
-            var token = GerarToken(user);
-
-            return Ok(new
+            try
             {
-                token,
-                usuario = new
+                var user = await _usuarioService.Autenticar(login.Email, login.Senha);
+                var token = GerarToken(user);
+
+                return Ok(new
                 {
-                    user.Id,
-                    user.Email,
-                    user.Tipo
-                }
-            });
+                    token,
+                    usuario = new
+                    {
+                        user.Id,
+                        user.Email,
+                        user.Tipo
+                    }
+                });
+            }
+            catch (NotFoundException)
+            {
+                return Unauthorized("Credenciais inválidas");
+            }
+            catch (BusinessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Hermes.Data;
 using Hermes.Entities;
 using Hermes.Enums;
+using Hermes.Exceptions;
 using Hermes.Services.Interfaces;
+using Hermes.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Services.Implementations
@@ -25,39 +27,40 @@ namespace Hermes.Services.Implementations
                 .FirstOrDefaultAsync(f => f.Id == avaliacao.FreteId);
 
             if (frete == null)
-                throw new Exception("Frete não encontrado");
+                throw new NotFoundException($"Frete {avaliacao.FreteId} não encontrado");
 
-            //  verifica se o cliente é o dono do frete
             if (frete.ClienteId != avaliacao.ClienteId)
-                throw new Exception("Você só pode avaliar fretes que solicitou");
+                throw new BusinessException("Você só pode avaliar fretes que solicitou");
 
             if (frete.Status != StatusFrete.Concluido)
-                throw new Exception("Frete ainda não foi concluído");
+                throw new BusinessException("Frete ainda não foi concluído");
 
             if (frete.Avaliacao != null)
-                throw new Exception("Frete já avaliado");
+                throw new ConflictException("Frete já avaliado");
 
-            // verifica se o transportador da avaliação é o mesmo do frete
             if (frete.TransportadorId != avaliacao.TransportadorId)
-                throw new Exception("O transportador informado não corresponde ao frete");
+                throw new BusinessException("O transportador informado não corresponde ao frete");
 
-         
             var transportador = await _context.Transportadores
                 .FirstOrDefaultAsync(t => t.Id == avaliacao.TransportadorId);
 
             if (transportador == null)
-                throw new Exception("Transportador não encontrado");
+                throw new NotFoundException($"Transportador {avaliacao.TransportadorId} não encontrado");
 
             avaliacao.Frete = frete;
             avaliacao.Transportador = transportador;
-            avaliacao.DataAvaliacao = DateTime.Now;
-
-        
+            avaliacao.DataAvaliacao = TimeHelper.Now;
 
             _context.Avaliacoes.Add(avaliacao);
             await _context.SaveChangesAsync();
 
-           
+            // Atualizar média e total de avaliações do transportador
+            var media = await CalcularMediaTransportador(avaliacao.TransportadorId);
+            transportador.AvaliacaoMedia = media;
+            transportador.TotalAvaliacoes = await _context.Avaliacoes
+                .CountAsync(a => a.TransportadorId == avaliacao.TransportadorId);
+            await _context.SaveChangesAsync();
+
             await _notificacaoService.CriarNotificacao(
                 avaliacao.TransportadorId,
                 "Você recebeu uma avaliação",
@@ -69,9 +72,6 @@ namespace Hermes.Services.Implementations
             return avaliacao;
         }
 
-
-
-
         public async Task<double> CalcularMediaTransportador(int transportadorId)
         {
             var notas = await _context.Avaliacoes
@@ -82,21 +82,20 @@ namespace Hermes.Services.Implementations
             if (!notas.Any())
                 return 0;
 
-            return notas.Average(); 
+            return notas.Average();
         }
-
-
 
         public async Task<IEnumerable<Avaliacao>> ListarPorTransportador(int transportadorId)
         {
-            return await _context.Avaliacoes
-             .Where(a => a.TransportadorId == transportadorId)
-             .Include(a => a.Frete)
-             .ToListAsync();
+            var avaliacoes = await _context.Avaliacoes
+                .Where(a => a.TransportadorId == transportadorId)
+                .Include(a => a.Frete)
+                .ToListAsync();
 
+            if (!avaliacoes.Any())
+                throw new NotFoundException($"Nenhuma avaliação encontrada para o transportador {transportadorId}");
+
+            return avaliacoes;
         }
-
-
-
     }
 }

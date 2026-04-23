@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Hermes.Exceptions;
+using System.Net;
 using System.Text.Json;
 
 namespace Hermes.Middlewares
@@ -35,12 +36,20 @@ namespace Hermes.Middlewares
         private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+            // Mapeamento do status code baseado no tipo da exceção
+            int statusCode = ex switch
+            {
+                NotFoundException => StatusCodes.Status404NotFound,
+                ConflictException => StatusCodes.Status409Conflict,
+                _ => StatusCodes.Status400BadRequest
+            };
+
+            context.Response.StatusCode = statusCode;
 
             var response = new
             {
                 mensagem = ex.Message,
-                // Em desenvolvimento, pode incluir mais detalhes (opcional)
                 detalhe = _env.IsDevelopment() ? ex.StackTrace : null,
                 tipo = ex.GetType().Name
             };

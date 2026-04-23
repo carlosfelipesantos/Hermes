@@ -5,7 +5,9 @@ using Hermes.DTOs.Frete;
 using Hermes.DTOs.Paginacao;
 using Hermes.Entities;
 using Hermes.Enums;
+using Hermes.Exceptions;
 using Hermes.Services.Interfaces;
+using Hermes.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Services.Implementations
@@ -16,7 +18,6 @@ namespace Hermes.Services.Implementations
         private readonly INotificacaoService _notificacaoService;
         private readonly IMapper _mapper;
         private readonly IDisponibilidadeService _disponibilidadeService;
-   
 
         public FreteService(HermesBD context, INotificacaoService notificacaoService, IMapper mapper, IDisponibilidadeService disponibilidadeService)
         {
@@ -25,8 +26,6 @@ namespace Hermes.Services.Implementations
             _mapper = mapper;
             _disponibilidadeService = disponibilidadeService;
         }
-
-      
 
         public async Task<List<Frete>> ListarConcluidosRecentes(int quantidade)
         {
@@ -103,10 +102,10 @@ namespace Hermes.Services.Implementations
         }
 
         public async Task<(List<FreteDTO> data, int total)> ListarDisponiveisPaginado(
-      int transportadorId,
-      int page,
-      int pageSize,
-      TipoVeiculo? tipoVeiculo = null)
+            int transportadorId,
+            int page,
+            int pageSize,
+            TipoVeiculo? tipoVeiculo = null)
         {
             var transportador = await _context.Transportadores
                 .Include(t => t.Veiculos)
@@ -179,25 +178,29 @@ namespace Hermes.Services.Implementations
 
         public async Task<Frete> BuscarPorId(int id)
         {
-            return await _context.Fretes
+            var frete = await _context.Fretes
                 .AsNoTracking()
                 .Include(f => f.Cliente)
                 .Include(f => f.Transportador)
                 .FirstOrDefaultAsync(f => f.Id == id);
-        }
 
+            if (frete == null)
+                throw new NotFoundException($"Frete {id} não encontrado");
+
+            return frete;
+        }
 
         public async Task<Frete> CriarFreteImediato(Frete frete)
         {
             // Validações de sítio
             if (frete.SitioOrigem && string.IsNullOrWhiteSpace(frete.DescricaoOrigem))
-                throw new Exception("Descrição da origem é obrigatória para sítio");
+                throw new BusinessException("Descrição da origem é obrigatória para sítio");
 
             if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
-                throw new Exception("Descrição do destino é obrigatória para sítio");
+                throw new BusinessException("Descrição do destino é obrigatória para sítio");
 
-            frete.DataSolicitacao = DateTime.Now;
-            frete.Status = StatusFrete.Pendente;  // Aguardando aceitação
+            frete.DataSolicitacao = TimeHelper.Now;
+            frete.Status = StatusFrete.Pendente;
 
             _context.Fretes.Add(frete);
             await _context.SaveChangesAsync();
@@ -226,18 +229,16 @@ namespace Hermes.Services.Implementations
         {
             // Validações de sítio
             if (frete.SitioOrigem && string.IsNullOrWhiteSpace(frete.DescricaoOrigem))
-                throw new Exception("Descrição da origem é obrigatória para sítio");
+                throw new BusinessException("Descrição da origem é obrigatória para sítio");
 
             if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
-                throw new Exception("Descrição do destino é obrigatória para sítio");
+                throw new BusinessException("Descrição do destino é obrigatória para sítio");
 
-            // VALIDAÇÃO EXPLÍCITA: TransportadorId é obrigatório
             if (!frete.TransportadorId.HasValue)
-                throw new Exception("Transportador não informado para frete agendado");
+                throw new BusinessException("Transportador não informado para frete agendado");
 
-            // VALIDAÇÃO EXPLÍCITA: DataHoraInicio é obrigatória
             if (frete.DataHoraInicio == default)
-                throw new Exception("Data e hora de início são obrigatórias para frete agendado");
+                throw new BusinessException("Data e hora de início são obrigatórias para frete agendado");
 
             // Calcular duração estimada se não informada
             if (frete.DataHoraFimPrevisto == default)
@@ -252,23 +253,24 @@ namespace Hermes.Services.Implementations
                 f.Status != StatusFrete.Cancelado &&
                 f.DataHoraInicio < frete.DataHoraFimPrevisto &&
                 f.DataHoraFimPrevisto > frete.DataHoraInicio);
+
             if (conflito)
-                throw new Exception("Já existe um frete agendado nesse período.");
+                throw new ConflictException("Já existe um frete agendado nesse período.");
 
             // Verificar disponibilidade do transportador (janela de trabalho + buffer)
             var intervalosLivres = await _disponibilidadeService.ListarIntervalosLivres(
                 frete.TransportadorId.Value,
                 frete.DataHoraInicio.Date,
-                TimeSpan.FromMinutes(20) // buffer
-            );
+                TimeSpan.FromMinutes(20));
 
             bool disponivel = intervalosLivres.Any(i =>
                 i.Inicio <= frete.DataHoraInicio && i.Fim >= frete.DataHoraFimPrevisto);
-            if (!disponivel)
-                throw new Exception("Horário não disponível para este transportador");
 
-            frete.DataSolicitacao = DateTime.Now;
-            frete.Status = StatusFrete.Pendente;  // Aguardando confirmação do transportador
+            if (!disponivel)
+                throw new ConflictException("Horário não disponível para este transportador");
+
+            frete.DataSolicitacao = TimeHelper.Now;
+            frete.Status = StatusFrete.Pendente;
 
             _context.Fretes.Add(frete);
             await _context.SaveChangesAsync();
@@ -287,7 +289,6 @@ namespace Hermes.Services.Implementations
 
         private TimeSpan ObterDuracaoEstimadaComFallback(Frete frete)
         {
-            // Tenta calcular com coordenadas se existirem
             if (frete.LatitudeOrigem.HasValue && frete.LongitudeOrigem.HasValue &&
                 frete.LatitudeDestino.HasValue && frete.LongitudeDestino.HasValue)
             {
@@ -297,10 +298,8 @@ namespace Hermes.Services.Implementations
                 return CalcularDuracaoEstimada(distancia);
             }
 
-            // Fallback: duração padrão de 1 hora (ajustável)
             return TimeSpan.FromHours(1);
         }
-
 
         public async Task<IEnumerable<Frete>> BuscarFretesParaTransportador(int transportadorId)
         {
@@ -312,7 +311,7 @@ namespace Hermes.Services.Implementations
                 return new List<Frete>();
 
             if (transportador.Latitude is null || transportador.Longitude is null)
-                throw new Exception("Transportador precisa ativar localização.");
+                throw new BusinessException("Transportador precisa ativar localização.");
 
             var fretes = await _context.Fretes
                 .AsNoTracking()
@@ -320,7 +319,6 @@ namespace Hermes.Services.Implementations
                 .Include(f => f.Cliente)
                 .ToListAsync();
 
-            //  Filtrar apenas fretes que possuem coordenadas e estão dentro do raio
             return fretes
                 .Where(f => f.LatitudeOrigem.HasValue && f.LongitudeOrigem.HasValue)
                 .Where(f =>
@@ -328,9 +326,7 @@ namespace Hermes.Services.Implementations
                         transportador.Latitude.Value,
                         transportador.Longitude.Value,
                         f.LatitudeOrigem.Value,
-                        f.LongitudeOrigem.Value
-                    ) <= 20
-                )
+                        f.LongitudeOrigem.Value) <= 20)
                 .ToList();
         }
 
@@ -351,18 +347,17 @@ namespace Hermes.Services.Implementations
                    $"Valor: R$ {frete.Valor}";
         }
 
-
         public async Task<TimeSpan> ObterDuracaoEstimada(int freteId)
         {
             var frete = await BuscarPorId(freteId);
-            if (frete == null) throw new Exception("Frete não encontrado");
+            if (frete == null)
+                throw new NotFoundException($"Frete {freteId} não encontrado");
 
             return ObterDuracaoEstimadaComFallback(frete);
         }
 
         private double CalcularDistancia(double? lat1, double? lon1, double? lat2, double? lon2)
         {
-            // Se qualquer coordenada for nula, retorna 0 (ou pode lançar exceção)
             if (!lat1.HasValue || !lon1.HasValue || !lat2.HasValue || !lon2.HasValue)
                 return 0;
 
@@ -378,8 +373,8 @@ namespace Hermes.Services.Implementations
 
         private TimeSpan CalcularDuracaoEstimada(double distanciaKm)
         {
-            double velocidadeMedia = 40; // km/h (ajustável)
-            double tempoCargaDescarga = 0.5; // 30 minutos
+            double velocidadeMedia = 40;
+            double tempoCargaDescarga = 0.5;
             double horas = distanciaKm / velocidadeMedia + tempoCargaDescarga;
             return TimeSpan.FromHours(horas);
         }
@@ -393,42 +388,34 @@ namespace Hermes.Services.Implementations
             if (frete == null || frete.TransportadorId != null || frete.Status != StatusFrete.Pendente)
                 return false;
 
-            // Verificar se o transportador existe e está ativo
             var transportador = await _context.Transportadores
                 .Include(t => t.Veiculos)
                 .FirstOrDefaultAsync(t => t.Id == transportadorId && t.Ativo);
 
             if (transportador == null)
-                throw new Exception("Transportador não encontrado ou inativo");
+                throw new NotFoundException("Transportador não encontrado ou inativo");
 
-            // Verificar compatibilidade de veículo
             bool veiculoCompativel = transportador.Veiculos
                 .Any(v => CompatibilidadeCarga.IsCompativel(v.TipoVeiculo, frete.TipoCarga));
 
             if (!veiculoCompativel)
-                throw new Exception("Você não possui um veículo compatível com este tipo de carga");
+                throw new BusinessException("Você não possui um veículo compatível com este tipo de carga");
 
-            // Definir data/hora de início (ex: 30 minutos a partir de agora)
-            var dataHoraInicio = DateTime.Now.AddMinutes(30);
-
-            // Usar o método com fallback para calcular duração estimada (trata coordenadas nulas)
+            var dataHoraInicio = TimeHelper.Now.AddMinutes(30);
             var duracaoEstimada = ObterDuracaoEstimadaComFallback(frete);
             var dataHoraFimPrevisto = dataHoraInicio + duracaoEstimada;
 
-            // Verificar conflito de agenda
             var intervalosLivres = await _disponibilidadeService.ListarIntervalosLivres(
                 transportadorId,
                 dataHoraInicio.Date,
-                TimeSpan.FromMinutes(20) // buffer
-            );
+                TimeSpan.FromMinutes(20));
 
             bool horarioDisponivel = intervalosLivres.Any(i =>
                 i.Inicio <= dataHoraInicio && i.Fim >= dataHoraFimPrevisto);
 
             if (!horarioDisponivel)
-                throw new Exception("Não há disponibilidade na agenda para o horário calculado");
+                throw new ConflictException("Não há disponibilidade na agenda para o horário calculado");
 
-            // Atualizar o frete
             frete.TransportadorId = transportadorId;
             frete.Status = StatusFrete.Aceito;
             frete.DataHoraInicio = dataHoraInicio;
@@ -437,7 +424,6 @@ namespace Hermes.Services.Implementations
 
             await _context.SaveChangesAsync();
 
-            // Notificar o cliente
             await _notificacaoService.CriarNotificacao(
                 frete.ClienteId,
                 "Frete aceito",
@@ -465,8 +451,8 @@ namespace Hermes.Services.Implementations
                 return false;
 
             frete.Status = StatusFrete.Concluido;
-            frete.DataConclusao = DateTime.Now;
-            frete.DataHoraFimReal = DateTime.Now;
+            frete.DataConclusao = TimeHelper.Now;
+            frete.DataHoraFimReal = TimeHelper.Now;
 
             await _context.SaveChangesAsync();
 
@@ -513,12 +499,12 @@ namespace Hermes.Services.Implementations
         public async Task<bool> AtualizarStatus(int id, StatusFrete novoStatus)
         {
             var frete = await _context.Fretes.FindAsync(id);
-            if (frete == null) return false;
+            if (frete == null)
+                throw new NotFoundException($"Frete {id} não encontrado");
 
             var statusAtual = frete.Status;
             bool transicaoValida = false;
 
-            // ✅ Validação de transições permitidas
             switch (statusAtual)
             {
                 case StatusFrete.Pendente:
@@ -526,53 +512,51 @@ namespace Hermes.Services.Implementations
                                       novoStatus == StatusFrete.Agendado ||
                                       novoStatus == StatusFrete.Cancelado;
                     break;
-
                 case StatusFrete.Aceito:
                     transicaoValida = novoStatus == StatusFrete.EmTransito ||
                                       novoStatus == StatusFrete.Cancelado;
                     break;
-
                 case StatusFrete.Agendado:
                     transicaoValida = novoStatus == StatusFrete.EmTransito ||
                                       novoStatus == StatusFrete.Cancelado;
                     break;
-
                 case StatusFrete.EmTransito:
                     transicaoValida = novoStatus == StatusFrete.Concluido;
                     break;
-
                 case StatusFrete.Concluido:
-                    transicaoValida = false; // Nenhuma transição permitida após concluído
-                    break;
-
                 case StatusFrete.Cancelado:
-                    transicaoValida = false; // Nenhuma transição permitida após cancelado
+                    transicaoValida = false;
                     break;
-
                 default:
                     transicaoValida = false;
                     break;
             }
 
             if (!transicaoValida)
-                throw new Exception($"Transição de status inválida: de {statusAtual} para {novoStatus}");
+                throw new BusinessException($"Transição de status inválida: de {statusAtual} para {novoStatus}");
 
             frete.Status = novoStatus;
             await _context.SaveChangesAsync();
             return true;
         }
 
-
-        // Confirmar frete agendado (transportador aceita)
         public async Task<bool> ConfirmarFreteAgendado(int freteId, int transportadorId)
         {
             var frete = await _context.Fretes.FindAsync(freteId);
-
             if (frete == null || frete.TransportadorId != transportadorId)
                 return false;
 
             if (frete.Status != StatusFrete.Pendente)
                 return false;
+
+            var intervalosLivres = await _disponibilidadeService.ListarIntervalosLivres(
+                transportadorId,
+                frete.DataHoraInicio.Date);
+            bool disponivel = intervalosLivres.Any(i =>
+                i.Inicio <= frete.DataHoraInicio && i.Fim >= frete.DataHoraFimPrevisto);
+
+            if (!disponivel)
+                throw new ConflictException("O horário não está mais disponível para este frete.");
 
             frete.Status = StatusFrete.Agendado;
             await _context.SaveChangesAsync();
@@ -588,11 +572,9 @@ namespace Hermes.Services.Implementations
             return true;
         }
 
-        // Rejeitar frete agendado (transportador recusa)
         public async Task<bool> RejeitarFreteAgendado(int freteId, int transportadorId)
         {
             var frete = await _context.Fretes.FindAsync(freteId);
-
             if (frete == null || frete.TransportadorId != transportadorId)
                 return false;
 
@@ -608,23 +590,28 @@ namespace Hermes.Services.Implementations
                 $"Infelizmente o transportador não pôde aceitar seu frete",
                 TipoNotificacao.FreteCancelado,
                 frete.Id
-            ); 
+            );
 
             return true;
         }
 
-
         public async Task<bool> Deletar(int id)
         {
             var frete = await _context.Fretes.FindAsync(id);
-            if (frete == null) return false;
+            if (frete == null)
+                throw new NotFoundException($"Frete {id} não encontrado");
+
+            if (frete.Status == StatusFrete.EmTransito ||
+                frete.Status == StatusFrete.Aceito ||
+                frete.Status == StatusFrete.Agendado ||
+                frete.Status == StatusFrete.Concluido)
+            {
+                throw new BusinessException($"Não é possível deletar um frete com status {frete.Status}");
+            }
 
             _context.Fretes.Remove(frete);
             await _context.SaveChangesAsync();
             return true;
         }
-
-      
-        
     }
 }

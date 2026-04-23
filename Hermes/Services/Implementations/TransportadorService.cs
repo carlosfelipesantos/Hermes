@@ -4,7 +4,9 @@ using Hermes.DTOs.Transportador;
 using Hermes.DTOs.Veiculo;
 using Hermes.Entities;
 using Hermes.Enums;
+using Hermes.Exceptions;
 using Hermes.Services.Interfaces;
+using Hermes.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Services.Implementations
@@ -30,6 +32,9 @@ namespace Hermes.Services.Implementations
                 .Include(t => t.Veiculos)
                 .Where(t => t.Ativo)
                 .ToListAsync();
+
+            if (!transportadores.Any())
+                throw new NotFoundException("Nenhum transportador ativo encontrado");
 
             var result = new List<TransportadorSugestaoDTO>();
 
@@ -64,6 +69,9 @@ namespace Hermes.Services.Implementations
                     DistanciaKm = distancia > 0 ? distancia : (double?)null
                 });
             }
+
+            if (!result.Any())
+                throw new NotFoundException("Nenhum transportador encontrado com os critérios informados");
 
             // Ordenar por avaliação e distância
             result = result

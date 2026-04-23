@@ -46,6 +46,7 @@ namespace Hermes.Controllers
         }
 
         // Buscar (somente o dono)
+        [Authorize(Roles = "Transportador")]
         [HttpGet("{id}")]
         public async Task<ActionResult<VeiculoDTO>> Buscar(int id)
         {
@@ -62,6 +63,7 @@ namespace Hermes.Controllers
         }
 
         // Criar (vinculado ao usuario logado)
+        [Authorize(Roles = "Transportador")]
         [HttpPost]
         public async Task<IActionResult> Criar([FromBody] CriarVeiculo dto)
         {
@@ -81,6 +83,7 @@ namespace Hermes.Controllers
         }
 
         //  Atualizar (somente o dono)
+        [Authorize(Roles = "Transportador")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Atualizar(int id, [FromBody] AtualizarVeiculo dto)
         {
@@ -104,6 +107,7 @@ namespace Hermes.Controllers
         }
 
         //  Deletar (somente o dono)
+        [Authorize(Roles = "Transportador")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Deletar(int id)
         {

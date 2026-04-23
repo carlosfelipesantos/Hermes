@@ -102,13 +102,12 @@ namespace Hermes.Controllers
             return Ok(_mapper.Map<List<FreteDTO>>(fretes));
         }
 
-        //  Listar fretes disponiveis para transportador
         [Authorize(Roles = "Transportador")]
         [HttpGet("disponiveis")]
-        public async Task<ActionResult> FretesDisponiveis([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] TipoVeiculo? tipoVeiculo = null )
+        public async Task<ActionResult> FretesDisponiveis([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] TipoVeiculo? tipoVeiculo = null)
         {
             var transportadorId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var (fretes, total) = await _freteService.ListarDisponiveisPaginado(transportadorId, page, pageSize);
+            var (fretes, total) = await _freteService.ListarDisponiveisPaginado(transportadorId, page, pageSize, tipoVeiculo); 
             return Ok(new { Data = fretes, Total = total, Page = page, PageSize = pageSize });
         }
 
