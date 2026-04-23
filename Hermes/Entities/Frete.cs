@@ -12,11 +12,10 @@ namespace Hermes.Entities
 
         public string? DDDOrigem { get; set; }
 
-        public double LatitudeOrigem { get; set; }
-        public double LongitudeOrigem { get; set; }
-
-        public double LatitudeDestino { get; set; }
-        public double LongitudeDestino { get; set; }
+        public double? LatitudeOrigem { get; set; }
+        public double? LongitudeOrigem { get; set; }
+        public double? LatitudeDestino { get; set; }
+        public double? LongitudeDestino { get; set; }
 
         public string CidadeOrigem { get; set; }
         public string BairroOrigem { get; set; }

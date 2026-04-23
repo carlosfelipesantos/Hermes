@@ -102,7 +102,11 @@ namespace Hermes.Services.Implementations
             return (data, total);
         }
 
-        public async Task<(List<FreteDTO> data, int total)> ListarDisponiveisPaginado(int transportadorId, int page, int pageSize, TipoVeiculo? tipoVeiculo=null)
+        public async Task<(List<FreteDTO> data, int total)> ListarDisponiveisPaginado(
+      int transportadorId,
+      int page,
+      int pageSize,
+      TipoVeiculo? tipoVeiculo = null)
         {
             var transportador = await _context.Transportadores
                 .Include(t => t.Veiculos)
@@ -110,16 +114,30 @@ namespace Hermes.Services.Implementations
 
             var tiposVeiculo = transportador?.Veiculos.Select(v => v.TipoVeiculo).Distinct().ToList() ?? new();
 
-            var query = _context.Fretes
+            // Busca TODOS os fretes disponíveis (sem paginação ainda)
+            var todosFretes = await _context.Fretes
                 .AsNoTracking()
                 .Where(f => f.TransportadorId == null && f.Status == StatusFrete.Pendente)
-                .Include(f => f.Cliente);
+                .Include(f => f.Cliente)
+                .ToListAsync();
 
-            var total = await query.CountAsync();
-            var fretes = await query
+            // Aplica filtro em memória (se necessário)
+            var fretesFiltrados = todosFretes.AsEnumerable();
+
+            if (tipoVeiculo.HasValue)
+            {
+                fretesFiltrados = fretesFiltrados.Where(f =>
+                    CompatibilidadeCarga.IsCompativel(tipoVeiculo.Value, f.TipoCarga));
+            }
+
+            var fretesList = fretesFiltrados.ToList();
+            var total = fretesList.Count();
+
+            // Aplica paginação em memória
+            var fretes = fretesList
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToList();
 
             var fretesDTO = new List<FreteDTO>();
             foreach (var f in fretes)
@@ -216,10 +234,7 @@ namespace Hermes.Services.Implementations
             // Calcular duração estimada se não informada
             if (frete.DataHoraFimPrevisto == default)
             {
-                var distancia = CalcularDistancia(
-                    frete.LatitudeOrigem, frete.LongitudeOrigem,
-                    frete.LatitudeDestino, frete.LongitudeDestino);
-                frete.DuracaoEstimada = CalcularDuracaoEstimada(distancia);
+                frete.DuracaoEstimada = ObterDuracaoEstimadaComFallback(frete);
                 frete.DataHoraFimPrevisto = frete.DataHoraInicio + frete.DuracaoEstimada;
             }
 
@@ -261,6 +276,23 @@ namespace Hermes.Services.Implementations
 
             return frete;
         }
+
+        private TimeSpan ObterDuracaoEstimadaComFallback(Frete frete)
+        {
+            // Tenta calcular com coordenadas se existirem
+            if (frete.LatitudeOrigem.HasValue && frete.LongitudeOrigem.HasValue &&
+                frete.LatitudeDestino.HasValue && frete.LongitudeDestino.HasValue)
+            {
+                var distancia = CalcularDistancia(
+                    frete.LatitudeOrigem.Value, frete.LongitudeOrigem.Value,
+                    frete.LatitudeDestino.Value, frete.LongitudeDestino.Value);
+                return CalcularDuracaoEstimada(distancia);
+            }
+
+            // Fallback: duração padrão de 1 hora (ajustável)
+            return TimeSpan.FromHours(1);
+        }
+
 
         public async Task<IEnumerable<Frete>> BuscarFretesParaTransportador(int transportadorId)
         {
@@ -315,19 +347,20 @@ namespace Hermes.Services.Implementations
             var frete = await BuscarPorId(freteId);
             if (frete == null) throw new Exception("Frete não encontrado");
 
-            var distancia = CalcularDistancia(
-                frete.LatitudeOrigem, frete.LongitudeOrigem,
-                frete.LatitudeDestino, frete.LongitudeDestino);
-            return CalcularDuracaoEstimada(distancia);
+            return ObterDuracaoEstimadaComFallback(frete);
         }
 
-        private double CalcularDistancia(double lat1, double lon1, double lat2, double lon2)
+        private double CalcularDistancia(double? lat1, double? lon1, double? lat2, double? lon2)
         {
+            // Se qualquer coordenada for nula, retorna 0 (ou pode lançar exceção)
+            if (!lat1.HasValue || !lon1.HasValue || !lat2.HasValue || !lon2.HasValue)
+                return 0;
+
             const int R = 6371;
-            var dLat = (lat2 - lat1) * Math.PI / 180;
-            var dLon = (lon2 - lon1) * Math.PI / 180;
+            var dLat = (lat2.Value - lat1.Value) * Math.PI / 180;
+            var dLon = (lon2.Value - lon1.Value) * Math.PI / 180;
             var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
-                    Math.Cos(lat1 * Math.PI / 180) * Math.Cos(lat2 * Math.PI / 180) *
+                    Math.Cos(lat1.Value * Math.PI / 180) * Math.Cos(lat2.Value * Math.PI / 180) *
                     Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return R * c;
@@ -365,14 +398,11 @@ namespace Hermes.Services.Implementations
             if (!veiculoCompativel)
                 throw new Exception("Você não possui um veículo compatível com este tipo de carga");
 
-            // ✅ Definir data/hora de início (ex: 30 minutos a partir de agora)
+            // Definir data/hora de início (ex: 30 minutos a partir de agora)
             var dataHoraInicio = DateTime.Now.AddMinutes(30);
 
-            // Calcular duração estimada com base na distância
-            var distancia = CalcularDistancia(
-                frete.LatitudeOrigem, frete.LongitudeOrigem,
-                frete.LatitudeDestino, frete.LongitudeDestino);
-            var duracaoEstimada = CalcularDuracaoEstimada(distancia);
+            // ✅ Usar o método com fallback para calcular duração estimada (trata coordenadas nulas)
+            var duracaoEstimada = ObterDuracaoEstimadaComFallback(frete);
             var dataHoraFimPrevisto = dataHoraInicio + duracaoEstimada;
 
             // Verificar conflito de agenda
@@ -388,7 +418,7 @@ namespace Hermes.Services.Implementations
             if (!horarioDisponivel)
                 throw new Exception("Não há disponibilidade na agenda para o horário calculado");
 
-            //  Atualizar o frete
+            // Atualizar o frete
             frete.TransportadorId = transportadorId;
             frete.Status = StatusFrete.Aceito;
             frete.DataHoraInicio = dataHoraInicio;
@@ -397,7 +427,7 @@ namespace Hermes.Services.Implementations
 
             await _context.SaveChangesAsync();
 
-            //  Notificar o cliente
+            // Notificar o cliente
             await _notificacaoService.CriarNotificacao(
                 frete.ClienteId,
                 "Frete aceito",
