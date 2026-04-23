@@ -350,3 +350,5 @@ C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\tr\Micros
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\appsettings.Production.json
+C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
