@@ -231,6 +231,14 @@ namespace Hermes.Services.Implementations
             if (frete.SitioDestino && string.IsNullOrWhiteSpace(frete.DescricaoDestino))
                 throw new Exception("Descrição do destino é obrigatória para sítio");
 
+            // VALIDAÇÃO EXPLÍCITA: TransportadorId é obrigatório
+            if (!frete.TransportadorId.HasValue)
+                throw new Exception("Transportador não informado para frete agendado");
+
+            // VALIDAÇÃO EXPLÍCITA: DataHoraInicio é obrigatória
+            if (frete.DataHoraInicio == default)
+                throw new Exception("Data e hora de início são obrigatórias para frete agendado");
+
             // Calcular duração estimada se não informada
             if (frete.DataHoraFimPrevisto == default)
             {
@@ -240,7 +248,7 @@ namespace Hermes.Services.Implementations
 
             // Verificar conflito com outro frete no mesmo período
             var conflito = await _context.Fretes.AnyAsync(f =>
-                f.TransportadorId == frete.TransportadorId &&
+                f.TransportadorId == frete.TransportadorId.Value &&
                 f.Status != StatusFrete.Cancelado &&
                 f.DataHoraInicio < frete.DataHoraFimPrevisto &&
                 f.DataHoraFimPrevisto > frete.DataHoraInicio);
@@ -312,13 +320,15 @@ namespace Hermes.Services.Implementations
                 .Include(f => f.Cliente)
                 .ToListAsync();
 
+            //  Filtrar apenas fretes que possuem coordenadas e estão dentro do raio
             return fretes
+                .Where(f => f.LatitudeOrigem.HasValue && f.LongitudeOrigem.HasValue)
                 .Where(f =>
                     CalcularDistancia(
                         transportador.Latitude.Value,
                         transportador.Longitude.Value,
-                        f.LatitudeOrigem,
-                        f.LongitudeOrigem
+                        f.LatitudeOrigem.Value,
+                        f.LongitudeOrigem.Value
                     ) <= 20
                 )
                 .ToList();
@@ -401,7 +411,7 @@ namespace Hermes.Services.Implementations
             // Definir data/hora de início (ex: 30 minutos a partir de agora)
             var dataHoraInicio = DateTime.Now.AddMinutes(30);
 
-            // ✅ Usar o método com fallback para calcular duração estimada (trata coordenadas nulas)
+            // Usar o método com fallback para calcular duração estimada (trata coordenadas nulas)
             var duracaoEstimada = ObterDuracaoEstimadaComFallback(frete);
             var dataHoraFimPrevisto = dataHoraInicio + duracaoEstimada;
 
@@ -500,12 +510,54 @@ namespace Hermes.Services.Implementations
                 .ToListAsync();
         }
 
-        public async Task<bool> AtualizarStatus(int id, StatusFrete status)
+        public async Task<bool> AtualizarStatus(int id, StatusFrete novoStatus)
         {
             var frete = await _context.Fretes.FindAsync(id);
             if (frete == null) return false;
 
-            frete.Status = status;
+            var statusAtual = frete.Status;
+            bool transicaoValida = false;
+
+            // ✅ Validação de transições permitidas
+            switch (statusAtual)
+            {
+                case StatusFrete.Pendente:
+                    transicaoValida = novoStatus == StatusFrete.Aceito ||
+                                      novoStatus == StatusFrete.Agendado ||
+                                      novoStatus == StatusFrete.Cancelado;
+                    break;
+
+                case StatusFrete.Aceito:
+                    transicaoValida = novoStatus == StatusFrete.EmTransito ||
+                                      novoStatus == StatusFrete.Cancelado;
+                    break;
+
+                case StatusFrete.Agendado:
+                    transicaoValida = novoStatus == StatusFrete.EmTransito ||
+                                      novoStatus == StatusFrete.Cancelado;
+                    break;
+
+                case StatusFrete.EmTransito:
+                    transicaoValida = novoStatus == StatusFrete.Concluido;
+                    break;
+
+                case StatusFrete.Concluido:
+                    transicaoValida = false; // Nenhuma transição permitida após concluído
+                    break;
+
+                case StatusFrete.Cancelado:
+                    transicaoValida = false; // Nenhuma transição permitida após cancelado
+                    break;
+
+                default:
+                    transicaoValida = false;
+                    break;
+            }
+
+            if (!transicaoValida)
+                throw new Exception($"Transição de status inválida: de {statusAtual} para {novoStatus}");
+
+            frete.Status = novoStatus;
             await _context.SaveChangesAsync();
             return true;
         }

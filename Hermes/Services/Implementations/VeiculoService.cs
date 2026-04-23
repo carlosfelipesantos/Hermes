@@ -29,14 +29,21 @@ namespace Hermes.Services.Implementations
         }
         public async Task<Veiculo> Criar(Veiculo veiculo)
         {
-           
+            //  Validar se o transportador existe e está ativo
+            var transportador = await _context.Transportadores
+                .FirstOrDefaultAsync(t => t.Id == veiculo.TransportadorId && t.Ativo);
+
+            if (transportador == null)
+                throw new Exception("Transportador não encontrado ou inativo");
+
+            // Validar se a placa já existe (independente do transportador)
             var placaExiste = await _context.Veiculos
                 .AnyAsync(v => v.Placa == veiculo.Placa);
             if (placaExiste)
                 throw new Exception("Esta placa já está cadastrada no sistema");
 
             veiculo.DataCadastro = DateTime.Now;
-            veiculo.Disponivel = true; 
+            veiculo.Disponivel = true; // por padrão, veículo está disponível
 
             _context.Veiculos.Add(veiculo);
             await _context.SaveChangesAsync();

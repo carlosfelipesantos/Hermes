@@ -47,6 +47,11 @@ namespace Hermes.Services.Implementations
             int? freteId = null
         )
         {
+            // Validar se o usuário existe
+            var usuarioExiste = await _context.Usuarios.AnyAsync(u => u.Id == usuarioId && u.Ativo);
+            if (!usuarioExiste)
+                throw new Exception($"Usuário com ID {usuarioId} não encontrado ou inativo");
+
             var notificacao = new Notificacao
             {
                 UsuarioId = usuarioId,

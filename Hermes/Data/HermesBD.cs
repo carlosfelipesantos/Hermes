@@ -122,6 +122,49 @@ namespace Hermes.Data
             modelBuilder.Entity<Avaliacao>()
                 .Property(a => a.Nota)
                 .HasColumnType("decimal(3,2)");
+
+
+
+            //  ÍNDICES PARA MELHORAR PERFORMANCE
+
+            // Para busca de fretes por status e data (mais usado)
+            modelBuilder.Entity<Frete>()
+                .HasIndex(f => new { f.Status, f.DataSolicitacao })
+                .HasDatabaseName("IX_Fretes_Status_DataSolicitacao");
+
+            // Para busca de fretes disponíveis (TransportadorId = null)
+            modelBuilder.Entity<Frete>()
+                .HasIndex(f => new { f.TransportadorId, f.Status })
+                .HasDatabaseName("IX_Fretes_TransportadorId_Status");
+
+            // Para busca de fretes por cidade de origem
+            modelBuilder.Entity<Frete>()
+                .HasIndex(f => f.CidadeOrigem)
+                .HasDatabaseName("IX_Fretes_CidadeOrigem");
+
+            // Para busca de janelas de disponibilidade (mais usado nas consultas de agenda)
+            modelBuilder.Entity<DisponibilidadeBase>()
+                .HasIndex(d => new { d.TransportadorId, d.DiaSemana })
+                .HasDatabaseName("IX_DisponibilidadesBase_TransportadorId_DiaSemana");
+
+            // Para busca de veículos por transportador e tipo
+            modelBuilder.Entity<Veiculo>()
+                .HasIndex(v => new { v.TransportadorId, v.TipoVeiculo })
+                .HasDatabaseName("IX_Veiculos_TransportadorId_TipoVeiculo");
+
+            // Para busca de avaliações por transportador
+            modelBuilder.Entity<Avaliacao>()
+                .HasIndex(a => a.TransportadorId)
+                .HasDatabaseName("IX_Avaliacoes_TransportadorId");
+
+            // Para busca de notificações (ordem decrescente por data)
+            modelBuilder.Entity<Notificacao>()
+                .HasIndex(n => new { n.UsuarioId, n.DataCriacao })
+                .HasDatabaseName("IX_Notificacoes_UsuarioId_DataCriacao");
+
+
         }
+
+
     }
 }

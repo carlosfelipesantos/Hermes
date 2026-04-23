@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Hermes.Controllers
 {
-    [Authorize(Roles = "Transportador")]
+    
     [ApiController]
     [Route("api/[controller]")]
     public class VeiculoController : ControllerBase
@@ -32,6 +32,7 @@ namespace Hermes.Controllers
         }
 
         // Veiculos do usuario logado
+        [Authorize(Roles = "Transportador")]
         [HttpGet("meus")]
         public async Task<ActionResult<IEnumerable<VeiculoDTO>>> Meus()
         {
