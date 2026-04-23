@@ -1,16 +1,7 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos\\documents\\github\\hermes\\hermes\\services\\implementations\\freteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:services\\implementations\\freteservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|c:\\users\\carlos\\documents\\github\\hermes\\hermes\\entities\\frete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7E590A27-F154-71D1-73C7-EF5FC73E7551}|Hermes.csproj|solutionrelative:entities\\frete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "WorkspaceRootPath": "C:\\Users\\Carlos Felipe\\Documents\\GitHub\\Hermes\\Hermes\\",
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -18,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 284,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -35,32 +26,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Frete.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Frete.cs",
-              "RelativeDocumentMoniker": "Entities\\Frete.cs",
-              "ToolTip": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\Entities\\Frete.cs",
-              "RelativeToolTip": "Entities\\Frete.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAkwBEAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-23T11:39:50.138Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FreteService.cs",
-              "DocumentMoniker": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\Services\\Implementations\\FreteService.cs",
-              "RelativeDocumentMoniker": "Services\\Implementations\\FreteService.cs",
-              "ToolTip": "C:\\Users\\Carlos\\Documents\\GitHub\\Hermes\\Hermes\\Services\\Implementations\\FreteService.cs",
-              "RelativeToolTip": "Services\\Implementations\\FreteService.cs",
-              "ViewState": "AgIAAPUAAAAAAAAAAAAAwBUBAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-23T11:34:17.536Z",
-              "EditorCaption": ""
             }
           ]
         }

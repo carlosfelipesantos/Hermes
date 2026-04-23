@@ -38,6 +38,16 @@ namespace Hermes.Services.Implementations
             if (dto.HoraInicio >= dto.HoraFim)
                 throw new Exception("Horário de início deve ser menor que o horário de fim.");
 
+            //  Validar sobreposição com janelas existentes
+            var sobreposicao = await _context.DisponibilidadesBase
+                .AnyAsync(d => d.TransportadorId == transportadorId &&
+                               d.DiaSemana == dto.DiaSemana &&
+                               d.HoraInicio < dto.HoraFim &&
+                               d.HoraFim > dto.HoraInicio);
+
+            if (sobreposicao)
+                throw new Exception("Já existe uma janela de disponibilidade neste horário.");
+
             var janela = new DisponibilidadeBase
             {
                 TransportadorId = transportadorId,
@@ -58,6 +68,17 @@ namespace Hermes.Services.Implementations
 
             if (dto.HoraInicio >= dto.HoraFim)
                 throw new Exception("Horário de início deve ser menor que o horário de fim.");
+
+            // Validar sobreposição com outras janelas (exceto a própria)
+            var sobreposicao = await _context.DisponibilidadesBase
+                .AnyAsync(d => d.TransportadorId == transportadorId &&
+                               d.Id != janelaId &&
+                               d.DiaSemana == dto.DiaSemana &&
+                               d.HoraInicio < dto.HoraFim &&
+                               d.HoraFim > dto.HoraInicio);
+
+            if (sobreposicao)
+                throw new Exception("Já existe uma janela de disponibilidade neste horário.");
 
             janela.DiaSemana = dto.DiaSemana;
             janela.HoraInicio = dto.HoraInicio;
