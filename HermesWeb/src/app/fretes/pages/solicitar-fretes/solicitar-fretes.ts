@@ -38,69 +38,202 @@ export class SolicitarFretes {
   enviando = false;
   sucesso = false;
   erro = '';
+  alertas: { tipo: 'success' | 'error' | 'info' | 'warning'; mensagem: string }[] = [];
 
   constructor(
     private freteService: FreteService,
     private router: Router
   ) {}
 
+  mostrarAlerta(tipo: 'success' | 'error' | 'info' | 'warning', mensagem: string): void {
+    this.alertas.push({ tipo, mensagem });
+    setTimeout(() => {
+      this.alertas = this.alertas.filter(a => a.mensagem !== mensagem);
+    }, 5000);
+  }
+
+  fecharAlerta(index: number): void {
+    this.alertas.splice(index, 1);
+  }
+
   formatarCep(tipo: 'origem' | 'destino'): void {
     const campo = tipo === 'origem' ? 'cepOrigem' : 'cepDestino';
     let valor = (this[campo] as string).replace(/\D/g, '');
-    if (valor.length > 5) valor = valor.slice(0, 5) + '-' + valor.slice(5, 8);
+    
+    if (valor.length > 8) {
+      valor = valor.slice(0, 8);
+    }
+    
+    if (valor.length > 5) {
+      valor = valor.slice(0, 5) + '-' + valor.slice(5, 8);
+    }
+    
     (this[campo] as string) = valor;
+
+    // Busca automática quando completar 8 dígitos
+    const cepNumeros = valor.replace(/\D/g, '');
+    if (cepNumeros.length === 8) {
+      this.buscarCep(tipo);
+    }
   }
 
-  buscarCep(tipo: 'origem' | 'destino'): void {
+  async buscarCep(tipo: 'origem' | 'destino'): Promise<void> {
     const cep = (tipo === 'origem' ? this.cepOrigem : this.cepDestino).replace(/\D/g, '');
-    if (cep.length !== 8) return;
+    
+    if (cep.length !== 8) {
+      this.mostrarAlerta('warning', 'CEP deve ter 8 dígitos');
+      return;
+    }
 
-    if (tipo === 'origem') this.carregandoCepOrigem = true;
-    else this.carregandoCepDestino = true;
+    // Seta loading
+    if (tipo === 'origem') {
+      this.carregandoCepOrigem = true;
+    } else {
+      this.carregandoCepDestino = true;
+    }
 
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-      .then(r => r.json())
-      .then(data => {
-        if (!data.erro) {
-          if (tipo === 'origem') {
-            this.bairroOrigem = data.bairro;
-            this.cidadeOrigem = data.localidade;
-            this.estadoOrigem = data.uf;
-            this.dddOrigem = data.ddd;
-          } else {
-            this.bairroDestino = data.bairro;
-            this.cidadeDestino = data.localidade;
-            this.estadoDestino = data.uf;
-          }
-        }
-      })
-      .finally(() => {
-        if (tipo === 'origem') this.carregandoCepOrigem = false;
-        else this.carregandoCepDestino = false;
-      });
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      
+      if (!response.ok) {
+        throw new Error('Erro na requisição');
+      }
+
+      const data = await response.json();
+
+      if (data.erro) {
+        this.mostrarAlerta('error', `CEP ${cep} não encontrado`);
+        this.limparCamposCep(tipo);
+        return;
+      }
+
+      // Preenche os campos
+      if (tipo === 'origem') {
+        this.enderecoOrigem = data.logradouro || '';
+        this.bairroOrigem = data.bairro || '';
+        this.cidadeOrigem = data.localidade || '';
+        this.estadoOrigem = data.uf || '';
+        this.dddOrigem = data.ddd || '';
+        
+        this.mostrarAlerta('success', 'Endereço de origem preenchido automaticamente!');
+      } else {
+        this.enderecoDestino = data.logradouro || '';
+        this.bairroDestino = data.bairro || '';
+        this.cidadeDestino = data.localidade || '';
+        this.estadoDestino = data.uf || '';
+        
+        this.mostrarAlerta('success', 'Endereço de destino preenchido automaticamente!');
+      }
+
+      // Alerta se faltar alguma informação
+      if (!data.logradouro || !data.bairro) {
+        this.mostrarAlerta('warning', 'Alguns campos precisam ser preenchidos manualmente');
+      }
+
+    } catch (error) {
+      console.error('Erro ao buscar CEP:', error);
+      this.mostrarAlerta('error', 'Erro ao consultar CEP. Tente novamente.');
+      this.limparCamposCep(tipo);
+    } finally {
+      if (tipo === 'origem') {
+        this.carregandoCepOrigem = false;
+      } else {
+        this.carregandoCepDestino = false;
+      }
+    }
+  }
+
+  limparCamposCep(tipo: 'origem' | 'destino'): void {
+    if (tipo === 'origem') {
+      this.enderecoOrigem = '';
+      this.bairroOrigem = '';
+      this.cidadeOrigem = '';
+      this.estadoOrigem = '';
+      this.dddOrigem = '';
+    } else {
+      this.enderecoDestino = '';
+      this.bairroDestino = '';
+      this.cidadeDestino = '';
+      this.estadoDestino = '';
+    }
+  }
+
+  validarFormulario(): boolean {
+    const erros: string[] = [];
+
+    // Validação de origem
+    if (!this.enderecoOrigem?.trim()) {
+      erros.push('Endereço de origem é obrigatório');
+    }
+    if (!this.bairroOrigem?.trim()) {
+      erros.push('Bairro de origem é obrigatório');
+    }
+    if (!this.cidadeOrigem?.trim()) {
+      erros.push('Cidade de origem é obrigatória');
+    }
+    if (!this.estadoOrigem?.trim()) {
+      erros.push('Estado de origem é obrigatório');
+    }
+    if (this.estadoOrigem?.trim().length !== 2) {
+      erros.push('Estado de origem deve ter 2 caracteres (UF)');
+    }
+
+    // Validação de destino
+    if (!this.enderecoDestino?.trim()) {
+      erros.push('Endereço de destino é obrigatório');
+    }
+    if (!this.bairroDestino?.trim()) {
+      erros.push('Bairro de destino é obrigatório');
+    }
+    if (!this.cidadeDestino?.trim()) {
+      erros.push('Cidade de destino é obrigatória');
+    }
+    if (!this.estadoDestino?.trim()) {
+      erros.push('Estado de destino é obrigatório');
+    }
+    if (this.estadoDestino?.trim().length !== 2) {
+      erros.push('Estado de destino deve ter 2 caracteres (UF)');
+    }
+
+    // Validação da carga
+    if (!this.tipoCarga) {
+      erros.push('Selecione o tipo de carga');
+    }
+
+    const valorLimpo = this.valor.replace(/[^\d,]/g, '').replace(',', '.');
+    if (!this.valor || isNaN(parseFloat(valorLimpo)) || parseFloat(valorLimpo) <= 0) {
+      erros.push('Informe um valor válido para o frete');
+    }
+
+    if (!this.descricaoCarga?.trim()) {
+      erros.push('Descrição da carga é obrigatória');
+    }
+
+    // Exibe os erros
+    if (erros.length > 0) {
+      erros.forEach(erro => this.mostrarAlerta('error', erro));
+      return false;
+    }
+
+    return true;
   }
 
   solicitarFrete(): void {
+    this.alertas = [];
     this.erro = '';
 
-    if (!this.cidadeOrigem || !this.estadoOrigem || !this.bairroOrigem) {
-      this.erro = 'Preencha o endereço de origem completo.';
-      return;
-    }
-    if (!this.cidadeDestino || !this.estadoDestino || !this.bairroDestino) {
-      this.erro = 'Preencha o endereço de destino completo.';
-      return;
-    }
-    if (!this.tipoCarga) {
-      this.erro = 'Selecione o tipo de carga.';
-      return;
-    }
-    if (!this.valor || !this.descricaoCarga) {
-      this.erro = 'Preencha o valor e a descrição da carga.';
+    if (!this.validarFormulario()) {
       return;
     }
 
     this.enviando = true;
+
+    const valorNumerico = parseFloat(
+      this.valor.replace('R$', '')
+                .replace(/\./g, '')
+                .replace(',', '.')
+                .trim()
+    );
 
     const payload = {
       tipoCarga: this.tipoCarga as 'Pequena' | 'Media' | 'Grande',
@@ -108,20 +241,22 @@ export class SolicitarFretes {
       urgente: this.urgente,
 
       dddOrigem: this.dddOrigem,
-      cidadeOrigem: this.cidadeOrigem,
-      bairroOrigem: this.bairroOrigem,
-      estadoOrigem: this.estadoOrigem,
+      cidadeOrigem: this.cidadeOrigem.trim(),
+      bairroOrigem: this.bairroOrigem.trim(),
+      estadoOrigem: this.estadoOrigem.trim().toUpperCase(),
+      enderecoOrigem: this.enderecoOrigem.trim(),
       latitudeOrigem: 0,
       longitudeOrigem: 0,
 
-      cidadeDestino: this.cidadeDestino,
-      bairroDestino: this.bairroDestino,
-      estadoDestino: this.estadoDestino,
+      cidadeDestino: this.cidadeDestino.trim(),
+      bairroDestino: this.bairroDestino.trim(),
+      estadoDestino: this.estadoDestino.trim().toUpperCase(),
+      enderecoDestino: this.enderecoDestino.trim(),
       latitudeDestino: 0,
       longitudeDestino: 0,
 
-      descricaoCarga: this.descricaoCarga,
-      valor: parseFloat(this.valor.replace('R$', '').replace('.', '').replace(',', '.').trim()),
+      descricaoCarga: this.descricaoCarga.trim(),
+      valor: valorNumerico,
 
       sitioOrigem: this.sitioOrigem,
       sitioDestino: this.sitioDestino,
@@ -129,15 +264,26 @@ export class SolicitarFretes {
       transportadorId: 0
     };
 
+    console.log('Payload enviado:', payload); // Debug
+
     this.freteService.criarFreteImediato(payload).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log('Resposta sucesso:', response); // Debug
+        this.enviando = false;
         this.sucesso = true;
-        this.enviando = false;
-        setTimeout(() => this.router.navigate(['/dashboard']), 2000);
+        this.mostrarAlerta('success', '✅ Frete solicitado com sucesso! Redirecionando...');
+        setTimeout(() => this.router.navigate(['/dashboard']), 3000);
       },
-      error: (err: { error: { mensagem: string; }; }) => {
-        this.erro = err?.error?.mensagem || 'Erro ao solicitar frete. Tente novamente.';
+      error: (err) => {
+        console.error('Erro completo:', err); // Debug
         this.enviando = false;
+        
+        const mensagemErro = err?.error?.mensagem || 
+                             err?.error?.message || 
+                             err?.message || 
+                             'Erro ao solicitar frete. Tente novamente.';
+        
+        this.mostrarAlerta('error', `❌ ${mensagemErro}`);
       }
     });
   }

@@ -1,233 +1,226 @@
-<app-navbar></app-navbar>
+  <app-navbar></app-navbar>
 
-  <div class="alert-overlay">
-    <div class="alert-box success">
-      <i class="fas fa-check-circle"></i>
-      <span>Solicitação enviada com sucesso!</span>
-    </div>
-  </div>
+  <section class="frete-section">
+    <div class="frete-container animate-fade-in">
+      <h1 class="section-title">Solicitar Frete</h1>
+      <p class="section-subtitle">
+        Preencha os dados completos para enviar sua solicitação.
+      </p>
 
-<section class="frete-section">
-  <div class="frete-container animate-fade-in">
-    <h1 class="section-title">Solicitar Frete</h1>
-    <p class="section-subtitle">
-      Preencha os dados completos para enviar sua solicitação.
-    </p>
+      <form class="frete-form" (ngSubmit)="solicitarFrete()" #freteForm="ngForm">
+        <div class="form-section">
+          <h3><i class="fas fa-map-marker-alt"></i> Endereço de Origem</h3>
 
-    <form class="frete-form" (ngSubmit)="solicitarFrete()" #freteForm="ngForm">
-      <div class="form-section">
-        <h3><i class="fas fa-map-marker-alt"></i> Endereço de Origem</h3>
+          <div class="form-group">
+            <label>CEP Origem <small>(opcional)</small></label>
+            <div class="cep-container">
+              <input
+                type="text"
+                placeholder="00000-000"
+                maxlength="9"
+                [(ngModel)]="cepOrigem"
+                (input)="formatarCep('origem')"
+                (blur)="buscarCep('origem')"
+                name="cepOrigem"
+              />
+              <div class="loading" *ngIf="carregandoCepOrigem">
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+            </div>
+            <small class="field-info">Informe o CEP para preenchimento automático</small>
+          </div>
 
-        <div class="form-group">
-          <label>CEP Origem <small>(opcional)</small></label>
-          <div class="cep-container">
-            <input
-              type="text"
-              placeholder="00000-000"
-              maxlength="9"
-              [(ngModel)]="cepOrigem"
-              (input)="formatarCep('origem')"
-              (blur)="buscarCep('origem')"
-              name="cepOrigem"
-            />
-            <div class="loading" *ngIf="carregandoCepOrigem">
-              <i class="fas fa-spinner fa-spin"></i>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Endereço Completo de Origem</label>
+              <input
+                type="text"
+                [(ngModel)]="enderecoOrigem"
+                name="enderecoOrigem"
+                placeholder="Rua, número e bairro"
+              />
             </div>
           </div>
-          <small class="field-info">Informe o CEP para preenchimento automático</small>
-        </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Endereço Completo de Origem</label>
-            <input
-              type="text"
-              [(ngModel)]="enderecoOrigem"
-              name="enderecoOrigem"
-              placeholder="Rua, número e bairro"
-            />
-          </div>
-        </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Cidade de Origem</label>
+              <input
+                type="text"
+                [(ngModel)]="cidadeOrigem"
+                name="cidadeOrigem"
+                placeholder="Cidade"
+              />
+            </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Cidade de Origem</label>
-            <input
-              type="text"
-              [(ngModel)]="cidadeOrigem"
-              name="cidadeOrigem"
-              placeholder="Cidade"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Estado de Origem</label>
-            <input
-              type="text"
-              [(ngModel)]="estadoOrigem"
-              name="estadoOrigem"
-              placeholder="UF"
-              maxlength="2"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h3><i class="fas fa-flag-checkered"></i> Endereço de Destino</h3>
-
-        <div class="form-group">
-          <label>CEP Destino <small>(opcional)</small></label>
-          <div class="cep-container">
-            <input
-              type="text"
-              placeholder="00000-000"
-              maxlength="9"
-              [(ngModel)]="cepDestino"
-              (input)="formatarCep('destino')"
-              (blur)="buscarCep('destino')"
-              name="cepDestino"
-            />
-            <div class="loading" *ngIf="carregandoCepDestino">
-              <i class="fas fa-spinner fa-spin"></i>
+            <div class="form-group">
+              <label>Estado de Origem</label>
+              <input
+                type="text"
+                [(ngModel)]="estadoOrigem"
+                name="estadoOrigem"
+                placeholder="UF"
+                maxlength="2"
+              />
             </div>
           </div>
-          <small class="field-info">Informe o CEP para preenchimento automático</small>
         </div>
 
-        <div class="form-row">
+        <div class="form-section">
+          <h3><i class="fas fa-flag-checkered"></i> Endereço de Destino</h3>
+
           <div class="form-group">
-            <label>Endereço Completo de Destino</label>
-            <input
-              type="text"
-              [(ngModel)]="enderecoDestino"
-              name="enderecoDestino"
-              placeholder="Rua, número e bairro"
-            />
+            <label>CEP Destino <small>(opcional)</small></label>
+            <div class="cep-container">
+              <input
+                type="text"
+                placeholder="00000-000"
+                maxlength="9"
+                [(ngModel)]="cepDestino"
+                (input)="formatarCep('destino')"
+                (blur)="buscarCep('destino')"
+                name="cepDestino"
+              />
+              <div class="loading" *ngIf="carregandoCepDestino">
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+            </div>
+            <small class="field-info">Informe o CEP para preenchimento automático</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Endereço Completo de Destino</label>
+              <input
+                type="text"
+                [(ngModel)]="enderecoDestino"
+                name="enderecoDestino"
+                placeholder="Rua, número e bairro"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Cidade de Destino</label>
+              <input
+                type="text"
+                [(ngModel)]="cidadeDestino"
+                name="cidadeDestino"
+                placeholder="Cidade"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Estado de Destino</label>
+              <input
+                type="text"
+                [(ngModel)]="estadoDestino"
+                name="estadoDestino"
+                placeholder="UF"
+                maxlength="2"
+              />
+            </div>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Cidade de Destino</label>
-            <input
-              type="text"
-              [(ngModel)]="cidadeDestino"
-              name="cidadeDestino"
-              placeholder="Cidade"
-            />
+        <div class="form-section">
+          <h3><i class="fas fa-box"></i> Informações da Carga</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tipo de Carga</label>
+              <select name="tipoCarga" [(ngModel)]="tipoCarga" required>
+                <option value="" disabled selected>Selecione</option>
+                <option value="Pequena">Pequena</option>
+                <option value="Media">Média</option>
+                <option value="Grande">Grande</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Valor do Frete (R$)</label>
+              <input
+                type="text"
+                name="valor"
+                placeholder="R$ 0,00"
+                [(ngModel)]="valor"
+                required
+              />
+            </div>
           </div>
 
-          <div class="form-group">
-            <label>Estado de Destino</label>
-            <input
-              type="text"
-              [(ngModel)]="estadoDestino"
-              name="estadoDestino"
-              placeholder="UF"
-              maxlength="2"
-            />
-          </div>
-        </div>
-      </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Bairro de Origem</label>
+              <input type="text" name="bairroOrigem" [(ngModel)]="bairroOrigem" placeholder="Bairro" />
+            </div>
 
-      <div class="form-section">
-        <h3><i class="fas fa-box"></i> Informações da Carga</h3>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Tipo de Carga</label>
-            <select name="tipoCarga" [(ngModel)]="tipoCarga" required>
-              <option value="" disabled selected>Selecione</option>
-              <option value="Pequena">Pequena</option>
-              <option value="Media">Média</option>
-              <option value="Grande">Grande</option>
-            </select>
+            <div class="form-group">
+              <label>Bairro de Destino</label>
+              <input type="text" name="bairroDestino" [(ngModel)]="bairroDestino" placeholder="Bairro" />
+            </div>
           </div>
 
-          <div class="form-group">
-            <label>Valor do Frete (R$)</label>
-            <input
-              type="text"
-              name="valor"
-              placeholder="R$ 0,00"
-              [(ngModel)]="valor"
+          <div class="form-row">
+            <div class="form-group">
+              <label>
+                <input type="checkbox" name="sitioOrigem" [(ngModel)]="sitioOrigem" />
+                Origem é sítio/zona rural
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" name="sitioDestino" [(ngModel)]="sitioDestino" />
+                Destino é sítio/zona rural
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>
+                <input type="checkbox" name="urgente" [(ngModel)]="urgente" />
+                Frete urgente
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label>Descrição da Carga</label>
+            <textarea
+              rows="4"
+              name="descricaoCarga"
+              placeholder="Descreva o tipo de carga, dimensões e cuidados especiais"
+              [(ngModel)]="descricaoCarga"
               required
-            />
+            ></textarea>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Bairro de Origem</label>
-            <input type="text" name="bairroOrigem" [(ngModel)]="bairroOrigem" placeholder="Bairro" />
-          </div>
-
-          <div class="form-group">
-            <label>Bairro de Destino</label>
-            <input type="text" name="bairroDestino" [(ngModel)]="bairroDestino" placeholder="Bairro" />
-          </div>
+        <div *ngIf="erro" class="alert-box danger" style="margin-bottom: 1rem;">
+          <i class="fas fa-times-circle"></i>
+          <span>{{ erro }}</span>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>
-              <input type="checkbox" name="sitioOrigem" [(ngModel)]="sitioOrigem" />
-              Origem é sítio/zona rural
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label>
-              <input type="checkbox" name="sitioDestino" [(ngModel)]="sitioDestino" />
-              Destino é sítio/zona rural
-            </label>
+        <div class="form-info">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <strong>Como funciona:</strong>
+            <ul>
+              <li>O CEP é opcional.</li>
+              <li>Se informado, o endereço pode ser preenchido automaticamente.</li>
+              <li>Confira os dados antes de enviar.</li>
+            </ul>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>
-              <input type="checkbox" name="urgente" [(ngModel)]="urgente" />
-              Frete urgente
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group full">
-          <label>Descrição da Carga</label>
-          <textarea
-            rows="4"
-            name="descricaoCarga"
-            placeholder="Descreva o tipo de carga, dimensões e cuidados especiais"
-            [(ngModel)]="descricaoCarga"
-            required
-          ></textarea>
-        </div>
-      </div>
-
-      <div *ngIf="erro" class="alert-box danger" style="margin-bottom: 1rem;">
-        <i class="fas fa-times-circle"></i>
-        <span>{{ erro }}</span>
-      </div>
-
-      <div class="form-info">
-        <i class="fas fa-info-circle"></i>
-        <div>
-          <strong>Como funciona:</strong>
-          <ul>
-            <li>O CEP é opcional.</li>
-            <li>Se informado, o endereço pode ser preenchido automaticamente.</li>
-            <li>Confira os dados antes de enviar.</li>
-          </ul>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary btn-large" [disabled]="enviando">
-        <i class="fas fa-paper-plane"></i>
-        {{ enviando ? 'Enviando...' : 'Solicitar Frete' }}
-      </button>
-    </form>
-  </div>
-</section>
-<app-footer></app-footer>
+        <button type="submit" class="btn btn-primary btn-large" [disabled]="enviando">
+          <i class="fas fa-paper-plane"></i>
+          {{ enviando ? 'Enviando...' : 'Solicitar Frete' }}
+        </button>
+      </form>
+    </div>
+  </section>
+  <app-footer></app-footer>

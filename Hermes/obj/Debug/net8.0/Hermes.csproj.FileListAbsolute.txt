@@ -352,3 +352,5 @@ C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\zh-Hant\M
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\appsettings.Production.json
 C:\Users\Carlos Felipe\Documents\GitHub\Hermes\Hermes\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\Users\Aluno\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\appsettings.Production.json
+C:\Users\Aluno\Documents\GitHub\Hermes\Hermes\bin\Debug\net8.0\BCrypt.Net-Next.dll
